@@ -1,0 +1,32 @@
+.container{
+    width: 90%; 
+    max-width: 1200px;
+    height: auto;
+    padding: 10px;
+    margin: 1in auto;
+    background-color: rgb(217, 217, 217);
+    border-radius: 10px;
+    box-shadow: 20px 20px 1px rgba(0, 13, 255, 0.1); 
+}
+
+header {
+    background-color: #1e1e4b;
+    color:white;
+    padding:20px;
+    text-align: left;
+    border-radius: 8px 8px 8px 8px;
+    margin-bottom: 40px;
+}
+
+.galeria-daws {
+    display: flex;             /* alinea las imagenes horizontalmente */
+    align-items: left;       /* alinea todas al centro verticalmente */
+    justify-content: left;   /* todas a la izquierda */
+    gap: 20px;                 /* separa las imagenes entre sí */
+}
+
+.galeria-daws img {
+    width: 120px;              /* ancho fijo para todas */
+    height: 120px;             /* alto fijo para todas */
+    object-fit: contain;       /* escala la imagen sin deformarla ni recortarla */
+}
