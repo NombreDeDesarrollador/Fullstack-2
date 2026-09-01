@@ -4,19 +4,9 @@
     height: auto;
     padding: 10px;
     margin: 1in auto;
-    background-color: rgba(217, 217, 217, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     box-shadow: 20px 20px 1px rgba(0, 13, 255, 0.1); 
-}
-
-header {
-    background-color: #2d2d67;
-    color:white;
-    padding:20px;
-    text-align: left;
-    border-radius: 8px 8px 8px 8px;
-    margin-bottom: 40px;
-    width: fit-content;
 }
 
 
