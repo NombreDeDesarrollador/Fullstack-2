@@ -4,29 +4,51 @@
     height: auto;
     padding: 10px;
     margin: 1in auto;
-    background-color: rgb(217, 217, 217);
+    background-color: rgba(217, 217, 217, 0.9);
     border-radius: 10px;
     box-shadow: 20px 20px 1px rgba(0, 13, 255, 0.1); 
 }
 
 header {
-    background-color: #1e1e4b;
+    background-color: #2d2d67;
     color:white;
     padding:20px;
     text-align: left;
     border-radius: 8px 8px 8px 8px;
     margin-bottom: 40px;
+    width: fit-content;
 }
 
-.galeria-daws {
+
+
+.galeria-plugins, .galeria-daws{
     display: flex;             /* alinea las imagenes horizontalmente */
-    align-items: left;       /* alinea todas al centro verticalmente */
-    justify-content: left;   /* todas a la izquierda */
-    gap: 20px;                 /* separa las imagenes entre sí */
+    align-items: center;       /* alinea todas al centro verticalmente */
+    justify-content: flex-start;   /* todas a la izquierda */
+    gap: 20px;  
+
 }
 
-.galeria-daws img {
-    width: 120px;              /* ancho fijo para todas */
-    height: 120px;             /* alto fijo para todas */
-    object-fit: contain;       /* escala la imagen sin deformarla ni recortarla */
+.galeria-plugins img, .galeria-daws img {
+    width: 130px;              /* ancho fijo para todas */
+    height: 120x; 
+    object-fit: cover;            /* alto fijo para todas */
+    object-fit: 6px;       /* escala la imagen sin deformarla ni recortarla */
+}
+
+.footer-centrado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+body {
+    background-image: url(https://i.redd.it/2un6y8ah5ib11.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
 }
