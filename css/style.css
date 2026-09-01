@@ -1,13 +1,4 @@
-.container{
-    width: 90%; 
-    max-width: 1200px;
-    height: auto;
-    padding: 10px;
-    margin: 1in auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 20px 20px 1px rgba(0, 13, 255, 0.1); 
-}
+
 
 
 
@@ -20,10 +11,10 @@
 }
 
 .galeria-plugins img, .galeria-daws img {
-    width: 130px;              /* ancho fijo para todas */
+    width: 200px;              /* ancho fijo para todas */
     height: 120x; 
     object-fit: cover;            /* alto fijo para todas */
-    object-fit: 6px;       /* escala la imagen sin deformarla ni recortarla */
+    object-fit: 10px;       /* escala la imagen sin deformarla ni recortarla */
 }
 
 .footer-centrado{
@@ -35,7 +26,7 @@
 }
 
 body {
-    background-image: url(https://i.redd.it/2un6y8ah5ib11.png);
+    background-image: url(https://img.magnific.com/vector-gratis/estilo-neumorfismo-fondo-blanco-abstracto_107791-34117.jpg?semt=ais_hybrid&w=740&q=80);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
