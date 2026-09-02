@@ -1,8 +1,12 @@
+.container{
+    max-width: 85%;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
 
 
 
-
-.galeria-plugins, .galeria-daws{
+.galeria-accesorios, .galeria-instrumentos{
     display: flex;             /* alinea las imagenes horizontalmente */
     align-items: center;       /* alinea todas al centro verticalmente */
     justify-content: flex-start;   /* todas a la izquierda */
@@ -10,7 +14,7 @@
 
 }
 
-.galeria-plugins img, .galeria-daws img {
+.galeria-accesorios img, .galeria-instrumentos img {
     width: 200px;              /* ancho fijo para todas */
     height: 120x; 
     object-fit: cover;            /* alto fijo para todas */
@@ -32,4 +36,24 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0;
+}
+
+.nombre{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}
+
+.descripcion{
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+}
+.nombres img {
+    width: 100%;
+    height: 120px;            /* Altura fija idéntica para todas */
+    object-fit: contain;       /* Escala la imagen sin recortarla ni deformarla */
 }
