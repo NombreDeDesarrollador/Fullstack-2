@@ -10,10 +10,15 @@
 </head>
 
 <body>
+
+    <header class="barra-arriba">
+        <a href="proyecto.html">
+            <img src="img/logo digital audio.png" alt="digital" width="200">
+        </a>
+    </header>
+
     <div class="container">
-        <header>
-            <img src="img/Gemini_Generated_Image_kr7s1fkr7s1fkr7s.png" alt="digital" width="200">
-        </header>
+
         <h2>Si entraste a Digital Sounds, es porque hablamos el mismo idioma,<br>
             estás en lugar indicado, aquí encontrarás los mejores instrumentos y accesorios.</h2>
 
@@ -25,42 +30,96 @@
         </p>
 
 
-        <section></section>
-            <h2>INSTRUMENTOS</h2>
+        <!-- GALERÍA INSTRUMENTOS -->
+        <h2>INSTRUMENTOS</h2>
 
-            <div class="galeria-instrumentos">
-                <div class = "nombres">
-                    <img src="https://guitarristas.edxstatic.com/3303/guitars.jpeg" alt="Guitarras">
-                    <p class = "descripcion">Guitarras Eléctricas</p>
-                </div>
+        <div class="carousel-wrapper">
+            <button class="btn-carrusel" onclick="moverCarrusel('galeria-inst', -1)">&#10094;</button>
 
-                <div class = "nombres">
-                    <img src="https://bemolmusic.cl/cdn/shop/files/1_e91a7447-3a68-42e3-8d79-6621582452ce.jpg?v=1766066098"alt="Pianos">
-                    <p class = "descripcion">Pianos y Controladores</p>
-                </div>
+            <div class="galeria-instrumentos" id="galeria-inst">
+                <a href="guitarras.html" class="nombres">
+                    <img src="https://static.vecteezy.com/system/resources/previews/001/207/359/non_2x/electric-guitar-png.png"
+                        alt="Guitarras">
+                    <p class="descripcion">Guitarras</p>
+                </a>
 
-                <div class = "nombres">
-                    <img src="https://static.roland.com/assets/images/products/gallery/vad716-sw_front_gal.jpg" alt="Baterias">
-                    <p class = "descripcion">Baterías y Percusión</p>
-                </div>
+                <a href="pianos.html" class="nombres">
+                    <img src="https://www.yamaki.com.co/musica-audio-consumo/wp-content/uploads/sites/2/2021/11/MPKMINI3_01-500x500.png"
+                        alt="Pianos">
+                    <p class="descripcion">Pianos y Controladores</p>
+                </a>
+
+                <a href="baterias.html" class="nombres">
+                    <img src="https://www.pngarts.com/files/3/Yamaha-Drum-Free-PNG-Image.png" alt="Baterias">
+                    <p class="descripcion">Baterías y Percusión</p>
+                </a>
+
+                <a href="bajos.html" class="nombres">
+                    <img src = "https://freepngimg.com/save/9964-bass-guitar-png-hd/1280x856" alt="Bajos">
+                    <p class = "descripcion">Bajos</p>
+                </a>
+
             </div>
 
-            <h2>ACCESORIOS</h2>
+            <button class="btn-carrusel" onclick="moverCarrusel('galeria-inst', 1)">&#10095;</button>
+        </div>
 
-            <div class = "galeria-accesorios">
-                <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvMPvREWVmHT_Rtp2drrStLXGzArr_oDKz5gcTH3utwujl0qj-3SZKaVY&s=10" alt="Serum">
-                <img src = "https://www.planetmusic.cl/wp-content/uploads/2025/04/Behringer-Overdrive-Distortion-OD300-Pedal-de-Efecto-Planet-Music-1200x1200-1.jpg" alt="Massive">
-                <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjCs06LUsIJEg0tqXfGuU8Qlu4etpI0gDG5F8cCzXr8_LItUnomTzVE74G&s=10" alt = "Antares">
+        <h2>ACCESORIOS</h2>
 
+        <div class="carousel-wrapper">
+            <button class="btn-carrusel" onclick="moverCarrusel('galeria-acc', -1)">&#10094;</button>
+
+            <div class="galeria-accesorios" id="galeria-acc">
+                <a href="amplificadores.html" class="nombres">
+                    <img src="https://gearhub.cl/cdn/shop/products/gearhub_blackstar_core_stereo_150_front_1x1_51e4c296-3d44-4d72-99f0-182371edcd2c.png?v=1662996776&width=1080"
+                        alt="Amplificadores">
+                    <p class="descripcion">Amplificadores</p>
+                </a>
+
+                <a href="pedales.html" class="nombres">
+                    <img src="https://gearhub.cl/cdn/shop/files/Gearhub_Nux_MG300_pedalera_multiefecto_guitarra_2_1800x1800.png?v=1756855204"
+                        alt="Pedales">
+                    <p class="descripcion">Pedales</p>
+                </a>
+
+                <a href="cuerdas.html" class="nombres">
+                    <img src="https://s3.us-west-2.amazonaws.com/static.ernieball.com/website/images/products/image_front/large/P02069.png"
+                        alt="Cuerdas">
+                    <p class="descripcion">Cuerdas</p>
+                </a>
             </div>
-        
 
-        <footer class = "footer-centrado">
+            <button class="btn-carrusel" onclick="moverCarrusel('galeria-acc', 1)">&#10095;</button>
+        </div>
+
+
+        <footer class="footer-centrado">
             <p> &copy; &reg; &trade; Sitio oficial Digital Sounds - 2026 <br>
-                &#9742; +569 1234 5678      &#9993; contacto.ds@corporation.com</p>
+                &#9742; +569 1234 5678 &#9993; contacto.ds@corporation.com</p>
         </footer>
 
     </div>
+
+    <script>
+    function moverCarrusel(idGaleria, direccion) {
+        const galeria = document.getElementById(idGaleria);
+        const distancia = 240; // Distancia de desplazamiento por clic
+        const maxScroll = galeria.scrollWidth - galeria.clientWidth;
+
+        // Si presiona derecha y llega al final, vuelve al inicio
+        if (direccion === 1 && galeria.scrollLeft >= maxScroll - 5) {
+            galeria.scrollTo({ left: 0, behavior: 'smooth' });
+        } 
+        // Si presiona izquierda y está al inicio, salta al final
+        else if (direccion === -1 && galeria.scrollLeft <= 5) {
+            galeria.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        } 
+        // Movimiento normal
+        else {
+            galeria.scrollBy({ left: direccion * distancia, behavior: 'smooth' });
+        }
+    }
+</script>
 </body>
 
 </html>

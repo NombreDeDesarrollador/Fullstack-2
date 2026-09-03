@@ -6,19 +6,29 @@
 
 
 
-.galeria-accesorios, .galeria-instrumentos{
-    display: flex;             /* alinea las imagenes horizontalmente */
-    align-items: center;       /* alinea todas al centro verticalmente */
-    justify-content: flex-start;   /* todas a la izquierda */
-    gap: 20px;  
-
+.galeria-accesorios, .galeria-instrumentos {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 15px 5px;
+    scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
 }
 
-.galeria-accesorios img, .galeria-instrumentos img {
-    width: 200px;              /* ancho fijo para todas */
-    height: 120x; 
-    object-fit: cover;            /* alto fijo para todas */
-    object-fit: 10px;       /* escala la imagen sin deformarla ni recortarla */
+.galeria-accesorios, .galeria-instrumentos {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 15px 5px;
+    scrollbar-width: none;
+    min-width: 0;
+    width: 100%;
+}
+
+.galeria-accesorios::-webkit-scrollbar,
+.galeria-instrumentos::-webkit-scrollbar {
+    display: none;
 }
 
 .footer-centrado{
@@ -38,22 +48,83 @@ body {
     margin: 0;
 }
 
-.nombre{
+.descripcion {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+    margin: 0;
+}
+
+.nombres {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 200px;
+    width: 220px;
+    background-color: #ffffff;             /* Fondo blanco para que destaque */
+    border: 1px solid #e0e0e0;             /* Borde gris claro */
+    border-radius: 12px;                    /* Esquinas redondeadas */
+    padding: 20px 15px;                     /* Espaciado interno */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);/* Sombra suave */
+    text-decoration: none;                  /* Quita subrayado de enlace */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    flex: 0 0 220px; /* Evita que las tarjetas se encojan */
 }
 
-.descripcion{
-    margin-top: 8px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    color: black;
-}
 .nombres img {
     width: 100%;
-    height: 120px;            /* Altura fija idéntica para todas */
-    object-fit: contain;       /* Escala la imagen sin recortarla ni deformarla */
+    height: 130px;
+    object-fit: contain;
+    margin-bottom: 10px;
 }
+
+.nombres:hover {
+    transform: translateY(-6px);            /* Sube ligeramente la tarjeta */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Aumenta la sombra */
+}
+
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 760px; /* Ancho ajustado para 3 tarjetas exactas */
+    margin: 0;   /* Centra el carrusel en la página */
+}
+
+.btn-carrusel {
+    background-color: #324c5e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-carrusel:hover {
+    background-color: #1d2d38;
+    transform: scale(1.1);
+}
+
+.barra-arriba{
+    background-color: #ffffff; /* Tono de azul (puedes cambiarlo a #0056b3 o el azul que prefieras) */
+    width: 100%;
+    padding: 15px 7.5%; /* Alinea verticalmente y da espacio lateral */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Añade una ligera sombra */
+}
+
+.barra-arriba a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Efecto visual al pasar el ratón (Hover) */
