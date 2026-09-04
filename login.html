@@ -1,21 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/stylelogin.css">
 </head>
+
 <body>
     <div class="row vh-100 g-0">
         <div class="col-lg-6 position-relative d-none d-lg-block">
-            <div class="bg-holder" style="background-image: url(img/fondo.png);">
+            <div class="bg-holder" style="background-image: url(img/1a46a019bf6adc8dcd03968264534e1a.jpg);">
             </div>
         </div>
-    </div>
-    
 
-    
+        <div class="col-lg-6">
+            <div class="row align-items-center justify-content-center h-100 g-0 px-4 px-sm-0">
+                <div class="col col-sm-6 col-lg-7 col-xl-6">
+                    <div class="login-card">
+                        <a href="#" class="d-flex justify-content-center mb-4">
+                            <img src="img/logo digital audio.png" alt="Logo">
+                        </a>
+                        <div class="text-center mb-5">
+                            <h3 class="fw-bold">Iniciar sesión</h3>
+                            <p class="text-secondary">Accede a tu cuenta</p>
+                        </div>
+
+                        <button
+                            class="btn btn-outline-secondary btn-lg w-100 mb-3 d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-google"></i> Iniciar sesión con Google
+                        </button>
+                        <button
+                            class="btn btn-outline-secondary btn-lg w-100 mb-3 d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-facebook"></i> Iniciar sesión con Facebook
+                        </button>
+
+                        <div class="position-relative">
+                            <hr class="text-secondary divider">
+                            <div class="divider-content-center">or</div>
+                        </div>
+                        <form action="#">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input type="text" class="form-control form-control-lg fs-6" placeholder="Usuario">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password" class="form-control form-control-lg fs-6"
+                                    placeholder="Contraseña">
+                            </div>
+                            <div class="input-group-mb3 mb-3 d-flex justify-content-between">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="formCheck">
+                                    <label class="form-check-label" for="formCheck">
+                                        <small>Recordar contraseña</small>
+                                    </label>
+                                </div>
+                                <div>
+                                    <small><a href="#" class="text-decoration-none">¿Olvidaste tu
+                                            contraseña?</a></small>
+                                </div>
+                            </div>
+                            <div id="resultado-login" class="mb-3"></div>
+                            <button type="button" class="btn btn-primary btn-lg w-100" onclick="validarLogin()">Iniciar
+                                sesión</button>
+                        </form>
+                        <div class="text-center">
+                            <small>¿No tienes una cuenta? <a href="#" class="fw-bold">Regístrate</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="js/login.js"></script>
 </body>
+
 </html>

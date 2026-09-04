@@ -1,3 +1,42 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #f8f9fa;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+.btn {
+    font-size: 0.8rem
+    font-weight 700;
+}
+
+.btn i {
+    vertical-align: text-top;
+}
+
+.btn-outline-custom {
+    color: #31374a;
+    border-color: #eee;
+}
+
+.login-card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 3rem 2.5rem;
+}
+
+
 .bg-holder{
     position: absolute;
     width: 100%;
@@ -5,6 +44,39 @@
     top: 0;
     left: 0;
     background-size: cover;
-    background-position: right;
+    background-position: center;
     background-repeat: no-repeat;
+}
+
+.bg-holder::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, #f8f9fa);
+    pointer-events: none;
+}
+
+.d-flex.justify-content-center.mb-4 img {
+    max-width: 200px;
+    height: auto;
+}
+
+.divider-content-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #999
+}
+
+.divider {
+    margin: 2rem 8;
 }
