@@ -1,21 +1,23 @@
-.container{
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    background-image: url(https://img.magnific.com/vector-gratis/estilo-neumorfismo-fondo-blanco-abstracto_107791-34117.jpg?semt=ais_hybrid&w=740&q=80);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+}
+
+.container {
     max-width: 85%;
     margin: 0 auto;
     padding: 20px 40px;
 }
 
-
-
-.galeria-accesorios, .galeria-instrumentos {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 15px 5px;
-    scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
-}
-
-.galeria-accesorios, .galeria-instrumentos {
+.galeria-accesorios,
+.galeria-instrumentos {
     display: flex;
     gap: 20px;
     overflow-x: auto;
@@ -31,21 +33,12 @@
     display: none;
 }
 
-.footer-centrado{
+.footer-centrado {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-}
-
-body {
-    background-image: url(https://img.magnific.com/vector-gratis/estilo-neumorfismo-fondo-blanco-abstracto_107791-34117.jpg?semt=ais_hybrid&w=740&q=80);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    margin: 0;
 }
 
 .descripcion {
@@ -61,15 +54,15 @@ body {
     flex-direction: column;
     align-items: center;
     width: 220px;
-    background-color: #ffffff;             /* Fondo blanco para que destaque */
-    border: 1px solid #e0e0e0;             /* Borde gris claro */
-    border-radius: 12px;                    /* Esquinas redondeadas */
-    padding: 20px 15px;                     /* Espaciado interno */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);/* Sombra suave */
-    text-decoration: none;                  /* Quita subrayado de enlace */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-decoration: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
-    flex: 0 0 220px; /* Evita que las tarjetas se encojan */
+    flex: 0 0 220px;
 }
 
 .nombres img {
@@ -80,16 +73,16 @@ body {
 }
 
 .nombres:hover {
-    transform: translateY(-6px);            /* Sube ligeramente la tarjeta */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Aumenta la sombra */
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .carousel-wrapper {
     display: flex;
     align-items: center;
     gap: 10px;
-    max-width: 760px; /* Ancho ajustado para 3 tarjetas exactas */
-    margin: 0;   /* Centra el carrusel en la página */
+    max-width: 760px;
+    margin: 0;
 }
 
 .btn-carrusel {
@@ -111,43 +104,154 @@ body {
     transform: scale(1.1);
 }
 
-.barra-arriba{
-    background-color: #ffffff; /* Tono de azul (puedes cambiarlo a #0056b3 o el azul que prefieras) */
-    width: 100%;
-    padding: 15px 7.5%; /* Alinea verticalmente y da espacio lateral */
-    box-sizing: border-box;
+/* ----- BARRA SUPERIOR DE PROMOCIONES ----- */
+.barra-promo {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 8px 30px;
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Añade una ligera sombra */
+    gap: 25px;
 }
 
-.barra-arriba a {
+.barra-promo strong {
+    color: #378eff;
+    font-weight: 600;
+}
+
+.barra-promo-derecha {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+}
+
+.barra-promo-derecha a {
+    color: #ddd7d7;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.barra-promo-derecha a:hover {
+    color: #378eff;
+}
+
+/* ----- HEADER PRINCIPAL ----- */
+.header-principal {
     display: flex;
     align-items: center;
-    text-decoration: none;
+    gap: 30px;
+    padding: 15px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
 }
 
-/* Efecto visual al pasar el ratón (Hover) */
+.logo-header img {
+    height: 45px;
+}
 
-/*parte catalogo vicho*
-/* ESTILO DEL BOTÓN VOLVER */
-.btn-volver {
-    display: inline-block;
-    background-color: #222222; /* Color oscuro que combina con tus textos */
-    color: #ffffff;
-    text-decoration: none;
-    padding: 10px 20px;
+.buscador-header {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
     border-radius: 8px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    font-family: inherit;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    padding: 8px 15px;
 }
 
-.btn-volver:hover {
-    background-color: #444444; /* Se aclara un poco al pasar el mouse */
-    transform: translateY(-2px); /* Pequeño efecto de salto igual que las tarjetas */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+.buscador-header input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.buscador-header button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.iconos-header {
+    display: flex;
+    gap: 25px;
+}
+
+.iconos-header a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #000000;
+    font-size: 0.75rem;
+    gap: 3px;
+}
+
+.iconos-header i {
+    font-size: 1.3rem;
+}
+
+.iconos-header .carro-btn {
+    background-color: #1a1a1a;
+    color: #378eff;
+    padding: 8px 15px;
+    border-radius: 8px;
+}
+
+/* ----- RESPONSIVE HEADER ----- */
+@media (max-width: 768px) {
+    .barra-promo {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 8px 15px;
+        font-size: 0.7rem;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .barra-promo-derecha {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-principal {
+        flex-wrap: wrap;
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .logo-header img {
+        height: 35px;
+    }
+
+    .buscador-header {
+        order: 3;
+        width: 100%;
+    }
+
+    .iconos-header {
+        margin-left: auto;
+        gap: 15px;
+    }
+
+    .iconos-header span {
+        display: none;
+    }
+
+    .iconos-header i {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .barra-promo span:not(.barra-promo-derecha *) {
+        display: none;
+    }
+
+    .barra-promo span:first-child {
+        display: inline;
+    }
 }

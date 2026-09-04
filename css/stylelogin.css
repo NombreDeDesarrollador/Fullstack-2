@@ -1,32 +1,25 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-
 
 body {
     font-family: 'Nunito Sans', sans-serif;
     background-color: #f8f9fa;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-a:hover{
+a:hover {
     text-decoration: underline;
 }
 
 .btn {
-    font-size: 0.8rem
-    font-weight 700;
+    font-size: 0.8rem;
+    font-weight: 700;
 }
 
 .btn i {
     vertical-align: text-top;
-}
-
-.btn-outline-custom {
-    color: #31374a;
-    border-color: #eee;
 }
 
 .login-card {
@@ -34,39 +27,30 @@ a:hover{
     border-radius: 1rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     padding: 3rem 2.5rem;
+    margin-top: -90px;
 }
 
-
-.bg-holder{
+.bg-holder {
     position: absolute;
-    width: 100%;
-    min-height: 100%;
+    width: 85%;
+    height: 100%;
     top: 0;
-    left: 0;
+    right: 0px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.bg-holder::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100%;
-    background: linear-gradient(to right, transparent, #f8f9fa);
-    pointer-events: none;
-}
+
 
 .d-flex.justify-content-center.mb-4 img {
     max-width: 200px;
     height: auto;
 }
 
-.divider-content-center{
+.divider-content-center {
     position: absolute;
-    top: 50%;
+    top: 0%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding-left: 0.5rem;
@@ -74,9 +58,121 @@ a:hover{
     background-color: #fff;
     font-size: 0.8rem;
     font-weight: 500;
-    color: #999
+    color: #999;
 }
 
 .divider {
     margin: 2rem 8;
 }
+
+.col-lg-6 {
+    position: relative;
+}
+
+/* ----- BOTÓN VOLVER AL INICIO ----- */
+.btn-volver-inicio {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #6d6c70;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    z-index: 10;
+}
+
+.btn-volver-inicio:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+}
+
+/* ----- HEADER PRINCIPAL ----- */
+.header-principal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #000;
+    width: 100%;
+    flex-shrink: 0;
+}
+.row.vh-100 {
+    height: calc(100vh - 60px);
+}
+
+.header-principal .btn-volver-inicio {
+    position: static;
+    top: auto;
+    left: auto;
+}
+
+.logo-header img {
+    height: 85px;
+}
+
+/* ----- RESPONSIVE LOGIN ----- */
+@media (max-width: 992px) {
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-card {
+        padding: 1.5rem 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .d-flex.justify-content-center.mb-4 img {
+        max-width: 140px;
+    }
+
+    .logo-header img {
+        height: 55px;
+    }
+}
+
+.bg-holder::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(to left, transparent, #f8f9fa);
+    pointer-events: none;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.columna-login {
+    height: 100%;
+    overflow-y: auto;
+}
+
+
+/***dejar para la barra de arriba que no se suba
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.columna-login {
+    height: 100vh;
+    overflow-y: auto;
+}***/
+
