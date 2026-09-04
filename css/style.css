@@ -128,3 +128,27 @@ body {
 }
 
 /* Efecto visual al pasar el ratón (Hover) */
+
+/*parte catalogo vicho*
+/* ESTILO DEL BOTÓN VOLVER */
+.btn-volver {
+    display: inline-block;
+    background-color: #222222; /* Color oscuro que combina con tus textos */
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    font-family: inherit;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-volver:hover {
+    background-color: #444444; /* Se aclara un poco al pasar el mouse */
+    transform: translateY(-2px); /* Pequeño efecto de salto igual que las tarjetas */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+

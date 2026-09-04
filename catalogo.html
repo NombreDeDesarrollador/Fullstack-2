@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina de sonidos - Catálogo</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- ESTILOS DE TARJETAS, IMÁGENES Y BOTÓN -->
+    <style>
+        .galeria-catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: flex-start;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .producto-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            width: 220px;
+            padding: 25px 15px 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Esta regla ajusta automáticamente cualquier imagen que pongas */
+        .producto-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .producto-card h4 {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #222222;
+            margin: 5px 0;
+            font-family: inherit;
+        }
+
+        .producto-card .codigo {
+            font-size: 0.75rem;
+            color: #888888;
+            font-weight: 600;
+            margin-bottom: 5px;
+            background-color: #f2f2f2;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .producto-card p {
+            font-size: 0.85rem;
+            color: #444444;
+            margin: 3px 0;
+        }
+
+        .producto-card .desc {
+            font-size: 0.78rem;
+            color: #666666;
+            margin-top: 6px;
+            line-height: 1.3;
+        }
+
+        /* ESTILO DEL BOTÓN VOLVER */
+        .btn-volver {
+            display: inline-block;
+            background-color: #222222;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            font-family: inherit;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-volver:hover {
+            background-color: #444444;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="barra-arriba">
+        <a href="proyecto.html">
+            <img src="img/logo digital audio.png" alt="digital" width="200">
+        </a>
+    </header>
+
+    <div class="container">
+
+        <!-- BOTÓN DE VOLVER -->
+        <a href="proyecto.html" class="btn-volver">&#8592; Volver al Inicio</a>
+
+        <!-- TÍTULO DE LA PÁGINA -->
+        <h1>CATÁLOGO DE PRODUCTOS</h1>
+
+        <!-- SECCIÓN: GUITARRAS ACÚSTICAS -->
+        <div class="categoria-bloque">
+            <h2>Guitarras Acústicas</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="https://www.blupointmusic.cl/wp-content/uploads/2020/07/guitare-classique-yamaha-cg122ms.png" alt="Guitarra Acústica Folk">
+                    <span class="codigo">GA001</span>
+                    <h4>Guitarra Acústica Folk</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Sonido cálido y definido, perfecta para fingerpicking y composiciones íntimas.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://www.fender.com/cdn-cgi/image/format=auto,resize=height=auto,width=500/https://images.ctfassets.net/mdpgzc1lmx9t/BYKt7UMe776XlKhhQGmT5/ea9e727a02dbff4ddccfdf72ec50d0ca/dreadnought_body_plp_tile_v2.png" alt="Guitarra Acústica Dreadnought">
+                    <span class="codigo">GA002</span>
+                    <h4>Guitarra Acústica Dreadnought</h4>
+                    <p><strong>Marca:</strong> Fender</p>
+                    <p class="desc">Gran proyección acústica y graves profundos gracias a su clásico cuerpo dreadnought.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://cdnx.jumpseller.com/instruments/image/69265064/resize/480/480?1762098705" alt="Guitarra Acústica Clásica 4/4">
+                    <span class="codigo">GA003</span>
+                    <h4>Guitarra Acústica Clásica 4/4</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Cuerdas de nylon con un tono suave, ideal para estudiantes y música clásica.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://i5.walmartimages.cl/asr/933570b1-4852-4b78-916c-ef27f4795881.a4f43d07f8a286d07cc670417b8e9219.png?odnHeight=612&odnWidth=612&odnBg=FFFFFF" alt="Guitarra Electroacústica">
+                    <span class="codigo">GA004</span>
+                    <h4>Guitarra Electroacústica</h4>
+                    <p><strong>Marca:</strong> Takamine</p>
+                    <p class="desc">Versatilidad total con preamplificador integrado para conectarla directamente en vivo.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://www.stockmusical.com/60807-home_default/guitarra-clasica-rocio-c16-3-4.jpg" alt="Guitarra 3/4 Niños">
+                    <span class="codigo">GA005</span>
+                    <h4>Guitarra 3/4 Niños</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Tamaño reducido perfecto para niños o como guitarra de viaje sin perder afinación.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: GUITARRAS ELÉCTRICAS -->
+        <div class="categoria-bloque">
+            <h2>Guitarras Eléctricas</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="https://www.stockmusical.com/60807-home_default/guitarra-clasica-rocio-c16-3-4.jpg" alt="Guitarra Eléctrica Stratocaster">
+                    <span class="codigo">GE001</span>
+                    <h4>Guitarra Eléctrica Stratocaster</h4>
+                    <p><strong>Marca:</strong> Squier</p>
+                    <p class="desc">Modelo legendario versátil con 3 cápsulas single-coil y selector de 5 posiciones.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://i5.walmartimages.cl/asr/a0c115c8-7798-4399-b55b-a49bd3f2daf9.0eba58507b884d597743dd4155fdd064.png?odnHeight=2000&odnWidth=2000&odnBg=ffffff" alt="Guitarra Eléctrica Les Paul">
+                    <span class="codigo">GE002</span>
+                    <h4>Guitarra Eléctrica Les Paul</h4>
+                    <p><strong>Marca:</strong> Epiphone</p>
+                    <p class="desc">Doble cápsula Humbucker para un tono gordo, cálido y sustain impecable.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://rdmusico.cl/cdn/shop/files/VS6VW_grande.jpg?v=1728309612" alt="Guitarra Eléctrica SG">
+                    <span class="codigo">GE003</span>
+                    <h4>Guitarra Eléctrica SG</h4>
+                    <p><strong>Marca:</strong> Epiphone</p>
+                    <p class="desc">Cuerpo liviano de doble recorte que ofrece fácil acceso a trastes superiores.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://rdmusico.cl/cdn/shop/files/E2BLK.png?v=1752523188&width=1920" alt="Guitarra Eléctrica Telecaster">
+                    <span class="codigo">GE004</span>
+                    <h4>Guitarra Eléctrica Telecaster</h4>
+                    <p><strong>Marca:</strong> Squier</p>
+                    <p class="desc">Sonido agudo y brillante icónico en géneros como el funk, indie y rock.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://factorysound.cl/30431-large_default/V72HFTB.jpg" alt="Guitarra Eléctrica Semi-hollow">
+                    <span class="codigo">GE005</span>
+                    <h4>Guitarra Eléctrica Semi-hollow</h4>
+                    <p><strong>Marca:</strong> Epiphone</p>
+                    <p class="desc">Diseño semi-hueco que combina la calidez acústica con la potencia eléctrica.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: BAJOS ELÉCTRICOS -->
+        <div class="categoria-bloque">
+            <h2>Bajos Eléctricos</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="https://lacasadelmusico.cl/wp-content/uploads/2026/05/SQUIER_3_73e04596-9658-4fa5-bbdf-db5f640195da_600x.png" alt="Bajo Eléctrico 4 Cuerdas">
+                    <span class="codigo">BA001</span>
+                    <h4>Bajo Eléctrico 4 Cuerdas</h4>
+                    <p><strong>Marca:</strong> Squier</p>
+                    <p class="desc">Diseño clásico y cómodo, perfecto para bajistas principiantes e intermedios.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="https://placehold.co/250x180/8e44ad/ffffff?text=BA002" alt="Bajo Eléctrico Jazz Bass">
+                    <span class="codigo">BA002</span>
+                    <h4>Bajo Eléctrico Jazz Bass</h4>
+                    <p><strong>Marca:</strong> Fender</p>
+                    <p class="desc">Dos pastillas single-coil que entregan ese tono rico y articulado inconfundible.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Bajo Acústico 4 Cuerdas">
+                    <span class="codigo">BA003</span>
+                    <h4>Bajo Acústico 4 Cuerdas</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Bajo acústico de gran resonancia para tocar sin necesidad de amplificador.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: BATERÍAS -->
+        <div class="categoria-bloque">
+            <h2>Baterías</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Batería Acústica 5 piezas">
+                    <span class="codigo">BT001</span>
+                    <h4>Batería Acústica 5 piezas</h4>
+                    <p><strong>Marca:</strong> Pearl</p>
+                    <p class="desc">El estándar en baterías acústicas, con herrajes resistentes y sonido contundente.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Batería Electrónica 8 pads">
+                    <span class="codigo">BT002</span>
+                    <h4>Batería Electrónica 8 pads</h4>
+                    <p><strong>Marca:</strong> Roland</p>
+                    <p class="desc">Batería digital con parches de malla y múltiples kits de sonido integrados.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Caja Snare 14">
+                    <span class="codigo">BT003</span>
+                    <h4>Caja Snare 14"</h4>
+                    <p><strong>Marca:</strong> Pearl</p>
+                    <p class="desc">Caja de 14 pulgadas que ofrece un ataque rápido y un tono nítido.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Platillo Hi-Hat 14">
+                    <span class="codigo">BT004</span>
+                    <h4>Platillo Hi-Hat 14"</h4>
+                    <p><strong>Marca:</strong> Zildjian</p>
+                    <p class="desc">Par de platillos de 14 pulgadas con un sonido crujiente y definido al pisar.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Platillo Crash 16">
+                    <span class="codigo">BT005</span>
+                    <h4>Platillo Crash 16"</h4>
+                    <p><strong>Marca:</strong> Zildjian</p>
+                    <p class="desc">Platillo crash explosivo y brillante, ideal para acentuar tus ritmos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: TECLADOS Y PIANOS -->
+        <div class="categoria-bloque">
+            <h2>Teclados y Pianos</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Teclado Digital 61 teclas">
+                    <span class="codigo">TC001</span>
+                    <h4>Teclado Digital 61 teclas</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Teclado sensible al tacto, ideal para aprendizaje con múltiples sonidos incorporados.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Piano Digital 88 teclas">
+                    <span class="codigo">TC002</span>
+                    <h4>Piano Digital 88 teclas</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Teclas contrapesadas que simulan a la perfección el tacto de un piano acústico.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Sintetizador 49 teclas">
+                    <span class="codigo">TC003</span>
+                    <h4>Sintetizador 49 teclas</h4>
+                    <p><strong>Marca:</strong> Arturia</p>
+                    <p class="desc">Sintetizador analógico virtual para crear secuencias y bajos electrónicos potentes.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Teclado MIDI 88 teclas">
+                    <span class="codigo">TC004</span>
+                    <h4>Teclado MIDI 88 teclas</h4>
+                    <p><strong>Marca:</strong> M-Audio</p>
+                    <p class="desc">Controlador MIDI completo con pads y faders para tu DAW favorito.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: AMPLIFICADORES -->
+        <div class="categoria-bloque">
+            <h2>Amplificadores</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Amplificador Guitarra 15W">
+                    <span class="codigo">AM001</span>
+                    <h4>Amplificador Guitarra 15W</h4>
+                    <p><strong>Marca:</strong> Fender</p>
+                    <p class="desc">Amplificador compacto ideal para practicar en casa con salida de auriculares.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Amplificador Guitarra 40W">
+                    <span class="codigo">AM002</span>
+                    <h4>Amplificador Guitarra 40W</h4>
+                    <p><strong>Marca:</strong> Marshall</p>
+                    <p class="desc">Potencia de sobra para ensayos y pequeñas presentaciones con efectos integrados.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Amplificador Bajo 100W">
+                    <span class="codigo">AM003</span>
+                    <h4>Amplificador Bajo 100W</h4>
+                    <p><strong>Marca:</strong> Hartke</p>
+                    <p class="desc">Graves profundos y ecualizador gráfico para esculpir el tono de tu bajo.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Amplificador Acústico 40W">
+                    <span class="codigo">AM004</span>
+                    <h4>Amplificador Acústico 40W</h4>
+                    <p><strong>Marca:</strong> Fishman</p>
+                    <p class="desc">Reproduce fielmente el tono acústico con canal independiente para micrófono.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: MICRÓFONOS -->
+        <div class="categoria-bloque">
+            <h2>Micrófonos</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Micrófono Dinámico Cardioide">
+                    <span class="codigo">MI001</span>
+                    <h4>Micrófono Dinámico Cardioide</h4>
+                    <p><strong>Marca:</strong> Shure</p>
+                    <p class="desc">El estándar de la industria para voces en vivo, resistente y confiable.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Micrófono Dinámico Instrumento">
+                    <span class="codigo">MI002</span>
+                    <h4>Micrófono Dinámico Instrumento</h4>
+                    <p><strong>Marca:</strong> Shure</p>
+                    <p class="desc">Diseñado para soportar altos niveles de presión sonora de amplificadores y baterías.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Micrófono Condensador">
+                    <span class="codigo">MI003</span>
+                    <h4>Micrófono Condensador</h4>
+                    <p><strong>Marca:</strong> Audio-Tech.</p>
+                    <p class="desc">Captura cada detalle y matiz de voces e instrumentos acústicos en el estudio.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Micrófono USB de Condensador">
+                    <span class="codigo">MI004</span>
+                    <h4>Micrófono USB de Condensador</h4>
+                    <p><strong>Marca:</strong> Blue</p>
+                    <p class="desc">Solución plug-and-play para podcasts, streams y grabaciones caseras de alta calidad.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: PEDALES DE EFECTOS -->
+        <div class="categoria-bloque">
+            <h2>Pedales de Efectos</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Pedal Distorsión">
+                    <span class="codigo">PE001</span>
+                    <h4>Pedal Distorsión</h4>
+                    <p><strong>Marca:</strong> Boss</p>
+                    <p class="desc">La distorsión clásica del rock, desde un crunch suave hasta alta ganancia.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Pedal Reverb">
+                    <span class="codigo">PE002</span>
+                    <h4>Pedal Reverb</h4>
+                    <p><strong>Marca:</strong> Boss</p>
+                    <p class="desc">Añade profundidad espacial, simulando desde una habitación hasta grandes salones.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Pedal Multi-efectos">
+                    <span class="codigo">PE003</span>
+                    <h4>Pedal Multi-efectos</h4>
+                    <p><strong>Marca:</strong> Boss</p>
+                    <p class="desc">Todo un arsenal de efectos, modulaciones y delays en una sola pedalera.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Pedal Tuner Cromático">
+                    <span class="codigo">PE004</span>
+                    <h4>Pedal Tuner Cromático</h4>
+                    <p><strong>Marca:</strong> Boss</p>
+                    <p class="desc">Afinador de piso preciso, rápido y con pantalla LED visible en escenarios oscuros.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Pedal Delay">
+                    <span class="codigo">PE005</span>
+                    <h4>Pedal Delay</h4>
+                    <p><strong>Marca:</strong> MXR</p>
+                    <p class="desc">Repeticiones cálidas y analógicas para dar textura y ambiente a tus solos.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Pedal Overdrive">
+                    <span class="codigo">PE006</span>
+                    <h4>Pedal Overdrive</h4>
+                    <p><strong>Marca:</strong> Ibanez</p>
+                    <p class="desc">Empuja tu amplificador al límite con este icónico overdrive de medios pronunciados.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: ACCESORIOS -->
+        <div class="categoria-bloque">
+            <h2>Accesorios</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Cuerdas Guitarra Eléctrica 09-42">
+                    <span class="codigo">AC001</span>
+                    <h4>Cuerdas Guitarra Eléctrica 09-42</h4>
+                    <p><strong>Marca:</strong> Ernie Ball</p>
+                    <p class="desc">Cuerdas de níquel con excelente flexibilidad y tono brillante duradero.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Cuerdas Guitarra Acústica 12-53">
+                    <span class="codigo">AC002</span>
+                    <h4>Cuerdas Guitarra Acústica 12-53</h4>
+                    <p><strong>Marca:</strong> Ernie Ball</p>
+                    <p class="desc">Tono acústico rico y proyectado gracias a su recubrimiento de fósforo bronce.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Cuerdas Bajo 45-105">
+                    <span class="codigo">AC003</span>
+                    <h4>Cuerdas Bajo 45-105</h4>
+                    <p><strong>Marca:</strong> Ernie Ball</p>
+                    <p class="desc">Calibre estándar que equilibra tensión, comodidad y graves contundentes.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Púas de Guitarra x10">
+                    <span class="codigo">AC004</span>
+                    <h4>Púas de Guitarra x10 (0.73mm)</h4>
+                    <p><strong>Marca:</strong> Fender</p>
+                    <p class="desc">Paquete de púas duraderas de celuloide con un grosor versátil para rasgueo.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Capotraste Guitarra">
+                    <span class="codigo">AC005</span>
+                    <h4>Capotraste Guitarra</h4>
+                    <p><strong>Marca:</strong> Dunlop</p>
+                    <p class="desc">Ajuste rápido y seguro sin dañar el mástil de tu instrumento.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Afinador de Clip">
+                    <span class="codigo">AC006</span>
+                    <h4>Afinador de Clip</h4>
+                    <p><strong>Marca:</strong> Snark</p>
+                    <p class="desc">Afinador de pinza ultra rápido y preciso mediante detección de vibración.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Cable Instrumento 3m">
+                    <span class="codigo">AC007</span>
+                    <h4>Cable Instrumento 3m</h4>
+                    <p><strong>Marca:</strong> Monster</p>
+                    <p class="desc">Cable resistente con conectores reforzados, ideal para uso en casa o estudio.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Cable Instrumento 6m">
+                    <span class="codigo">AC008</span>
+                    <h4>Cable Instrumento 6m</h4>
+                    <p><strong>Marca:</strong> Monster</p>
+                    <p class="desc">Mayor longitud para moverte con total libertad por el escenario.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Soporte Guitarra de Piso">
+                    <span class="codigo">AC009</span>
+                    <h4>Soporte Guitarra de Piso</h4>
+                    <p><strong>Marca:</strong> Hercules</p>
+                    <p class="desc">Soporte estable y seguro para mantener tu instrumento siempre a mano.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Soporte Guitarra de Pared">
+                    <span class="codigo">AC010</span>
+                    <h4>Soporte Guitarra de Pared</h4>
+                    <p><strong>Marca:</strong> Hercules</p>
+                    <p class="desc">Exhibe tu guitarra con seguridad y ahorra espacio en tu habitación.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: ESTUDIO Y GRABACIÓN -->
+        <div class="categoria-bloque">
+            <h2>Estudio y Grabación</h2>
+            <div class="galeria-catalogo">
+                <div class="producto-card">
+                    <img src="" alt="Interfaz de Audio 2x2 USB">
+                    <span class="codigo">ES001</span>
+                    <h4>Interfaz de Audio 2x2 USB</h4>
+                    <p><strong>Marca:</strong> Focusrite</p>
+                    <p class="desc">Graba con calidad de estudio y latencia cero directamente a tu computadora.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Auriculares de Estudio">
+                    <span class="codigo">ES002</span>
+                    <h4>Auriculares de Estudio</h4>
+                    <p><strong>Marca:</strong> Audio-Tech.</p>
+                    <p class="desc">Auriculares cerrados para monitorización sin filtraciones de sonido al micrófono.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Auriculares de Estudio Pro">
+                    <span class="codigo">ES003</span>
+                    <h4>Auriculares de Estudio Pro</h4>
+                    <p><strong>Marca:</strong> Audio-Tech.</p>
+                    <p class="desc">Respuesta plana y detallada para mezclar y masterizar tus pistas con precisión.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Monitor de Estudio 5">
+                    <span class="codigo">ES004</span>
+                    <h4>Monitor de Estudio 5"</h4>
+                    <p><strong>Marca:</strong> Yamaha</p>
+                    <p class="desc">Monitores de campo cercano con bajos definidos y agudos cristalinos.</p>
+                </div>
+                <div class="producto-card">
+                    <img src="" alt="Pop Filter para Micrófono">
+                    <span class="codigo">ES005</span>
+                    <h4>Pop Filter para Micrófono</h4>
+                    <p><strong>Marca:</strong> Sennheiser</p>
+                    <p class="desc">Elimina los molestos ruidos de respiración y popeos en tus grabaciones vocales.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
