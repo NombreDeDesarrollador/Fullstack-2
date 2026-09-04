@@ -99,6 +99,47 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
+
+        .buscador-catalogo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 520px;
+            margin: 0 0 30px;
+        }
+
+        .buscador-catalogo label {
+            font-weight: bold;
+            color: #222222;
+            white-space: nowrap;
+        }
+
+        #buscador-instrumentos {
+            flex: 1;
+            min-width: 0;
+            padding: 12px 16px;
+            border: 2px solid #d6d6d6;
+            border-radius: 8px;
+            font: inherit;
+            box-sizing: border-box;
+        }
+
+        #buscador-instrumentos:focus {
+            outline: 3px solid rgba(50, 76, 94, 0.2);
+            border-color: #324c5e;
+        }
+
+        #resultado-busqueda {
+            color: #555555;
+            margin: -15px 0 25px;
+        }
+
+        @media (max-width: 520px) {
+            .buscador-catalogo {
+                align-items: stretch;
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
@@ -117,6 +158,12 @@
 
         <!-- TÍTULO DE LA PÁGINA -->
         <h1>CATÁLOGO DE PRODUCTOS</h1>
+
+        <div class="buscador-catalogo">
+            <label for="buscador-instrumentos">Buscar instrumento:</label>
+            <input type="search" id="buscador-instrumentos" placeholder="Escribe un nombre..." autocomplete="off">
+        </div>
+        <p id="resultado-busqueda" aria-live="polite"></p>
 
         <!-- SECCIÓN: GUITARRAS ACÚSTICAS -->
         <div class="categoria-bloque">
@@ -545,5 +592,8 @@
             </div>
         </div>
     </div>
+
+    <script src="js/buscador.js"></script>
 </body>
+
 </html>
