@@ -425,3 +425,57 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 86, 179, 0.3);
 }
+
+/* =========================================
+   ESTILOS DEL CATÁLOGO (GRILLA DINÁMICA)
+   ========================================= */
+.grilla-catalogo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+.card-catalogo {
+    background-color: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px;
+    text-align: center;
+    text-decoration: none;
+    color: #333333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-catalogo:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card-catalogo img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.card-catalogo .marca-card {
+    font-size: 0.85rem;
+    color: #888888;
+    margin-bottom: 5px;
+}
+
+.card-catalogo h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #222222;
+    min-height: 40px; /* Mantiene la altura aunque el nombre sea corto */
+}
+
+.card-catalogo .precio-card {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #e63946;
+}
