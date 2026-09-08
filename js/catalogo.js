@@ -25,10 +25,25 @@ const formateadorPesos = new Intl.NumberFormat('es-CL', {
 });
 
 if (contenedorCatalogo) {
+    const categoriaSolicitada = new URLSearchParams(window.location.search).get('cat');
+    const filtrosCategoria = {
+        guitarras: producto => producto.categoria.startsWith('Guitarras'),
+        bajos: producto => producto.categoria === 'Bajos Eléctricos',
+        teclados: producto => producto.categoria === 'Teclados y Pianos',
+        baterias: producto => producto.categoria === 'Baterías',
+        amplificadores: producto => producto.categoria === 'Amplificadores',
+        pedales: producto => producto.categoria === 'Pedales de Efectos',
+        microfonos: producto => producto.categoria === 'Micrófonos',
+        estudio: producto => producto.categoria === 'Estudio y Grabación',
+        accesorios: producto => producto.categoria === 'Accesorios'
+    };
+
+    const filtroSeleccionado = filtrosCategoria[categoriaSolicitada];
     const categorias = {};
 
     for (const codigo in baseDeDatos) {
         const producto = baseDeDatos[codigo];
+        if (filtroSeleccionado && !filtroSeleccionado(producto)) continue;
         if (!categorias[producto.categoria]) categorias[producto.categoria] = [];
         categorias[producto.categoria].push({ codigo, producto });
     }

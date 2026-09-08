@@ -536,3 +536,15 @@ body {
     font-weight: 900;
     color: #e63946;
 }
+
+/* Títulos de las secciones en el catálogo */
+.titulo-categoria-catalogo {
+    width: 100%;
+    margin-top: 60px;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #222;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    scroll-margin-top: 120px; /* Evita que el menú superior tape el título al hacer el salto */
+}
