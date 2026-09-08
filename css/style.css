@@ -11,13 +11,15 @@ body {
 }
 
 .container {
-    width: 1200px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
     margin: 0 auto;
     padding: 20px 40px;
 }
 
 .carrito-container {
-    width: 920px;
+    width: min(920px, 100%);
     margin: 48px auto;
     padding: 52px;
     box-sizing: border-box;
@@ -217,6 +219,7 @@ body {
 
 .presentacion-inicio {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 32px;
     margin: 20px 0 36px;
@@ -228,7 +231,7 @@ body {
 }
 
 .imagen-menu {
-    width: 520px;
+    width: min(520px, 100%);
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border-radius: 10px;
@@ -476,7 +479,7 @@ body {
 /* Columna Izquierda: Imagen */
 .detalle-imagen {
     flex: 1;
-    min-width: 300px;
+    min-width: min(300px, 100%);
     background-color: #f8f9fa; /* Fondo gris muy suave para resaltar el instrumento */
     border-radius: 12px;
     padding: 30px;
@@ -499,7 +502,7 @@ body {
 /* Columna Derecha: Información */
 .detalle-info {
     flex: 1;
-    min-width: 300px;
+    min-width: min(300px, 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -711,4 +714,130 @@ body {
     border-bottom: 2px solid #eee;
     padding-bottom: 10px;
     scroll-margin-top: 120px; /* Evita que el menú superior tape el título al hacer el salto */
+}
+
+@media (max-width: 767.98px) {
+    .barra-promo {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 14px;
+        padding: 8px 15px;
+        text-align: center;
+    }
+
+    .barra-promo-derecha {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+    }
+
+    .header-principal {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 15px;
+    }
+
+    .logo-header {
+        flex: 1 1 auto;
+    }
+
+    .buscador-header {
+        order: 3;
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .iconos-header {
+        gap: 12px;
+    }
+
+    .iconos-header a:not(.carro-btn) span {
+        display: none;
+    }
+
+    .container {
+        padding: 16px;
+    }
+
+    .menu-principal {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .btn-menu {
+        flex: 1 1 calc(50% - 8px);
+        padding: 10px 8px;
+        text-align: center;
+    }
+
+    .presentacion-inicio {
+        gap: 20px;
+    }
+
+    .imagen-menu {
+        width: 100%;
+    }
+
+    .carrito-container {
+        width: 100%;
+        margin: 24px auto;
+        padding: 24px 16px;
+    }
+
+    .carrito-encabezado h1 {
+        font-size: 1.8rem;
+    }
+
+    .carrito-item {
+        grid-template-columns: 82px minmax(0, 1fr);
+        gap: 14px;
+        padding: 12px;
+    }
+
+    .carrito-item-imagen {
+        width: 82px;
+        height: 78px;
+    }
+
+    .carrito-item-resultado {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-width: 0;
+        padding-top: 10px;
+        border-top: 1px solid #e3e8eb;
+    }
+
+    .carrito-summary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #checkout-btn,
+    .btn-comprar {
+        width: 100%;
+        max-width: none;
+    }
+
+    .detalle-producto {
+        gap: 24px;
+        padding: 20px;
+    }
+
+    .detalle-imagen,
+    .detalle-info {
+        min-width: 0;
+        flex-basis: 100%;
+    }
+
+    .detalle-info h2 {
+        font-size: 1.7rem;
+    }
+
+    .detalle-info .precio {
+        font-size: 2rem;
+    }
 }
