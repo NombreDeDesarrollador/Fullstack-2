@@ -1,0 +1,327 @@
+/* ================= LAYOUT GENERAL DEL ADMINISTRADOR ================= */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f5f7;
+    color: #222;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ================= MENÚ LATERAL ================= */
+.admin-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #1e2530;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.admin-sidebar .admin-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid #333d4d;
+    margin-bottom: 15px;
+}
+
+.admin-sidebar .admin-logo img {
+    height: 48px;
+    width: auto;
+}
+
+.admin-sidebar .admin-logo span {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.admin-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.admin-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #c7ccd6;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-left: 3px solid transparent;
+    transition: background .15s ease, color .15s ease;
+}
+
+.admin-menu a:hover {
+    background: #2a3242;
+    color: #ffffff;
+}
+
+.admin-menu a.activo {
+    background: #2a3242;
+    color: #ffffff;
+    border-left-color: #4f8cff;
+}
+
+.admin-usuario-box {
+    padding: 15px 20px 0;
+    border-top: 1px solid #333d4d;
+    margin-top: 10px;
+}
+
+.admin-usuario-box .nombre {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.admin-usuario-box .rol {
+    font-size: 0.78rem;
+    color: #8b93a3;
+    margin-bottom: 10px;
+}
+
+.btn-cerrar-sesion {
+    background: none;
+    border: 1px solid #4a5468;
+    color: #c7ccd6;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.btn-cerrar-sesion:hover {
+    background: #2a3242;
+    color: #fff;
+}
+
+/* ================= CONTENIDO PRINCIPAL ================= */
+.admin-contenido {
+    flex: 1;
+    padding: 30px 40px;
+}
+
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.admin-topbar h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.btn-admin {
+    background: #4f8cff;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-admin:hover { background: #3d75e0; }
+
+.btn-admin.secundario {
+    background: #e5e8ee;
+    color: #333;
+}
+.btn-admin.secundario:hover { background: #d5d9e2; }
+
+.btn-admin.peligro {
+    background: #e0453d;
+}
+.btn-admin.peligro:hover { background: #c93a33; }
+
+/* ================= TARJETAS DE RESUMEN (dashboard) ================= */
+.admin-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.admin-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.05);
+    min-width: 180px;
+}
+
+.admin-card .valor {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.admin-card .etiqueta {
+    color: #777;
+    font-size: 0.85rem;
+}
+
+/* ================= TABLAS ================= */
+.admin-panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.05);
+    overflow-x: auto;
+}
+
+table.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+table.tabla-admin th {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid #eee;
+    color: #555;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+table.tabla-admin td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+table.tabla-admin tr:hover td { background: #fafbfd; }
+
+.badge-stock-critico {
+    color: #c0392b;
+    font-weight: 700;
+}
+
+.badge-sin-stock {
+    background: #fdecea;
+    color: #c0392b;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.acciones-tabla { display: flex; gap: 8px; }
+.acciones-tabla a, .acciones-tabla button {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+.accion-editar {
+    background: #eaf1ff;
+    color: #2b5cd9;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 1rem;
+}
+.accion-editar:hover { background: #d7e5ff; }
+.accion-deshabilitada {
+    background: #eef0f2 !important;
+    color: #a4abb3 !important;
+    cursor: not-allowed !important;
+}
+.accion-deshabilitada:hover { background: #eef0f2 !important; }
+.accion-eliminar { background: #fdecea; color: #c0392b; }
+.accion-eliminar:hover { background: #fbdad7; }
+
+/* ================= FORMULARIOS ================= */
+.form-admin {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.05);
+    max-width: 700px;
+}
+
+.form-admin .campo {
+    margin-bottom: 16px;
+}
+
+.form-admin label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-admin input,
+.form-admin textarea,
+.form-admin select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #d5d9e2;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.form-admin input.is-invalid,
+.form-admin select.is-invalid,
+.form-admin textarea.is-invalid {
+    border-color: #e0453d;
+}
+
+.form-admin .fila-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.mensaje-error-admin {
+    color: #e0453d;
+    font-size: 0.78rem;
+    margin-top: 4px;
+    min-height: 14px;
+}
+
+.resultado-admin {
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+@media (max-width: 800px) {
+    .admin-wrapper { flex-direction: column; }
+    .admin-sidebar { width: 100%; }
+    .admin-contenido { padding: 20px; }
+    .form-admin .fila-2 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+    .admin-topbar {
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .admin-contenido { padding: 15px; }
+    .form-admin { padding: 20px; }
+}

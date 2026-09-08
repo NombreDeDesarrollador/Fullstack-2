@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 body {
     font-family: 'Nunito Sans', sans-serif;
     background-image: url(https://img.magnific.com/vector-gratis/estilo-neumorfismo-fondo-blanco-abstracto_107791-34117.jpg?semt=ais_hybrid&w=740&q=80);
@@ -504,6 +513,7 @@ body {
 
 .form-contacto input,
 .form-contacto textarea {
+    width: 100%;
     padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -535,4 +545,52 @@ body {
 
 .btn-enviar:hover {
     background-color: #444444;
+}
+
+/* =========================================
+   RESPONSIVE GENERAL (celulares)
+   ========================================= */
+@media (max-width: 600px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .menu-principal {
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .btn-menu {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .detalle-producto {
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .detalle-imagen,
+    .detalle-info {
+        min-width: 100%;
+    }
+
+    .detalle-info h2 {
+        font-size: 1.6rem;
+    }
+
+    .detalle-info .precio {
+        font-size: 2rem;
+    }
+
+    .card-catalogo {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .seccion-contacto {
+        margin: 25px auto;
+    }
 }

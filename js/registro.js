@@ -1,25 +1,9 @@
-// ----- Validación RUN chileno (sin puntos ni guion, ej: 19011022K) -----
-function validarRun(run) {
-    run = run.trim().toUpperCase();
-    if (run.length < 7 || run.length > 9) return false;
-    const cuerpo = run.slice(0, -1);
-    const dv = run.slice(-1);
-    if (!/^\d+$/.test(cuerpo)) return false;
-
-    let suma = 0, multiplo = 2;
-    for (let i = cuerpo.length - 1; i >= 0; i--) {
-        suma += parseInt(cuerpo[i]) * multiplo;
-        multiplo = multiplo === 7 ? 2 : multiplo + 1;
-    }
-    const resto = 11 - (suma % 11);
-    const dvEsperado = resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
-    return dv === dvEsperado;
-}
+// La función validarRun() ahora vive en js/validaciones.js (compartida con el admin)
 
 function marcarError(campo, mensaje) {
     const input = document.getElementById(campo);
     const error = document.getElementById('err-' + campo);
-    input.classList.add('is-invalid');
+    if (input) input.classList.add('is-invalid');
     if (error) error.textContent = mensaje;
 }
 
@@ -32,7 +16,7 @@ function limpiarErrores(campos) {
 }
 
 function validarRegistro() {
-    const campos = ['run', 'nombre', 'apellidos', 'correo', 'correo2', 'clave', 'clave2', 'direccion'];
+    const campos = ['run', 'nombre', 'apellidos', 'correo', 'correo2', 'clave', 'clave2', 'region', 'direccion'];
     limpiarErrores(campos);
 
     const run = document.getElementById('run').value.trim();
@@ -42,6 +26,8 @@ function validarRegistro() {
     const correo2 = document.getElementById('correo2').value.trim();
     const clave = document.getElementById('clave').value;
     const clave2 = document.getElementById('clave2').value;
+    const region = document.getElementById('region').value;
+    const comuna = document.getElementById('comuna').value;
     const direccion = document.getElementById('direccion').value.trim();
 
     const resultado = document.getElementById('resultado-registro');
@@ -70,6 +56,8 @@ function validarRegistro() {
 
     if (clave2 !== clave || !clave2) { marcarError('clave2', 'Las contraseñas no coinciden.'); valido = false; }
 
+    if (!region || !comuna) { marcarError('region', 'Selecciona región y comuna.'); valido = false; }
+
     if (!direccion) { marcarError('direccion', 'La dirección es requerida.'); valido = false; }
     else if (direccion.length > 300) { marcarError('direccion', 'Máximo 300 caracteres.'); valido = false; }
 
@@ -79,8 +67,9 @@ function validarRegistro() {
         return false;
     }
 
-    resultado.innerHTML = '¡Gracias por registrarte! Redirigiendo al inicio...';
+    // El registro solo se valida: no se guarda en la base de datos.
+    resultado.innerHTML = '¡Registro validado correctamente! Redirigiendo al inicio de sesión...';
     resultado.style.color = 'green';
-    setTimeout(() => window.location.href = 'proyecto.html', 1500);
+    setTimeout(() => window.location.href = 'login.html', 1500);
     return true;
 }

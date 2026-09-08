@@ -54,20 +54,23 @@
                             <hr class="text-secondary divider">
                             <div class="divider-content-center">or</div>
                         </div>
-                        <form action="#">
-                            <div class="input-group mb-3">
+                        <form id="form-login" novalidate>
+                            <div class="input-group mb-1">
                                 <span class="input-group-text">
                                     <i class="bi bi-person"></i>
                                 </span>
-                                <input type="text" class="form-control form-control-lg fs-6" placeholder="Usuario">
+                                <input type="email" id="login-correo" class="form-control form-control-lg fs-6" placeholder="Correo">
                             </div>
-                            <div class="input-group mb-3">
+                            <div class="invalid-feedback d-block mb-2" id="err-login-correo"></div>
+
+                            <div class="input-group mb-1">
                                 <span class="input-group-text">
                                     <i class="bi bi-lock"></i>
                                 </span>
-                                <input type="password" class="form-control form-control-lg fs-6"
+                                <input type="password" id="login-clave" class="form-control form-control-lg fs-6"
                                     placeholder="Contraseña">
                             </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-login-clave"></div>
                             <div class="input-group-mb3 mb-3 d-flex justify-content-between">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="formCheck">
@@ -94,6 +97,7 @@
 
     </div>
 
+    <script src="js/usuariosDB.js"></script>
     <script src="js/login.js"></script>
 </body>
 
