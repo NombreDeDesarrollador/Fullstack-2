@@ -426,6 +426,63 @@ body {
     box-shadow: 0 6px 15px rgba(0, 86, 179, 0.3);
 }
 
+.btn-volver-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 16px;
+    background-color: #324c5e;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-volver-menu:hover {
+    background-color: #1d2d38;
+}
+
+.mensaje-pago-exitoso {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 480px;
+    margin: 24px auto 0;
+    padding: 18px 22px;
+    background-color: #e9f8ef;
+    border: 1px solid #b7e4c7;
+    border-radius: 12px;
+    color: #176b3a;
+    animation: mostrar-pago 0.35s ease-out;
+}
+
+.mensaje-pago-exitoso[hidden] {
+    display: none;
+}
+
+.icono-pago-exitoso {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #2eaa60;
+    color: #ffffff;
+    font-size: 1.5rem;
+}
+
+.mensaje-pago-exitoso p {
+    margin: 0;
+    font-weight: 700;
+}
+
+@keyframes mostrar-pago {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================
    ESTILOS DEL CATÁLOGO (GRILLA DINÁMICA)
    ========================================= */

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Carrito - Digital Sounds</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="carrito-container">
+    <h1>Tu Carrito de Compras</h1>
+    <div id="carrito-items"></div>
+    <div class="carrito-summary">
+      <h3>Total: $<span id="carrito-total">0</span></h3>
+      <button id="checkout-btn">Proceder al pago</button>
+    </div>
+    <div id="mensaje-pago-exitoso" class="mensaje-pago-exitoso" role="status" aria-live="polite" hidden>
+      <span class="icono-pago-exitoso"><i class="bi bi-check-lg"></i></span>
+      <p>El pago se ha realizado con éxito</p>
+    </div>
+    <a href="proyecto.html" class="btn-volver-menu"><i class="bi bi-house-fill"></i> Volver al menú principal</a>
+  </main>
+
+  <script src="js/carrito.js"></script>
+</body>
+</html>

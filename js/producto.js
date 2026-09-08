@@ -27,9 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const elementoStock = document.querySelector('.stock');
     const botonComprar = document.querySelector('.btn-comprar');
+    const stockActual = getStock(idProducto, producto.stock);
 
-    if (producto.stock > 0) {
-        elementoStock.innerHTML = `<i class="bi bi-check-circle-fill"></i> Stock: ${producto.stock} unidades`;
+    botonComprar.addEventListener('click', () => {
+        const agregado = addToCarrito({
+            id: idProducto,
+            name: producto.nombre,
+            price: producto.precio,
+            image: producto.img,
+            stock: stockActual
+        });
+        if (agregado) {
+            botonComprar.innerHTML = '<i class="bi bi-check-circle"></i> Agregado al Carrito';
+        }
+    });
+
+    if (stockActual > 0) {
+        elementoStock.innerHTML = `<i class="bi bi-check-circle-fill"></i> Stock: ${stockActual} unidades`;
         elementoStock.style.backgroundColor = '#d4edda';
         elementoStock.style.color = '#155724';
     } else {
