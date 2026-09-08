@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
+
 body {
     font-family: 'Nunito Sans', sans-serif;
     background-image: url(https://img.magnific.com/vector-gratis/estilo-neumorfismo-fondo-blanco-abstracto_107791-34117.jpg?semt=ais_hybrid&w=740&q=80);
@@ -8,7 +9,9 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0;
+    overflow-x: hidden;
 }
+
 
 .container {
     max-width: 85%;
@@ -414,23 +417,25 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+
 .logo-header img {
-    height: 45px;
+    height: 85px;
 }
 
 .buscador-header {
     flex: 1;
     display: flex;
     align-items: center;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    padding: 8px 15px;
+    background-color: #ffffff;
+    border: 1px solid #a7a2a2;
+    border-radius: 6px;
+    padding: 4px 2px;
 }
 
 .buscador-header input {
     flex: 1;
     border: none;
-    background: transparent;
+    background-color: rgb(255, 255, 255);
     outline: none;
     font-size: 0.9rem;
 }
@@ -491,9 +496,11 @@ body {
         gap: 12px;
     }
 
+    @media (max-width: 768px) {
     .logo-header img {
-        height: 35px;
+        height: 55px;
     }
+}
 
     .buscador-header {
         order: 3;
