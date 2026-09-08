@@ -1,14 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
 body {
     font-family: 'Nunito Sans', sans-serif;
     background-image: url(https://img.magnific.com/vector-gratis/estilo-neumorfismo-fondo-blanco-abstracto_107791-34117.jpg?semt=ais_hybrid&w=740&q=80);
@@ -23,6 +14,273 @@ body {
     max-width: 85%;
     margin: 0 auto;
     padding: 20px 40px;
+}
+
+.carrito-container {
+    width: min(92%, 920px);
+    margin: 48px auto;
+    padding: clamp(24px, 5vw, 52px);
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.96);
+    border: 1px solid #e2e6ea;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(31, 45, 54, 0.14);
+}
+
+.carrito-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #e6e9eb;
+}
+
+.carrito-etiqueta {
+    margin: 0 0 8px;
+    color: #2879c7;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.carrito-encabezado h1 {
+    margin: 0;
+    color: #1d2d38;
+    font-size: clamp(1.65rem, 4vw, 2.4rem);
+}
+
+.carrito-encabezado-icono {
+    color: #2879c7;
+    font-size: 3.2rem;
+}
+
+#carrito-items {
+    display: grid;
+    gap: 14px;
+    margin: 28px 0;
+}
+
+.carrito-item {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 22px;
+    padding: 18px;
+    background-color: #f8fafb;
+    border: 1px solid #e3e8eb;
+    border-radius: 12px;
+}
+
+.carrito-item-imagen {
+    width: 112px;
+    height: 96px;
+    object-fit: contain;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+.carrito-item-datos h2 {
+    margin: 0 0 8px;
+    color: #1d2d38;
+    font-size: 1.1rem;
+}
+
+.carrito-item-precio,
+.carrito-item-cantidad {
+    margin: 5px 0;
+    color: #68757c;
+    font-size: 0.9rem;
+}
+
+.carrito-item-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.carrito-item-cantidad strong {
+    min-width: 28px;
+    padding: 3px 7px;
+    color: #1d2d38;
+    text-align: center;
+    background-color: #e5eef6;
+    border-radius: 5px;
+}
+
+.carrito-item-resultado {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    min-width: 125px;
+}
+
+.carrito-item-resultado > span {
+    color: #68757c;
+    font-size: 0.78rem;
+}
+
+.carrito-item-resultado > strong {
+    color: #1d2d38;
+    font-size: 1.15rem;
+}
+
+.btn-eliminar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 9px;
+    color: #b04444;
+    font: inherit;
+    font-size: 0.8rem;
+    background: transparent;
+    border: 1px solid #e8baba;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-eliminar:hover {
+    color: #ffffff;
+    background-color: #b04444;
+}
+
+.carrito-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 26px;
+    padding-top: 24px;
+    border-top: 2px solid #e6e9eb;
+}
+
+.carrito-total-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #68757c;
+}
+
+.carrito-total-texto strong {
+    color: #1d2d38;
+    font-size: 1.8rem;
+}
+
+#checkout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 230px;
+    padding: 14px 22px;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 800;
+    background-color: #2879c7;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 12px rgba(40, 121, 199, 0.25);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#checkout-btn:hover {
+    background-color: #1c5f9f;
+    box-shadow: 0 8px 16px rgba(40, 121, 199, 0.32);
+    transform: translateY(-2px);
+}
+
+.carrito-vacio {
+    padding: 42px 20px;
+    color: #68757c;
+    text-align: center;
+}
+
+.carrito-vacio i {
+    color: #2879c7;
+    font-size: 3rem;
+}
+
+.carrito-vacio h2 {
+    margin: 12px 0 6px;
+    color: #1d2d38;
+    font-size: 1.3rem;
+}
+
+.carrito-vacio p {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .carrito-container {
+        width: 94%;
+        margin: 24px auto;
+        padding: 22px 16px;
+        border-radius: 12px;
+    }
+
+    .carrito-encabezado-icono {
+        font-size: 2.4rem;
+    }
+
+    .carrito-item {
+        grid-template-columns: 82px minmax(0, 1fr);
+        gap: 14px;
+        padding: 12px;
+    }
+
+    .carrito-item-imagen {
+        width: 82px;
+        height: 78px;
+    }
+
+    .carrito-item-resultado {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-width: 0;
+        padding-top: 10px;
+        border-top: 1px solid #e3e8eb;
+    }
+
+    .btn-eliminar {
+        margin-top: 0;
+    }
+
+    .carrito-summary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #checkout-btn {
+        width: 100%;
+    }
+}
+
+.presentacion-inicio {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin: 20px 0 36px;
+}
+
+.presentacion-texto {
+    flex: 1;
+    min-width: 0;
+}
+
+.imagen-menu {
+    width: min(42%, 520px);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
 }
 
 .galeria-accesorios,
@@ -91,7 +349,8 @@ body {
     align-items: center;
     gap: 10px;
     max-width: 760px;
-    margin: 0;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .btn-carrusel {
@@ -252,6 +511,15 @@ body {
 
     .iconos-header i {
         font-size: 1.4rem;
+    }
+
+    .presentacion-inicio {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .imagen-menu {
+        width: 100%;
     }
 }
 
@@ -435,6 +703,63 @@ body {
     box-shadow: 0 6px 15px rgba(0, 86, 179, 0.3);
 }
 
+.btn-volver-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 16px;
+    background-color: #324c5e;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-volver-menu:hover {
+    background-color: #1d2d38;
+}
+
+.mensaje-pago-exitoso {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 480px;
+    margin: 24px auto 0;
+    padding: 18px 22px;
+    background-color: #e9f8ef;
+    border: 1px solid #b7e4c7;
+    border-radius: 12px;
+    color: #176b3a;
+    animation: mostrar-pago 0.35s ease-out;
+}
+
+.mensaje-pago-exitoso[hidden] {
+    display: none;
+}
+
+.icono-pago-exitoso {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #2eaa60;
+    color: #ffffff;
+    font-size: 1.5rem;
+}
+
+.mensaje-pago-exitoso p {
+    margin: 0;
+    font-weight: 700;
+}
+
+@keyframes mostrar-pago {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================
    ESTILOS DEL CATÁLOGO (GRILLA DINÁMICA)
    ========================================= */
@@ -489,108 +814,14 @@ body {
     color: #e63946;
 }
 
-/* ===== FORMULARIO CONTACTO ===== */
-.seccion-contacto {
-    max-width: 600px;
-    margin: 40px auto;
-}
-
-.seccion-contacto h1 {
-    margin-bottom: 10px;
-}
-
-.form-contacto {
-    display: flex;
-    flex-direction: column;
-    margin-top: 25px;
-}
-
-.form-contacto label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    margin-top: 14px;
-}
-
-.form-contacto input,
-.form-contacto textarea {
+/* Títulos de las secciones en el catálogo */
+.titulo-categoria-catalogo {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.95rem;
-}
-
-.mensaje-error {
-    color: red;
-    font-size: 0.8rem;
-    min-height: 18px;
-}
-
-#resultado-contacto {
-    margin-top: 10px;
-    font-weight: 600;
-}
-
-.btn-enviar {
-    margin-top: 15px;
-    padding: 12px;
-    background-color: #222222;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.btn-enviar:hover {
-    background-color: #444444;
-}
-
-/* =========================================
-   RESPONSIVE GENERAL (celulares)
-   ========================================= */
-@media (max-width: 600px) {
-    .container {
-        max-width: 100%;
-        padding: 15px;
-    }
-
-    .menu-principal {
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 25px;
-    }
-
-    .btn-menu {
-        padding: 10px 16px;
-        font-size: 0.9rem;
-    }
-
-    .detalle-producto {
-        padding: 20px;
-        gap: 20px;
-    }
-
-    .detalle-imagen,
-    .detalle-info {
-        min-width: 100%;
-    }
-
-    .detalle-info h2 {
-        font-size: 1.6rem;
-    }
-
-    .detalle-info .precio {
-        font-size: 2rem;
-    }
-
-    .card-catalogo {
-        width: 100%;
-        max-width: 280px;
-    }
-
-    .seccion-contacto {
-        margin: 25px auto;
-    }
+    margin-top: 60px;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #222;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    scroll-margin-top: 120px; /* Evita que el menú superior tape el título al hacer el salto */
 }

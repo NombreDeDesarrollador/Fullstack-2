@@ -9,33 +9,24 @@ function formatoPrecioProd(valor) {
     return valor.toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 }
 
-function obtenerCarrito() {
-    const carrito = localStorage.getItem('carrito');
-    return carrito ? JSON.parse(carrito) : [];
-}
-
-function guardarCarrito(carrito) {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-}
-
+// El carrito real (guardado y renderizado) vive en js/carrito.js, que usa
+// las claves id/name/price/image/quantity/stock. Aquí solo traducimos el
+// producto (codigo/nombre/precio/imagen/stock) a ese formato y delegamos
+// en addToCarrito(), para que el stock y el badge se manejen en un solo lugar.
 function agregarAlCarrito(producto) {
-    const carrito = obtenerCarrito();
-    const existente = carrito.find(item => item.codigo === producto.codigo);
+    const item = {
+        id: producto.codigo,
+        name: producto.nombre,
+        price: producto.precio,
+        image: producto.imagen,
+        stock: producto.stock
+    };
 
-    if (existente) {
-        existente.cantidad += 1;
-    } else {
-        carrito.push({
-            codigo: producto.codigo,
-            nombre: producto.nombre,
-            precio: producto.precio,
-            imagen: producto.imagen,
-            cantidad: 1
-        });
+    const agregado = addToCarrito(item); // definida en js/carrito.js
+
+    if (agregado) {
+        alert('"' + producto.nombre + '" fue añadido al carrito.');
     }
-
-    guardarCarrito(carrito);
-    alert('"' + producto.nombre + '" fue añadido al carrito.');
 }
 
 document.addEventListener('DOMContentLoaded', function () {

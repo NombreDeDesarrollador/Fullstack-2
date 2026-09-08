@@ -1,135 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonido Vivo - Tienda de Sonidos</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <title>Pagina de sonidos</title>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    
 
-   <div class="barra-promo">
-    <span>Envío gratis <strong>en compras sobre $50.000</strong></span>
-    <span>12 cuotas <strong>sin interés con Webpay</strong></span>
-    <span>Retira <strong>en tienda · gratis</strong></span>
-    <div class="barra-promo-derecha">
-        <a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-        <a href="#"><i class="bi bi-shop"></i> Tiendas</a>
-        <a href="#">Ayuda</a>
-    </div>
-</div>
 
-<!-- ===== HEADER PRINCIPAL ===== -->
-<header class="header-principal">
-    <a href="proyecto.html" class="logo-header">
-        <img src="img/logo digital audio.png" alt="Digital Audio">
-    </a>
-
-    <div class="buscador-header">
-        <input type="text" placeholder="Busca instrumentos, marcas, accesorios...">
-        <button type="button"><i class="bi bi-arrow-right"></i></button>
+    <div class="barra-promo">
+        <span>Envío gratis <strong>en compras sobre $50.000</strong></span>
+        <span>12 cuotas <strong>sin interés con Webpay</strong></span>
+        <span>Retira <strong>en tienda · gratis</strong></span>
+        <div class="barra-promo-derecha">
+            <a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+            <a href="#"><i class="bi bi-shop"></i> Tiendas</a>
+            <a href="#">Ayuda</a>
+        </div>
     </div>
 
-    <div class="iconos-header">
-        <a href="login.html">
-            <i class="bi bi-person"></i>
-            <span>Cuenta</span>
+    <!-- ===== HEADER PRINCIPAL ===== -->
+    <header class="header-principal">
+        <a href="proyecto.html" class="logo-header">
+            <img src="img/logo digital audio.png" alt="Digital Audio">
         </a>
-        <a href="#">
-            <i class="bi bi-heart"></i>
-            <span>Favoritos</span>
-        </a>
-        <a href="#" class="carro-btn">
-            <i class="bi bi-cart"></i>
-            <span>Carro</span>
-        </a>
-    </div>
-</header>
+
+        <div class="buscador-header">
+            <input type="text" placeholder="Busca instrumentos, marcas, accesorios...">
+            <button type="button"><i class="bi bi-arrow-right"></i></button>
+        </div>
+
+        <div class="iconos-header">
+            <a href="login.html">
+                <i class="bi bi-person"></i>
+                <span>Cuenta</span>
+            </a>
+            <a href="#">
+                <i class="bi bi-heart"></i>
+                <span>Favoritos</span>
+            </a>
+            <a href="carrito.html" class="carro-btn" id="carrito-button">
+                <i class="bi bi-cart"></i>
+                <span>Carro</span>
+                <span id="carrito-badge" class="badge">0</span>
+            </a>
+        </div>
+    </header>
 
     <div class="container">
-        
+
         <!-- MENÚ DE NAVEGACIÓN PRINCIPAL -->
         <nav class="menu-principal">
             <a href="proyecto.html" class="btn-menu activo">Inicio</a>
             <a href="catalogo.html" class="btn-menu">Catálogo Completo</a>
             <a href="sobreNosotros.html" class="btn-menu">Sobre Nosotros</a>
             <a href="contacto.html" class="btn-menu">Contacto</a>
-            <a href="#" class="btn-menu">Ofertas</a>
+
         </nav>
 
-        <h2>Si entraste a Digital Sounds, es porque hablamos el mismo idioma,<br>
-            estás en lugar indicado, aquí encontrarás los mejores instrumentos y accesorios.</h2>
+        <section class="presentacion-inicio">
+            <div class="presentacion-texto">
+                <h2>Si entraste a Sonido Vivo, es porque hablamos el mismo idioma,<br>
+                    estás en lugar indicado, aquí encontrarás los mejores instrumentos y accesorios.</h2>
+
+                <strong>QUIENES SOMOS</strong>
+                <p>Probablemente seamos lo que has estado buscando durante toda tu carrera como artista,<br>
+                    y nos alegra decirte que llegaste buscando cobre y encontraste oro, somos la empresa que revolucionó
+                    <br>
+                    la industria para los compositores, artistas emergentes, etc.
+                </p>
+            </div>
+            <img class="imagen-menu" src="img/imagen menu.jpg" alt="Instrumentos y equipos de audio en Sonido Vivo">
+        </section>
 
 
-        <strong>QUIENES SOMOS</strong>
-        <p>Probablemente seamos lo que has estado buscando durante toda tu carrera como artista,<br>
-            y nos alegra decirte que llegaste buscando cobre y encontraste oro, somos la empresa que revolucionó
-            <br>
-            la industria para los compositores, artistas emergentes, etc.
-        </p>
-
-
-        <!-- GALERÍA INSTRUMENTOS -->
+      <!-- GALERÍA INSTRUMENTOS -->
         <h2>INSTRUMENTOS</h2>
 
         <div class="carousel-wrapper">
             <button class="btn-carrusel" onclick="moverCarrusel('galeria-inst', -1)">&#10094;</button>
 
             <div class="galeria-instrumentos" id="galeria-inst">
-                <a href="guitarras.html" class="nombres">
-                    <img src="https://static.vecteezy.com/system/resources/previews/001/207/359/non_2x/electric-guitar-png.png"
-                        alt="Guitarras">
+                <a href="catalogo.html?cat=guitarras" class="nombres">
+                    <img src="https://i5.walmartimages.cl/asr/a4f54c98-ac25-4390-9159-0a4626b27c75.6441ce67cfa2eb6d123d016d18e8fd36.png?odnHeight=612&odnWidth=612&odnBg=FFFFFF" alt="Guitarras">
                     <p class="descripcion">Guitarras</p>
                 </a>
 
-                <a href="pianos.html" class="nombres">
-                    <img src="https://www.yamaki.com.co/musica-audio-consumo/wp-content/uploads/sites/2/2021/11/MPKMINI3_01-500x500.png"
-                        alt="Pianos">
+                <a href="catalogo.html?cat=bajos" class="nombres">
+                    <img src="https://freepngimg.com/save/9964-bass-guitar-png-hd/1280x856" alt="Bajos">
+                    <p class="descripcion">Bajos</p>
+                </a>
+
+                <a href="catalogo.html?cat=teclados" class="nombres">
+                    <img src="https://www.yamaki.com.co/musica-audio-consumo/wp-content/uploads/sites/2/2021/11/MPKMINI3_01-500x500.png" alt="Pianos">
                     <p class="descripcion">Pianos y Controladores</p>
                 </a>
 
-                <a href="baterias.html" class="nombres">
+                <a href="catalogo.html?cat=baterias" class="nombres">
                     <img src="https://www.pngarts.com/files/3/Yamaha-Drum-Free-PNG-Image.png" alt="Baterias">
                     <p class="descripcion">Baterías y Percusión</p>
                 </a>
-
-                <a href="bajos.html" class="nombres">
-                    <img src = "https://freepngimg.com/save/9964-bass-guitar-png-hd/1280x856" alt="Bajos">
-                    <p class = "descripcion">Bajos</p>
-                </a>
-
             </div>
 
             <button class="btn-carrusel" onclick="moverCarrusel('galeria-inst', 1)">&#10095;</button>
         </div>
 
+        <!-- GALERÍA ACCESORIOS -->
         <h2>ACCESORIOS</h2>
 
         <div class="carousel-wrapper">
             <button class="btn-carrusel" onclick="moverCarrusel('galeria-acc', -1)">&#10094;</button>
 
             <div class="galeria-accesorios" id="galeria-acc">
-                <a href="amplificadores.html" class="nombres">
-                    <img src="https://gearhub.cl/cdn/shop/products/gearhub_blackstar_core_stereo_150_front_1x1_51e4c296-3d44-4d72-99f0-182371edcd2c.png?v=1662996776&width=1080"
-                        alt="Amplificadores">
+                <a href="catalogo.html?cat=amplificadores" class="nombres">
+                    <img src="https://gearhub.cl/cdn/shop/products/gearhub_blackstar_core_stereo_150_front_1x1_51e4c296-3d44-4d72-99f0-182371edcd2c.png?v=1662996776&width=1080" alt="Amplificadores">
                     <p class="descripcion">Amplificadores</p>
                 </a>
 
-                <a href="pedales.html" class="nombres">
-                    <img src="https://gearhub.cl/cdn/shop/files/Gearhub_Nux_MG300_pedalera_multiefecto_guitarra_2_1800x1800.png?v=1756855204"
-                        alt="Pedales">
+                <a href="catalogo.html?cat=pedales" class="nombres">
+                    <img src="https://gearhub.cl/cdn/shop/files/Gearhub_Nux_MG300_pedalera_multiefecto_guitarra_2_1800x1800.png?v=1756855204" alt="Pedales">
                     <p class="descripcion">Pedales</p>
                 </a>
 
-                <a href="cuerdas.html" class="nombres">
-                    <img src="https://s3.us-west-2.amazonaws.com/static.ernieball.com/website/images/products/image_front/large/P02069.png"
-                        alt="Cuerdas">
-                    <p class="descripcion">Cuerdas</p>
+                <a href="catalogo.html?cat=microfonos" class="nombres">
+                    <img src="https://studiomusic.cl/cdn/shop/products/shure-beta-56a-microfono-dinamico-de-instrumento-microfonos-dinamicos-shure-363464.webp?v=1660240459&width=1298" alt="Micrófonos">
+                    <p class="descripcion">Micrófonos</p>
+                </a>
+
+                <a href="catalogo.html?cat=estudio" class="nombres">
+                    <img src="https://www.blupointmusic.cl/wp-content/uploads/2020/12/ath-m50x_04.png" alt="Estudio">
+                    <p class="descripcion">Estudio y Grabación</p>
+                </a>
+
+                <a href="catalogo.html?cat=accesorios" class="nombres">
+                    <img src="https://s3.us-west-2.amazonaws.com/static.ernieball.com/website/images/products/image_front/large/P02069.png" alt="Cuerdas">
+                    <p class="descripcion">Cuerdas y Accesorios</p>
                 </a>
             </div>
 
@@ -138,32 +148,34 @@
 
 
         <footer class="footer-centrado">
-            <p> &copy; &reg; &trade; Sitio oficial Digital Sounds - 2026 <br>
+            <p> &copy; &reg; &trade; Sitio oficial Sonido Vivo - 2026 <br>
                 &#9742; +569 1234 5678 &#9993; contacto.ds@corporation.com</p>
         </footer>
 
     </div>
+    
+    <script src="js/carrito.js"></script>
 
     <script>
-    function moverCarrusel(idGaleria, direccion) {
-        const galeria = document.getElementById(idGaleria);
-        const distancia = 240; // Distancia de desplazamiento por clic
-        const maxScroll = galeria.scrollWidth - galeria.clientWidth;
+        function moverCarrusel(idGaleria, direccion) {
+            const galeria = document.getElementById(idGaleria);
+            const distancia = 240; // Distancia de desplazamiento por clic
+            const maxScroll = galeria.scrollWidth - galeria.clientWidth;
 
-        // Si presiona derecha y llega al final, vuelve al inicio
-        if (direccion === 1 && galeria.scrollLeft >= maxScroll - 5) {
-            galeria.scrollTo({ left: 0, behavior: 'smooth' });
-        } 
-        // Si presiona izquierda y está al inicio, salta al final
-        else if (direccion === -1 && galeria.scrollLeft <= 5) {
-            galeria.scrollTo({ left: maxScroll, behavior: 'smooth' });
-        } 
-        // Movimiento normal
-        else {
-            galeria.scrollBy({ left: direccion * distancia, behavior: 'smooth' });
+            // Si presiona derecha y llega al final, vuelve al inicio
+            if (direccion === 1 && galeria.scrollLeft >= maxScroll - 5) {
+                galeria.scrollTo({left: 0, behavior: 'smooth'});
+            }
+            // Si presiona izquierda y está al inicio, salta al final
+            else if (direccion === -1 && galeria.scrollLeft <= 5) {
+                galeria.scrollTo({left: maxScroll, behavior: 'smooth'});
+            }
+            // Movimiento normal
+            else {
+                galeria.scrollBy({left: direccion * distancia, behavior: 'smooth'});
+            }
         }
-    }
-</script>
+    </script>
 </body>
 
 </html>
