@@ -4,6 +4,13 @@ function getCarrito() {
   return JSON.parse(localStorage.getItem('carrito')) || [];
 }
 
+function formatCLP(value) {
+  const amount = Number(value) || 0;
+  return `$${new Intl.NumberFormat('es-CL', {
+    maximumFractionDigits: 0
+  }).format(amount)}`;
+}
+
 function saveCarrito(carrito) {
   localStorage.setItem('carrito', JSON.stringify(carrito));
   updateCarritoBadge();
@@ -124,8 +131,8 @@ function renderCarritoView() {
   const carrito = getCarrito();
 
   if (carrito.length === 0) {
-    container.innerHTML = '<p>El carrito está vacío.</p>';
-    totalElement.textContent = '0';
+    container.innerHTML = '<div class="carrito-vacio"><i class="bi bi-cart3"></i><h2>Tu carrito está vacío</h2><p>Agrega instrumentos o accesorios para verlos aquí.</p></div>';
+    totalElement.textContent = formatCLP(0);
     return;
   }
 
@@ -136,16 +143,24 @@ function renderCarritoView() {
     
     return `
       <div class="carrito-item">
-        <h4>${item.name}</h4>
-        <p>Precio: $${item.price}</p>
-        <p>Cantidad: ${item.quantity}</p>
-        <p>Subtotal: $${itemTotal}</p>
-        <button onclick="removeFromCarrito('${item.id}')">Eliminar</button>
+        <img class="carrito-item-imagen" src="${item.image}" alt="${item.name}">
+        <div class="carrito-item-datos">
+          <h2>${item.name}</h2>
+          <p class="carrito-item-precio">${formatCLP(item.price)} cada uno</p>
+          <p class="carrito-item-cantidad"><span>Cantidad</span><strong>${item.quantity}</strong></p>
+        </div>
+        <div class="carrito-item-resultado">
+          <span>Subtotal</span>
+          <strong>${formatCLP(itemTotal)}</strong>
+          <button class="btn-eliminar" onclick="removeFromCarrito('${item.id}')" aria-label="Eliminar ${item.name}">
+            <i class="bi bi-trash3"></i><span>Eliminar</span>
+          </button>
+        </div>
       </div>
     `;
   }).join('');
 
-  totalElement.textContent = total.toFixed(2);
+  totalElement.textContent = formatCLP(total);
 }
 
 // Inicialización global según el DOM cargado

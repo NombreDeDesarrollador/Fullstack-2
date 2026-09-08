@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('prod-desc').textContent = producto.descripcion;
     document.getElementById('prod-img').src = producto.img;
     document.getElementById('prod-img').alt = producto.nombre;
-    document.title = `${producto.nombre} - Digital Sounds`;
+    document.title = `${producto.nombre} - Sonido Vivo`;
 
     const elementoStock = document.querySelector('.stock');
     const botonComprar = document.querySelector('.btn-comprar');

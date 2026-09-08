@@ -3,17 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tu Carrito - Digital Sounds</title>
+  <title>Tu Carrito - Sonido Vivo</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <main class="carrito-container">
-    <h1>Tu Carrito de Compras</h1>
+    <div class="carrito-encabezado">
+      <div>
+        <p class="carrito-etiqueta">SONIDO VIVO</p>
+        <h1>Tu Carrito de Compras</h1>
+      </div>
+      <i class="bi bi-bag-heart carrito-encabezado-icono"></i>
+    </div>
     <div id="carrito-items"></div>
     <div class="carrito-summary">
-      <h3>Total: $<span id="carrito-total">0</span></h3>
-      <button id="checkout-btn">Proceder al pago</button>
+      <div class="carrito-total-texto">
+        <span>Total de tu pedido</span>
+        <strong><span id="carrito-total">$0</span></strong>
+      </div>
+      <button id="checkout-btn"><i class="bi bi-credit-card-2-front"></i><span>Proceder al pago</span></button>
     </div>
     <div id="mensaje-pago-exitoso" class="mensaje-pago-exitoso" role="status" aria-live="polite" hidden>
       <span class="icono-pago-exitoso"><i class="bi bi-check-lg"></i></span>
