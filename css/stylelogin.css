@@ -65,10 +65,6 @@ a:hover {
     margin: 2rem 8;
 }
 
-.col-lg-6 {
-    position: relative;
-}
-
 /* ----- BOTÓN VOLVER AL INICIO ----- */
 .btn-volver-inicio {
     position: absolute;
@@ -105,7 +101,7 @@ a:hover {
     flex-shrink: 0;
 }
 .row.vh-100 {
-    height: calc(100vh - 60px);
+    height: 700px;
 }
 
 .header-principal .btn-volver-inicio {
@@ -116,29 +112,6 @@ a:hover {
 
 .logo-header img {
     height: 85px;
-}
-
-/* ----- RESPONSIVE LOGIN ----- */
-@media (max-width: 992px) {
-    .login-card {
-        padding: 2rem 1.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .login-card {
-        padding: 1.5rem 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .d-flex.justify-content-center.mb-4 img {
-        max-width: 140px;
-    }
-
-    .logo-header img {
-        height: 55px;
-    }
 }
 
 .bg-holder::after {
@@ -172,7 +145,7 @@ html, body {
 }
 
 .columna-login {
-    height: 100vh;
+    height: 760px;
     overflow-y: auto;
 }***/
 

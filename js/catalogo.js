@@ -24,8 +24,17 @@ const formateadorPesos = new Intl.NumberFormat('es-CL', {
     minimumFractionDigits: 0
 });
 
+function normalizarTexto(texto) {
+    return texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLocaleLowerCase();
+}
+
 if (contenedorCatalogo) {
-    const categoriaSolicitada = new URLSearchParams(window.location.search).get('cat');
+    const parametros = new URLSearchParams(window.location.search);
+    const categoriaSolicitada = parametros.get('cat');
+    const terminoBusqueda = normalizarTexto((parametros.get('buscar') || '').trim());
     const filtrosCategoria = {
         guitarras: producto => producto.categoria.startsWith('Guitarras'),
         bajos: producto => producto.categoria === 'Bajos Eléctricos',
@@ -44,11 +53,13 @@ if (contenedorCatalogo) {
     for (const codigo in baseDeDatos) {
         const producto = baseDeDatos[codigo];
         if (filtroSeleccionado && !filtroSeleccionado(producto)) continue;
+        if (terminoBusqueda && !normalizarTexto(producto.nombre).includes(terminoBusqueda)) continue;
         if (!categorias[producto.categoria]) categorias[producto.categoria] = [];
         categorias[producto.categoria].push({ codigo, producto });
     }
 
-    contenedorCatalogo.innerHTML = Object.entries(categorias).map(([categoria, productos]) => `
+    const categoriasEncontradas = Object.entries(categorias);
+    contenedorCatalogo.innerHTML = categoriasEncontradas.length ? categoriasEncontradas.map(([categoria, productos]) => `
         <section class="categoria-bloque">
             <h2>${categoria}</h2>
             <div class="galeria-catalogo">
@@ -66,5 +77,5 @@ if (contenedorCatalogo) {
                 `).join('')}
             </div>
         </section>
-    `).join('');
+    `).join('') : '<p class="sin-resultados">No encontramos productos con ese nombre.</p>';
 }

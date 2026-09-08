@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sonido Vivo - Tienda de Sonidos</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -31,7 +30,7 @@
         </a>
 
         <div class="buscador-header">
-            <input type="text" placeholder="Busca instrumentos, marcas, accesorios...">
+            <input type="search" aria-label="Buscar productos por nombre" placeholder="Buscar por nombre...">
             <button type="button"><i class="bi bi-arrow-right"></i></button>
         </div>
 
@@ -59,11 +58,12 @@
             <a href="proyecto.html" class="btn-menu activo">Inicio</a>
             <a href="catalogo.html" class="btn-menu">Catálogo Completo</a>
             <a href="sobreNosotros.html" class="btn-menu">Sobre Nosotros</a>
+            <a href="contacto.html" class="btn-menu">Contacto</a>
         </nav>
 
         <section class="presentacion-inicio">
             <div class="presentacion-texto">
-                <h2>Si entraste a Sonido Vivo, es porque hablamos el mismo idioma,<br>
+                <h2>Si entraste a Digital Audio, es porque hablamos el mismo idioma,<br>
                     estás en lugar indicado, aquí encontrarás los mejores instrumentos y accesorios.</h2>
 
                 <strong>QUIENES SOMOS</strong>
@@ -146,13 +146,14 @@
 
 
         <footer class="footer-centrado">
-            <p> &copy; &reg; &trade; Sitio oficial Sonido Vivo - 2026 <br>
+            <p> &copy; &reg; &trade; Sitio oficial Digital Audio - 2026 <br>
                 &#9742; +569 1234 5678 &#9993; contacto.ds@corporation.com</p>
         </footer>
 
     </div>
     
     <script src="js/carrito.js"></script>
+    <script src="js/busqueda.js"></script>
 
     <script>
         function moverCarrusel(idGaleria, direccion) {

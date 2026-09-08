@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto - Sonido Vivo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- ===== BARRA SUPERIOR ===== -->
+    <div class="barra-promo">
+        <span>Envío gratis <strong>en compras sobre $50.000</strong></span>
+        <span>12 cuotas <strong>sin interés con Webpay</strong></span>
+        <span>Retira <strong>en tienda · gratis</strong></span>
+        <div class="barra-promo-derecha">
+            <a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+            <a href="#"><i class="bi bi-shop"></i> Tiendas</a>
+            <a href="#">Ayuda</a>
+            
+        </div>
+    </div>
+
+    <!-- ===== HEADER PRINCIPAL ===== -->
+    <header class="header-principal">
+        <a href="proyecto.html" class="logo-header">
+            <img src="img/logo digital audio.png" alt="Digital Audio">
+        </a>
+        <div class="buscador-header">
+            <input type="search" aria-label="Buscar productos por nombre" placeholder="Buscar por nombre...">
+            <button type="button"><i class="bi bi-arrow-right"></i></button>
+        </div>
+        <div class="iconos-header">
+            <a href="login.html"><i class="bi bi-person"></i><span>Cuenta</span></a>
+            <a href="#"><i class="bi bi-heart"></i><span>Favoritos</span></a>
+            <a href="carrito.html" class="carro-btn" id="carrito-button"><i class="bi bi-cart"></i><span>Carro</span><span id="carrito-badge" class="badge">0</span></a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- MENÚ DE NAVEGACIÓN PRINCIPAL -->
+        <nav class="menu-principal">
+            <a href="proyecto.html" class="btn-menu">Inicio</a>
+            <a href="catalogo.html" class="btn-menu">Catálogo Completo</a>
+            <a href="sobreNosotros.html" class="btn-menu">Sobre Nosotros</a>
+            <a href="contacto.html" class="btn-menu activo">Contacto</a>
+            
+        </nav>
+
+        <section class="seccion-contacto">
+            <h1>Contáctanos</h1>
+            <p>¿Tienes dudas sobre un producto o quieres dejarnos un comentario? Escríbenos y te responderemos a la brevedad.</p>
+
+            <form id="form-contacto" novalidate class="form-contacto">
+                <label class="form-label" for="contacto-nombre">Nombre</label>
+                <input type="text" id="contacto-nombre" placeholder="Tu nombre">
+                <div class="mensaje-error" id="err-contacto-nombre"></div>
+
+                <label class="form-label" for="contacto-correo">Correo</label>
+                <input type="email" id="contacto-correo" placeholder="tucorreo@duoc.cl">
+                <div class="mensaje-error" id="err-contacto-correo"></div>
+
+                <label class="form-label" for="contacto-comentario">Comentario</label>
+                <textarea id="contacto-comentario" rows="5" placeholder="Escribe tu mensaje..."></textarea>
+                <div class="mensaje-error" id="err-contacto-comentario"></div>
+
+                <div id="resultado-contacto"></div>
+
+                <button type="button" class="btn-enviar" onclick="validarContacto()">Enviar mensaje</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer-centrado">
+        <p>&copy; 2026 Digital Audio — Todos los derechos reservados</p>
+    </footer>
+
+    <script src="js/carrito.js"></script>
+    <script src="js/busqueda.js"></script>
+    <script src="js/contacto.js"></script>
+</body>
+
+</html>
