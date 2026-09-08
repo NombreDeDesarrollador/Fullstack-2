@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de usuario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/stylelogin.css">
+</head>
+
+<body>
+
+    <header class="header-principal">
+        <a href="proyecto.html" class="logo-header">
+            <img src="img/logo digital audio.png" alt="Digital Audio">
+        </a>
+        <a href="proyecto.html" class="btn-volver-inicio">
+            <i class="bi bi-arrow-left"></i> Volver al inicio
+        </a>
+    </header>
+
+    <div class="row vh-100 g-0">
+
+        <div class="col-lg-6 order-lg-2 position-relative d-none d-lg-block">
+            <div class="bg-holder" style="background-image: url(img/1a46a019bf6adc8dcd03968264534e1a.jpg);">
+            </div>
+        </div>
+
+        <div class="col-lg-6 order-lg-1 columna-login">
+            <div class="row align-items-center justify-content-center h-100 g-0 px-4 px-sm-0 py-4">
+                <div class="col col-sm-6 col-lg-7 col-xl-6">
+                    <div class="login-card">
+                        <a href="proyecto.html" class="d-flex justify-content-center mb-4">
+                            <img src="img/logo digital audio.png" alt="Logo">
+                        </a>
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Crear cuenta</h3>
+                            <p class="text-secondary">Regístrate para comprar y guardar tus favoritos.</p>
+                        </div>
+
+                        <form id="form-registro" novalidate>
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                                <input type="text" id="run" class="form-control" placeholder="RUN (sin puntos ni guion)">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-run"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" id="nombre" class="form-control" placeholder="Nombre completo">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-nombre"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-person-lines-fill"></i></span>
+                                <input type="text" id="apellidos" class="form-control" placeholder="Apellidos">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-apellidos"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" id="correo" class="form-control" placeholder="Correo">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-correo"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-envelope-check"></i></span>
+                                <input type="email" id="correo2" class="form-control" placeholder="Confirmar correo">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-correo2"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" id="clave" class="form-control" placeholder="Contraseña">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-clave"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" id="clave2" class="form-control" placeholder="Confirmar contraseña">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-clave2"></div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="text" id="telefono" class="form-control" placeholder="Teléfono (opcional)">
+                            </div>
+
+                        
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <select id="region" class="form-select">
+                                        <option value="">-- Seleccione la región --</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <select id="comuna" class="form-select">
+                                        <option value="">-- Seleccione la comuna --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-region"></div>
+
+                            <div class="input-group mb-1">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" id="direccion" class="form-control" placeholder="Dirección">
+                            </div>
+                            <div class="invalid-feedback d-block mb-2" id="err-direccion"></div>
+
+                            <div id="resultado-registro" class="mb-3"></div>
+
+                            <button type="button" class="btn btn-primary btn-lg w-100" onclick="validarRegistro()">
+                                Registrar
+                            </button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <small>¿Ya tienes una cuenta? <a href="login.html" class="fw-bold">Inicia sesión</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/validaciones.js"></script>
+    <script src="js/regiones.js"></script>
+    <script src="js/usuariosDB.js"></script>
+    <script src="js/registro.js"></script>
+</body>
+
+</html>
