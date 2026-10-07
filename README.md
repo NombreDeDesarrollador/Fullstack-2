@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+[README.md](https://github.com/user-attachments/files/31961060/README.md)
+=======
+>>>>>>> main
 # Digital Audio 🎸
 
 Sitio web de e-commerce para una tienda de instrumentos musicales, desarrollado como proyecto **Fullstack** con HTML, CSS y JavaScript puro (sin frameworks ni backend).
@@ -14,13 +18,20 @@ Digital Audio es una tienda en línea de instrumentos y accesorios musicales (gu
 - **Registro de usuarios** con validaciones de formulario, incluyendo validación de RUN chileno (dígito verificador) y selección dinámica de región/comuna.
 - **Login** con distintos roles de usuario: `Cliente`, `Vendedor` y `Administrador`.
 - **Formulario de contacto** con validaciones.
+<<<<<<< HEAD
+=======
 - **Panel de administrador** (`admin/`): listado, creación y edición de productos y usuarios; los productos se guardan en `localStorage` y se reflejan en el catálogo.
+>>>>>>> main
 - **Diseño responsive** basado en Bootstrap 5.
 
 ## 🗂️ Estructura del proyecto
 
 ```
+<<<<<<< HEAD
+Fullstack-2-Develop/
+=======
 Fullstack-2/
+>>>>>>> main
 ├── index.html              # Punto de entrada
 ├── proyecto.html           # Página principal / home de la tienda
 ├── catalogo.html           # Listado y búsqueda de productos
@@ -30,7 +41,10 @@ Fullstack-2/
 ├── registro.html           # Registro de nuevos usuarios
 ├── contacto.html           # Formulario de contacto
 ├── sobreNosotros.html      # Página "Sobre nosotros"
+<<<<<<< HEAD
+=======
 ├── admin/                  # Panel de administración (home, productos, usuarios)
+>>>>>>> main
 ├── css/
 │   ├── style.css           # Estilos generales del sitio
 │   └── stylelogin.css      # Estilos específicos de login/registro

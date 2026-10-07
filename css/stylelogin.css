@@ -69,10 +69,6 @@ a:hover {
     margin: 2rem 8;
 }
 
-.col-lg-6 {
-    position: relative;
-}
-
 /* ----- BOTÓN VOLVER AL INICIO ----- */
 .btn-volver-inicio {
     position: absolute;
@@ -115,8 +111,8 @@ a:hover {
     left: 0;
     z-index: 100;
 }
-.row.vh-100 {
-    height: calc(100vh - 60px);
+.fixed-login-layout {
+    min-height: calc(100vh - 95px);
 }
 
 .header-principal .btn-volver-inicio {
@@ -127,29 +123,6 @@ a:hover {
 
 .logo-header img {
     height: 85px;
-}
-
-/* ----- RESPONSIVE LOGIN ----- */
-@media (max-width: 992px) {
-    .login-card {
-        padding: 2rem 1.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .login-card {
-        padding: 1.5rem 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .d-flex.justify-content-center.mb-4 img {
-        max-width: 140px;
-    }
-
-    .logo-header img {
-        height: 55px;
-    }
 }
 
 .bg-holder::after {
@@ -164,14 +137,24 @@ a:hover {
 }
 
 html, body {
-    height: 100%;
     margin: 0;
-    overflow: hidden;
+    min-height: 100%;
+    overflow-x: hidden;
 }
 
 .columna-login {
-    height: 100%;
+    min-height: calc(100vh - 95px);
     overflow-y: auto;
+}
+
+@media (max-width: 991.98px) {
+    .fixed-login-layout {
+        min-height: auto;
+    }
+
+    .columna-login {
+        min-height: calc(100vh - 95px);
+    }
 }
 
 
@@ -183,6 +166,6 @@ html, body {
 }
 
 .columna-login {
-    height: 100vh;
+    height: 760px;
     overflow-y: auto;
 }***/

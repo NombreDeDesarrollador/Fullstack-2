@@ -67,6 +67,14 @@ function validarRegistro() {
         return false;
     }
 
+<<<<<<< HEAD
+    // El registro solo se valida: no se guarda en la base de datos.
+    resultado.innerHTML = '¡Registro validado correctamente! Redirigiendo al inicio de sesión...';
+    resultado.style.color = 'green';
+    setTimeout(() => window.location.href = 'login.html', 1500);
+    return true;
+}
+=======
     // Evitar duplicados por RUN o correo
     const runNormalizado = run.toUpperCase();
     if (buscarUsuarioPorRun(runNormalizado)) {
@@ -112,3 +120,4 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); validarRegistro(); }
     });
 });
+>>>>>>> main
