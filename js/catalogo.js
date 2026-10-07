@@ -24,11 +24,40 @@ function crearTarjetaProducto(producto) {
     `;
 }
 
+function normalizarTexto(texto) {
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
+}
+
+// Filtros por categoría (parámetro ?cat= que usan los enlaces de proyecto.html)
+const filtrosCategoria = {
+    guitarras: p => p.categoria.startsWith('Guitarras'),
+    bajos: p => p.categoria === 'Bajos Eléctricos',
+    teclados: p => p.categoria === 'Teclados y Pianos',
+    baterias: p => p.categoria === 'Baterías',
+    amplificadores: p => p.categoria === 'Amplificadores',
+    pedales: p => p.categoria === 'Pedales de Efectos',
+    microfonos: p => p.categoria === 'Micrófonos',
+    estudio: p => p.categoria === 'Estudio y Grabación',
+    accesorios: p => p.categoria === 'Accesorios'
+};
+
 function renderizarCatalogo() {
     const contenedor = document.getElementById('contenedor-catalogo');
     if (!contenedor) return;
 
-    const productos = obtenerProductos();
+    const parametros = new URLSearchParams(window.location.search);
+    const filtroCategoria = filtrosCategoria[parametros.get('cat')];
+    const termino = normalizarTexto((parametros.get('buscar') || '').trim());
+
+    const productos = obtenerProductos().filter(p =>
+        (!filtroCategoria || filtroCategoria(p)) &&
+        (!termino || normalizarTexto(p.nombre).includes(termino))
+    );
+
+    if (productos.length === 0) {
+        contenedor.innerHTML = '<p class="sin-resultados">No se encontraron productos.</p>';
+        return;
+    }
 
     // Agrupar productos por categoría
     const categorias = [...new Set(productos.map(p => p.categoria))];
