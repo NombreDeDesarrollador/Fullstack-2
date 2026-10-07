@@ -53,9 +53,26 @@ const usuariosIniciales = [
 ];
     
 function inicializarUsuarios() {
-    if (!localStorage.getItem('usuarios')) {
-        localStorage.setItem('usuarios', JSON.stringify(usuariosIniciales));
-    }
+    let guardados;
+    try { guardados = JSON.parse(localStorage.getItem('usuarios')); } catch (e) { guardados = null; }
+    if (!Array.isArray(guardados)) guardados = [];
+    guardados = guardados.filter(u => u && typeof u === 'object');
+
+    // Garantiza que los usuarios de ejemplo (admin, vendedor, cliente) siempre existan,
+    // aunque el navegador tenga datos viejos de otra versión del proyecto.
+    let cambios = !localStorage.getItem('usuarios');
+    usuariosIniciales.forEach(base => {
+        const existente = guardados.find(u => u.correo === base.correo);
+        if (!existente) {
+            guardados.push(base);
+            cambios = true;
+        } else if (existente.clave !== base.clave || existente.tipoUsuario !== base.tipoUsuario) {
+            existente.clave = base.clave;
+            existente.tipoUsuario = base.tipoUsuario;
+            cambios = true;
+        }
+    });
+    if (cambios) localStorage.setItem('usuarios', JSON.stringify(guardados));
 }
 
 function obtenerUsuarios() {

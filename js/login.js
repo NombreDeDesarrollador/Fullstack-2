@@ -58,9 +58,13 @@ function validarLogin() {
 
     // Usuarios de la base de datos (usuariosDB.js ya la precarga con
     // Administrador y Vendedor de ejemplo, además de los registrados).
-    const usuarios = obtenerUsuarios();
+    // Usuarios guardados + usuarios de ejemplo (los de ejemplo siempre funcionan,
+    // aunque el navegador tenga datos viejos o dañados en localStorage).
+    let usuarios = [];
+    try { usuarios = obtenerUsuarios().filter(u => u && u.correo); } catch (e) { usuarios = []; }
+    usuarios = usuarios.concat(usuariosIniciales);
 
-    const usuarioEncontrado = usuarios.find(u => u.correo === correo && u.clave === clave);
+    const usuarioEncontrado = usuarios.find(u => String(u.correo).toLowerCase() === correo.toLowerCase() && u.clave === clave);
 
     if (usuarioEncontrado) {
         localStorage.setItem('usuarioActivo', JSON.stringify(usuarioEncontrado));
@@ -79,3 +83,12 @@ function validarLogin() {
         return false;
     }
 }
+
+// Permite iniciar sesión presionando Enter en cualquier campo
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('form-login');
+    if (!form) return;
+    form.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); validarLogin(); }
+    });
+});
