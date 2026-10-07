@@ -67,9 +67,57 @@ function validarRegistro() {
         return false;
     }
 
+<<<<<<< HEAD
     // El registro solo se valida: no se guarda en la base de datos.
     resultado.innerHTML = '¡Registro validado correctamente! Redirigiendo al inicio de sesión...';
     resultado.style.color = 'green';
     setTimeout(() => window.location.href = 'login.html', 1500);
     return true;
 }
+=======
+    // Evitar duplicados por RUN o correo
+    const runNormalizado = run.toUpperCase();
+    if (buscarUsuarioPorRun(runNormalizado)) {
+        marcarError('run', 'Ya existe un usuario con ese RUN.');
+        resultado.innerHTML = 'Revisa los campos marcados en rojo.';
+        resultado.style.color = 'red';
+        return false;
+    }
+    if (buscarUsuarioPorCorreo(correo)) {
+        marcarError('correo', 'Ya existe un usuario con ese correo.');
+        resultado.innerHTML = 'Revisa los campos marcados en rojo.';
+        resultado.style.color = 'red';
+        return false;
+    }
+
+    // Guardar el nuevo usuario (rol Cliente) para poder iniciar sesión después
+    const usuarios = obtenerUsuarios();
+    usuarios.push({
+        run: runNormalizado,
+        nombre,
+        apellidos,
+        correo,
+        clave,
+        telefono: (document.getElementById('telefono') || { value: '' }).value.trim(),
+        region,
+        comuna,
+        direccion,
+        tipoUsuario: 'Cliente'
+    });
+    guardarUsuarios(usuarios);
+
+    resultado.innerHTML = '¡Registro exitoso! Redirigiendo al inicio de sesión...';
+    resultado.style.color = 'green';
+    setTimeout(() => window.location.href = 'login.html', 1500);
+    return true;
+}
+
+// Permite registrar presionando Enter en los campos de texto
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('form-registro');
+    if (!form) return;
+    form.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); validarRegistro(); }
+    });
+});
+>>>>>>> main

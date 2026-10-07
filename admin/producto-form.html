@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="titulo-pagina">Nuevo Producto - Panel Administrador</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../img/logo digital audio.png" alt="Digital Sounds">
+                <span>Digital Sounds</span>
+            </div>
+            <nav class="admin-menu">
+                <a href="home.html"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                <a href="productos.html" class="activo"><i class="bi bi-box-seam"></i> Productos</a>
+                <a href="usuarios.html" class="solo-admin"><i class="bi bi-people"></i> Usuarios</a>
+                <a href="../proyecto.html"><i class="bi bi-shop"></i> Ver tienda</a>
+            </nav>
+            <div class="admin-usuario-box">
+                <div class="nombre" id="admin-usuario-nombre">-</div>
+                <div class="rol" id="admin-usuario-rol">-</div>
+                <button class="btn-cerrar-sesion" onclick="cerrarSesion()"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <main class="admin-contenido">
+            <div class="admin-topbar">
+                <h1 id="titulo-form">Nuevo Producto</h1>
+                <a href="productos.html" class="btn-admin secundario"><i class="bi bi-arrow-left"></i> Volver al listado</a>
+            </div>
+
+            <form class="form-admin" id="form-producto" novalidate>
+                <input type="hidden" id="codigo-original">
+
+                <div class="campo">
+                    <label for="codigo">Código de producto</label>
+                    <input type="text" id="codigo" placeholder="Ej: GTR-003">
+                    <div class="mensaje-error-admin" id="err-codigo"></div>
+                </div>
+
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Ej: Guitarra Eléctrica Les Paul">
+                    <div class="mensaje-error-admin" id="err-nombre"></div>
+                </div>
+
+                <div class="campo">
+                    <label for="descripcion">Descripción (opcional)</label>
+                    <textarea id="descripcion" rows="3" placeholder="Descripción del producto..."></textarea>
+                    <div class="mensaje-error-admin" id="err-descripcion"></div>
+                </div>
+
+                <div class="fila-2">
+                    <div class="campo">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" placeholder="Ej: Fender">
+                    </div>
+                    <div class="campo">
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria"></select>
+                        <div class="mensaje-error-admin" id="err-categoria"></div>
+                    </div>
+                </div>
+
+                <div class="fila-2">
+                    <div class="campo">
+                        <label for="precio">Precio (CLP)</label>
+                        <input type="number" id="precio" min="0" step="1" placeholder="0">
+                        <div class="mensaje-error-admin" id="err-precio"></div>
+                    </div>
+                    <div class="campo">
+                        <label for="stock">Stock</label>
+                        <input type="number" id="stock" min="0" step="1" placeholder="0">
+                        <div class="mensaje-error-admin" id="err-stock"></div>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label for="stockCritico">Stock crítico (opcional) — se avisará cuando el stock sea igual o menor</label>
+                    <input type="number" id="stockCritico" min="0" step="1" placeholder="Ej: 3">
+                    <div class="mensaje-error-admin" id="err-stockCritico"></div>
+                </div>
+
+                <div class="campo">
+                    <label for="imagen">URL de imagen (opcional)</label>
+                    <input type="text" id="imagen" placeholder="https://...">
+                </div>
+
+                <div class="resultado-admin" id="resultado-producto"></div>
+
+                <button type="button" class="btn-admin" onclick="guardarFormularioProducto()">
+                    <i class="bi bi-check-lg"></i> Guardar producto
+                </button>
+            </form>
+        </main>
+    </div>
+
+    <script src="../js/baseDeDatos.js"></script>
+    <script src="../js/usuariosDB.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/producto-form.js"></script>
+</body>
+</html>
