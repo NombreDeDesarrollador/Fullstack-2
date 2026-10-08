@@ -25,10 +25,11 @@ function renderizarTablaProductos() {
                 <td>${p.categoria}</td>
                 <td>${formatoPrecioAdmin(p.precio)}</td>
                 <td>${stockHtml}</td>
-                <td class="solo-admin">
+                <td>
                     <div class="acciones-tabla">
-                        <span class="accion-editar accion-deshabilitada" title="Edición deshabilitada por ahora"><i class="bi bi-pencil"></i></span>
-                        <button class="accion-eliminar" onclick="eliminarProducto('${p.codigo}')"><i class="bi bi-trash"></i> Eliminar</button>
+                        <a href="producto-detalle.html?codigo=${encodeURIComponent(p.codigo)}" class="accion-ver" title="Ver detalle"><i class="bi bi-eye"></i></a>
+                        <a href="producto-form.html?codigo=${encodeURIComponent(p.codigo)}" class="accion-editar solo-admin" title="Editar"><i class="bi bi-pencil"></i></a>
+                        <button class="accion-eliminar solo-admin" onclick="eliminarProducto('${p.codigo}')"><i class="bi bi-trash"></i> Eliminar</button>
                     </div>
                 </td>
             </tr>
@@ -45,6 +46,6 @@ function eliminarProducto(codigo) {
 
 const usuario = requireRole(['Administrador', 'Vendedor']);
 if (usuario) {
-    iniciarLayoutAdmin(usuario);
     renderizarTablaProductos();
+    iniciarLayoutAdmin(usuario); // después de la tabla, para ocultar acciones solo-admin al Vendedor
 }

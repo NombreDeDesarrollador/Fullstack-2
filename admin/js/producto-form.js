@@ -32,7 +32,7 @@ function limpiarErroresProducto(campos) {
 function poblarCategorias(categoriaSeleccionada) {
     const select = document.getElementById('categoria');
     select.innerHTML = '<option value="">-- Seleccione la categoría --</option>' +
-        categoriasDisponibles.map(c => `<option value="${c}">${c}</option>`).join('');
+        obtenerCategorias().map(c => `<option value="${c}">${c}</option>`).join('');
     if (categoriaSeleccionada) select.value = categoriaSeleccionada;
 }
 

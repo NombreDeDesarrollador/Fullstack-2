@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Panel Administrador</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- ===== MENÚ LATERAL ===== -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="../img/logo digital audio.png" alt="Digital Sounds">
+                <span>Digital Sounds</span>
+            </div>
+            <nav class="admin-menu">
+                <a href="home.html"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                <a href="ordenes.html"><i class="bi bi-receipt"></i> Órdenes</a>
+                <a href="productos.html"><i class="bi bi-box-seam"></i> Productos</a>
+                <a href="categorias.html" class="solo-admin"><i class="bi bi-tags"></i> Categorías</a>
+                <a href="usuarios.html" class="solo-admin"><i class="bi bi-people"></i> Usuarios</a>
+                <a href="reportes.html" class="activo solo-admin"><i class="bi bi-bar-chart-line"></i> Reportes</a>
+                <a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a>
+                <a href="../proyecto.html"><i class="bi bi-shop"></i> Ver tienda</a>
+            </nav>
+            <div class="admin-usuario-box">
+                <div class="nombre" id="admin-usuario-nombre">-</div>
+                <div class="rol" id="admin-usuario-rol">-</div>
+                <button class="btn-cerrar-sesion" onclick="cerrarSesion()"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <!-- ===== CONTENIDO ===== -->
+        <main class="admin-contenido">
+            <div class="admin-topbar">
+                <div>
+                    <h1>Reportes</h1>
+                    <p class="admin-subtitulo">Resumen de ventas e inventario (solo órdenes pagadas).</p>
+                </div>
+                <button type="button" class="btn-admin secundario no-imprimir" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir reporte</button>
+            </div>
+
+            <div class="stat-cards" id="kpis-reportes"></div>
+
+            <div class="grid-2">
+                <div class="admin-panel">
+                    <h2>Ventas por categoría</h2>
+                    <div class="barras" id="reporte-categorias"></div>
+                </div>
+                <div class="admin-panel">
+                    <h2>Ventas por mes</h2>
+                    <div class="barras" id="reporte-meses"></div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="admin-panel">
+                    <h2>Productos más vendidos</h2>
+                    <table class="tabla-admin">
+                        <thead><tr><th>#</th><th>Producto</th><th>Unidades</th><th>Ingresos</th></tr></thead>
+                        <tbody id="reporte-top-productos"></tbody>
+                    </table>
+                </div>
+                <div class="admin-panel">
+                    <h2>Inventario por categoría</h2>
+                    <table class="tabla-admin">
+                        <thead><tr><th>Categoría</th><th>Productos</th><th>Unidades</th><th>Valorizado</th></tr></thead>
+                        <tbody id="reporte-inventario"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/baseDeDatos.js"></script>
+    <script src="../js/usuariosDB.js"></script>
+    <script src="../js/ordenesDB.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/reportes.js"></script>
+</body>
+</html>

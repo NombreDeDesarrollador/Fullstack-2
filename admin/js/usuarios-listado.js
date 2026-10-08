@@ -21,6 +21,8 @@ function renderizarTablaUsuarios() {
             <td>${u.tipoUsuario}</td>
             <td>
                 <div class="acciones-tabla">
+                    <a href="usuario-detalle.html?run=${encodeURIComponent(u.run)}" class="accion-ver" title="Ver detalle"><i class="bi bi-eye"></i></a>
+                    <a href="usuario-detalle.html?run=${encodeURIComponent(u.run)}#historial" class="accion-ver" title="Historial de compras"><i class="bi bi-clock-history"></i></a>
                     <a href="usuario-form.html?run=${encodeURIComponent(u.run)}" class="accion-editar" title="Editar"><i class="bi bi-pencil"></i></a>
                     <button class="accion-eliminar" onclick="eliminarUsuario('${u.run}')"><i class="bi bi-trash"></i> Eliminar</button>
                 </div>

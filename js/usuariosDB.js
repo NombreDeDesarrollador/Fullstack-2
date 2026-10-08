@@ -53,11 +53,6 @@ const usuariosIniciales = [
 ];
     
 function inicializarUsuarios() {
-<<<<<<< HEAD
-    if (!localStorage.getItem('usuarios')) {
-        localStorage.setItem('usuarios', JSON.stringify(usuariosIniciales));
-    }
-=======
     let guardados;
     try { guardados = JSON.parse(localStorage.getItem('usuarios')); } catch (e) { guardados = null; }
     if (!Array.isArray(guardados)) guardados = [];
@@ -78,7 +73,6 @@ function inicializarUsuarios() {
         }
     });
     if (cambios) localStorage.setItem('usuarios', JSON.stringify(guardados));
->>>>>>> main
 }
 
 function obtenerUsuarios() {

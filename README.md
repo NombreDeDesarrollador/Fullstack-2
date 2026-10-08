@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-[README.md](https://github.com/user-attachments/files/31961060/README.md)
-=======
->>>>>>> main
 # Digital Audio 🎸
 
 Sitio web de e-commerce para una tienda de instrumentos musicales, desarrollado como proyecto **Fullstack** con HTML, CSS y JavaScript puro (sin frameworks ni backend).
@@ -18,20 +14,13 @@ Digital Audio es una tienda en línea de instrumentos y accesorios musicales (gu
 - **Registro de usuarios** con validaciones de formulario, incluyendo validación de RUN chileno (dígito verificador) y selección dinámica de región/comuna.
 - **Login** con distintos roles de usuario: `Cliente`, `Vendedor` y `Administrador`.
 - **Formulario de contacto** con validaciones.
-<<<<<<< HEAD
-=======
 - **Panel de administrador** (`admin/`): listado, creación y edición de productos y usuarios; los productos se guardan en `localStorage` y se reflejan en el catálogo.
->>>>>>> main
 - **Diseño responsive** basado en Bootstrap 5.
 
 ## 🗂️ Estructura del proyecto
 
 ```
-<<<<<<< HEAD
-Fullstack-2-Develop/
-=======
 Fullstack-2/
->>>>>>> main
 ├── index.html              # Punto de entrada
 ├── proyecto.html           # Página principal / home de la tienda
 ├── catalogo.html           # Listado y búsqueda de productos
@@ -41,16 +30,26 @@ Fullstack-2/
 ├── registro.html           # Registro de nuevos usuarios
 ├── contacto.html           # Formulario de contacto
 ├── sobreNosotros.html      # Página "Sobre nosotros"
-<<<<<<< HEAD
-=======
-├── admin/                  # Panel de administración (home, productos, usuarios)
->>>>>>> main
+├── categorias.html         # Productos separados por categoría
+├── ofertas.html            # Productos con descuento
+├── blogs.html              # Listado de artículos del blog
+├── blog-detalle.html       # Detalle de un artículo (?id=)
+├── checkout.html           # Paso de pago: datos del cliente y dirección
+├── compra-exitosa.html     # Resumen de compra pagada
+├── compra-error.html       # Pago rechazado (permite reintentar)
+├── mi-cuenta.html          # Perfil del cliente y sus compras
+├── admin/                  # Panel: dashboard, órdenes/boleta, productos (detalle, críticos),
+│                           # categorías, usuarios (detalle + historial), reportes y perfil
 ├── css/
 │   ├── style.css           # Estilos generales del sitio
 │   └── stylelogin.css      # Estilos específicos de login/registro
 ├── js/
 │   ├── baseDeDatos.js      # Catálogo de productos (datos en memoria)
 │   ├── usuariosDB.js       # Usuarios de ejemplo (cliente, vendedor, admin)
+│   ├── ordenesDB.js        # Órdenes/boletas (localStorage)
+│   ├── categorias.js, ofertas.js, blogs.js, checkout.js, resultado-compra.js
+│   ├── sesion.js           # Nombre del usuario en el header (Cliente -> mi cuenta, Admin/Vendedor -> panel)
+│   ├── mi-cuenta.js        # Perfil y compras del cliente
 │   ├── catalogo.js         # Lógica de listado y filtrado de productos
 │   ├── producto.js         # Lógica de la ficha de producto
 │   ├── carrito.js          # Lógica del carrito de compras (localStorage)

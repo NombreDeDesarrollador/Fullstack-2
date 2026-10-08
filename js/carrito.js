@@ -64,6 +64,35 @@ function removeFromCarrito(productId) {
   renderCarritoView(); // Re-renderiza la vista si estamos en carrito.html
 }
 
+// Cambia la cantidad de un producto del carrito (+1 / -1) respetando el stock
+function changeQuantity(productId, delta) {
+  const carrito = getCarrito();
+  const item = carrito.find(i => i.id === productId);
+  if (!item) return;
+
+  const nuevaCantidad = item.quantity + delta;
+  if (nuevaCantidad > getStock(item.id, item.stock)) {
+    alert('No hay más unidades disponibles de este producto.');
+    return;
+  }
+  if (nuevaCantidad <= 0) {
+    removeFromCarrito(productId);
+    return;
+  }
+  item.quantity = nuevaCantidad;
+  saveCarrito(carrito);
+  renderCarritoView();
+}
+
+function vaciarCarrito() {
+  if (getCarrito().length === 0) return;
+  if (!confirm('¿Quieres vaciar el carrito?')) return;
+  saveCarrito([]);
+  renderCarritoView();
+}
+
+// Ya no se paga directo en el carrito: se pasa al checkout (checkout.html),
+// donde el cliente ingresa sus datos y dirección de entrega.
 function proceedToPayment() {
   const carrito = getCarrito();
 
@@ -82,15 +111,7 @@ function proceedToPayment() {
     return;
   }
 
-  carrito.forEach(item => {
-    const availableStock = getStock(item.id, item.stock);
-    saveStock(item.id, availableStock - item.quantity);
-  });
-
-  saveCarrito([]);
-  renderCarritoView();
-  const mensajePago = document.getElementById('mensaje-pago-exitoso');
-  if (mensajePago) mensajePago.hidden = false;
+  window.location.href = 'checkout.html';
 }
 
 // --- RENDERIZADO DEL CATÁLOGO ---
@@ -147,7 +168,12 @@ function renderCarritoView() {
         <div class="carrito-item-datos">
           <h2>${item.name}</h2>
           <p class="carrito-item-precio">${formatCLP(item.price)} cada uno</p>
-          <p class="carrito-item-cantidad"><span>Cantidad</span><strong>${item.quantity}</strong></p>
+          <div class="carrito-item-cantidad">
+            <span>Cantidad</span>
+            <button type="button" class="btn-cantidad" onclick="changeQuantity('${item.id}', -1)" aria-label="Quitar una unidad">−</button>
+            <strong>${item.quantity}</strong>
+            <button type="button" class="btn-cantidad" onclick="changeQuantity('${item.id}', 1)" aria-label="Agregar una unidad">+</button>
+          </div>
         </div>
         <div class="carrito-item-resultado">
           <span>Subtotal</span>
@@ -170,4 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const checkoutButton = document.getElementById('checkout-btn');
   if (checkoutButton) checkoutButton.addEventListener('click', proceedToPayment);
+
+  const vaciarButton = document.getElementById('vaciar-btn');
+  if (vaciarButton) vaciarButton.addEventListener('click', vaciarCarrito);
 });
