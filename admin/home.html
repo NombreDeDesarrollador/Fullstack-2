@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrador - Digital Sounds</title>
+    <title>Dashboard - Panel Administrador</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
@@ -17,8 +17,12 @@
             </div>
             <nav class="admin-menu">
                 <a href="home.html" class="activo"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                <a href="ordenes.html"><i class="bi bi-receipt"></i> Órdenes</a>
                 <a href="productos.html"><i class="bi bi-box-seam"></i> Productos</a>
+                <a href="categorias.html" class="solo-admin"><i class="bi bi-tags"></i> Categorías</a>
                 <a href="usuarios.html" class="solo-admin"><i class="bi bi-people"></i> Usuarios</a>
+                <a href="reportes.html" class="solo-admin"><i class="bi bi-bar-chart-line"></i> Reportes</a>
+                <a href="perfil.html"><i class="bi bi-person-circle"></i> Perfil</a>
                 <a href="../proyecto.html"><i class="bi bi-shop"></i> Ver tienda</a>
             </nav>
             <div class="admin-usuario-box">
@@ -31,48 +35,69 @@
         <!-- ===== CONTENIDO ===== -->
         <main class="admin-contenido">
             <div class="admin-topbar">
-                <h1>¡Hola, <span id="saludo-nombre">Administrador</span>!</h1>
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="admin-subtitulo">¡Hola, <span id="saludo-nombre">Administrador</span>! Resumen de las actividades diarias.</p>
+                </div>
             </div>
 
-            <div class="admin-cards">
-                <div class="admin-card">
-                    <div class="valor" id="card-total-productos">-</div>
-                    <div class="etiqueta">Productos en catálogo</div>
+            <div class="stat-cards">
+                <div class="stat-card azul">
+                    <i class="bi bi-cart3"></i>
+                    <div>
+                        <span class="stat-titulo">Compras</span>
+                        <span class="stat-valor" id="stat-compras">-</span>
+                        <span class="stat-detalle" id="stat-compras-detalle">-</span>
+                    </div>
                 </div>
-                <div class="admin-card">
-                    <div class="valor" id="card-stock-critico">-</div>
-                    <div class="etiqueta">Con stock crítico o agotado</div>
+                <div class="stat-card verde">
+                    <i class="bi bi-box-seam"></i>
+                    <div>
+                        <span class="stat-titulo">Productos</span>
+                        <span class="stat-valor" id="stat-productos">-</span>
+                        <span class="stat-detalle" id="stat-productos-detalle">-</span>
+                    </div>
                 </div>
-                <div class="admin-card solo-admin">
-                    <div class="valor" id="card-total-usuarios">-</div>
-                    <div class="etiqueta">Usuarios registrados</div>
+                <div class="stat-card amarillo solo-admin">
+                    <i class="bi bi-people"></i>
+                    <div>
+                        <span class="stat-titulo">Usuarios</span>
+                        <span class="stat-valor" id="stat-usuarios">-</span>
+                        <span class="stat-detalle" id="stat-usuarios-detalle">-</span>
+                    </div>
                 </div>
+            </div>
+
+            <div class="alerta-admin" id="alerta-criticos" hidden></div>
+
+            <div class="accesos-grid">
+                <a href="home.html" class="acceso"><i class="bi bi-speedometer2"></i><strong>Dashboard</strong><span>Visión general de las métricas y estadísticas clave del sistema.</span></a>
+                <a href="ordenes.html" class="acceso"><i class="bi bi-receipt"></i><strong>Órdenes</strong><span>Gestión y seguimiento de todas las órdenes de compra realizadas.</span></a>
+                <a href="productos.html" class="acceso"><i class="bi bi-box-seam"></i><strong>Productos</strong><span>Administrar inventario y detalles de los productos disponibles.</span></a>
+                <a href="categorias.html" class="acceso solo-admin"><i class="bi bi-tags"></i><strong>Categorías</strong><span>Organizar productos en categorías para facilitar su navegación.</span></a>
+                <a href="usuarios.html" class="acceso solo-admin"><i class="bi bi-people"></i><strong>Usuarios</strong><span>Gestión de cuentas de usuario y sus roles dentro del sistema.</span></a>
+                <a href="reportes.html" class="acceso solo-admin"><i class="bi bi-bar-chart-line"></i><strong>Reportes</strong><span>Informes detallados sobre las ventas e inventario del sistema.</span></a>
+                <a href="perfil.html" class="acceso"><i class="bi bi-person-circle"></i><strong>Perfil</strong><span>Administración de tu información personal y configuración de cuenta.</span></a>
+                <a href="../proyecto.html" class="acceso"><i class="bi bi-shop"></i><strong>Tienda</strong><span>Visualiza la tienda en tiempo real tal como la ven los clientes.</span></a>
             </div>
 
             <div class="admin-panel">
-                <p>Desde el menú de la izquierda puedes gestionar el catálogo de productos<span class="solo-admin"> y los usuarios del sistema</span>. Los cambios que realices aquí se reflejan de inmediato en la tienda.</p>
+                <div class="panel-titulo">
+                    <h2>Últimas órdenes</h2>
+                    <a href="ordenes.html" class="enlace-admin">Ver todas <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <table class="tabla-admin">
+                    <thead><tr><th>N° Orden</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead>
+                    <tbody id="tabla-ultimas-ordenes"></tbody>
+                </table>
             </div>
         </main>
     </div>
 
     <script src="../js/baseDeDatos.js"></script>
     <script src="../js/usuariosDB.js"></script>
+    <script src="../js/ordenesDB.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-        const usuario = requireRole(['Administrador', 'Vendedor']);
-        if (usuario) {
-            iniciarLayoutAdmin(usuario);
-            document.getElementById('saludo-nombre').textContent = usuario.nombre || usuario.correo;
-
-            const productos = obtenerProductos();
-            document.getElementById('card-total-productos').textContent = productos.length;
-            document.getElementById('card-stock-critico').textContent =
-                productos.filter(p => p.stock === 0 || p.stock <= p.stockCritico).length;
-
-            if (usuario.tipoUsuario === 'Administrador') {
-                document.getElementById('card-total-usuarios').textContent = obtenerUsuarios().length;
-            }
-        }
-    </script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

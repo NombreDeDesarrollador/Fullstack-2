@@ -56,10 +56,6 @@ function validarLogin() {
         return false;
     }
 
-    // Usuarios de la base de datos (usuariosDB.js ya la precarga con
-    // Administrador y Vendedor de ejemplo, además de los registrados).
-    // Usuarios guardados + usuarios de ejemplo (los de ejemplo siempre funcionan,
-    // aunque el navegador tenga datos viejos o dañados en localStorage).
     let usuarios = [];
     try { usuarios = obtenerUsuarios().filter(u => u && u.correo); } catch (e) { usuarios = []; }
     usuarios = usuarios.concat(usuariosIniciales);

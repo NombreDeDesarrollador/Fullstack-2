@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error en el pago - Digital Audio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ===== BARRA SUPERIOR ===== -->
+    <div class="barra-promo">
+        <span>Envío gratis <strong>en compras sobre $50.000</strong></span>
+        <span>12 cuotas <strong>sin interés con Webpay</strong></span>
+        <span>Retira <strong>en tienda · gratis</strong></span>
+        <div class="barra-promo-derecha">
+            <a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+            <a href="#"><i class="bi bi-shop"></i> Tiendas</a>
+            <a href="#">Ayuda</a>
+        </div>
+    </div>
+
+    <!-- ===== HEADER PRINCIPAL ===== -->
+    <header class="header-principal">
+        <a href="proyecto.html" class="logo-header">
+            <img src="img/logo digital audio.png" alt="Digital Audio">
+        </a>
+        <div class="buscador-header">
+            <input type="search" aria-label="Buscar productos por nombre" placeholder="Buscar por nombre...">
+            <button type="button"><i class="bi bi-arrow-right"></i></button>
+        </div>
+        <div class="iconos-header">
+            <a href="login.html"><i class="bi bi-person"></i><span>Cuenta</span></a>
+            <a href="#"><i class="bi bi-heart"></i><span>Favoritos</span></a>
+            <a href="carrito.html" class="carro-btn" id="carrito-button"><i class="bi bi-cart"></i><span>Carro</span><span id="carrito-badge" class="badge">0</span></a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- MENÚ DE NAVEGACIÓN PRINCIPAL -->
+        <nav class="menu-principal">
+            <a href="proyecto.html" class="btn-menu">Inicio</a>
+            <a href="catalogo.html" class="btn-menu">Catálogo Completo</a>
+            <a href="categorias.html" class="btn-menu">Categorías</a>
+            <a href="ofertas.html" class="btn-menu">Ofertas</a>
+            <a href="blogs.html" class="btn-menu">Blog</a>
+            <a href="sobreNosotros.html" class="btn-menu">Sobre Nosotros</a>
+            <a href="contacto.html" class="btn-menu">Contacto</a>
+        </nav>
+
+        <!-- ===== PAGO CON ERROR ===== -->
+        <div class="pasos-compra">
+            <span class="paso hecho"><i class="bi bi-cart-check"></i> Carrito</span>
+            <span class="paso hecho"><i class="bi bi-truck"></i> Datos de envío</span>
+            <span class="paso error"><i class="bi bi-x-circle"></i> Pago rechazado</span>
+        </div>
+
+        <section class="tarjeta-compra resultado-error" id="resultado-compra">
+            <div class="tarjeta-compra-encabezado">
+                <h1><i class="bi bi-x-circle icono-resultado error"></i> No se pudo realizar el pago. nro <span class="nro-orden">#-</span></h1>
+                <span class="codigo-orden">Código orden: <strong class="codigo-orden-valor">-</strong></span>
+            </div>
+            <p class="subtitulo-form">Detalle de compra. Tu carrito sigue guardado, puedes intentarlo nuevamente.</p>
+
+            <div class="acciones-compra centro">
+                <a href="checkout.html" class="btn-verde grande"><i class="bi bi-arrow-repeat"></i> VOLVER A REALIZAR EL PAGO</a>
+            </div>
+
+            <div class="fila-form tres">
+                <div class="campo-form"><label>Nombre</label><input type="text" id="res-nombre" readonly></div>
+                <div class="campo-form"><label>Apellidos</label><input type="text" id="res-apellidos" readonly></div>
+                <div class="campo-form"><label>Correo</label><input type="text" id="res-correo" readonly></div>
+            </div>
+
+            <h2>Dirección de entrega de los productos</h2>
+            <div class="fila-form">
+                <div class="campo-form"><label>Calle</label><input type="text" id="res-calle" readonly></div>
+                <div class="campo-form"><label>Departamento (opcional)</label><input type="text" id="res-departamento" readonly></div>
+            </div>
+            <div class="fila-form">
+                <div class="campo-form"><label>Región</label><input type="text" id="res-region" readonly></div>
+                <div class="campo-form"><label>Comuna</label><input type="text" id="res-comuna" readonly></div>
+            </div>
+            <div class="campo-form">
+                <label>Indicaciones para la entrega (opcional)</label>
+                <textarea id="res-indicaciones" rows="2" readonly></textarea>
+            </div>
+
+            <div class="tabla-responsive">
+                <table class="tabla-compra">
+                    <thead>
+                        <tr><th>Imagen</th><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr>
+                    </thead>
+                    <tbody id="res-items"></tbody>
+                </table>
+            </div>
+
+            <div class="total-final">Total <span id="res-total-texto">a pagar</span>: <strong id="res-total">$0</strong></div>
+        </section>
+
+        <div id="mensaje-error" class="mensaje-error-producto">
+            <h2>Orden no encontrada</h2>
+            <p>No pudimos encontrar la orden solicitada. <a href="proyecto.html">Volver al inicio</a></p>
+        </div>
+    </main>
+
+    <footer class="footer-centrado">
+        <p>&copy; 2026 Digital Audio — Todos los derechos reservados</p>
+    </footer>
+
+    <script src="js/baseDeDatos.js"></script>
+    <script src="js/ordenesDB.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/resultado-compra.js"></script>
+    <script src="js/sesion.js"></script>
+    <script src="js/busqueda.js"></script>
+</body>
+</html>
