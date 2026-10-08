@@ -1,0 +1,62 @@
+/* Estilos propios que complementan a Bootstrap (marca Digital Audio) */
+:root {
+    --da-oscuro: #1d2d38;
+    --bs-primary: #2879c7;
+    --bs-primary-rgb: 40, 121, 199;
+    --bs-link-color: #2879c7;
+    --bs-link-color-rgb: 40, 121, 199;
+}
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+.btn-primary { --bs-btn-bg: #2879c7; --bs-btn-border-color: #2879c7; --bs-btn-hover-bg: #1c5f9f; --bs-btn-hover-border-color: #1c5f9f; }
+.btn-outline-primary { --bs-btn-color: #2879c7; --bs-btn-border-color: #2879c7; --bs-btn-hover-bg: #2879c7; --bs-btn-hover-border-color: #2879c7; }
+.fondo-tienda { background: #f4f6f8; }
+
+/* ---------- Header ---------- */
+.barra-promo { background: #1a1a1a; color: #fff; }
+.barra-promo strong { color: #6aaeff; }
+.logo-header { height: 34px; width: auto; }
+.buscador-header { max-width: 640px; }
+.menu-tienda { background: #fff; border-bottom: 1px solid #e6e9eb; padding: 0 .5rem; }
+.menu-tienda .nav-link { color: #33424b; font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; }
+.menu-tienda .nav-link.active { color: var(--bs-primary); border-bottom-color: var(--bs-primary); }
+@media (max-width: 575.98px) { .logo-header { height: 26px; } }
+
+/* ---------- Tarjetas ---------- */
+.tarjeta-producto { transition: transform .2s ease, box-shadow .2s ease; }
+.tarjeta-producto:hover { transform: translateY(-4px); box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.1) !important; }
+.tarjeta-producto-imagen { height: 180px; padding: 1rem; display: flex; align-items: center; justify-content: center; background: #fff; }
+.tarjeta-producto-imagen img { max-height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+.tarjeta-categoria { transition: transform .2s ease; }
+.tarjeta-categoria:hover { transform: translateY(-3px); }
+.tarjeta-categoria-imagen { height: 90px; object-fit: contain; }
+.detalle-imagen { max-height: 420px; object-fit: contain; }
+.miniatura { width: 48px; height: 40px; object-fit: contain; background: #fff; border: 1px solid #eee; border-radius: 6px; }
+
+/* ---------- Inicio y ofertas ---------- */
+.carrusel-inicio img { height: clamp(220px, 40vw, 420px); object-fit: cover; filter: brightness(.65); }
+.carrusel-inicio .carousel-caption { bottom: 15%; }
+.banner-ofertas { background: linear-gradient(120deg, var(--da-oscuro), #2879c7); }
+.blog-card-imagen { min-height: 220px; max-height: 320px; }
+.blog-detalle-imagen { max-height: 420px; object-fit: cover; }
+
+/* ---------- Footer ---------- */
+.footer-tienda { background: var(--da-oscuro); color: #b9c4cc; }
+.footer-tienda a { color: #b9c4cc; text-decoration: none; }
+.footer-tienda a:hover { color: #fff; }
+
+/* ---------- Panel administrador ---------- */
+.admin-wrapper { display: flex; min-height: 100vh; background: #f4f5f7; }
+.admin-sidebar { width: 240px; flex-shrink: 0; background: #1e2530; color: #fff; flex-direction: column; padding: 1.25rem 0; position: sticky; top: 0; height: 100vh; }
+.admin-logo img { width: 100%; max-width: 170px; filter: brightness(0) invert(1); }
+.admin-nav .nav-link { color: #c7ccd6; padding: .7rem 1.25rem; border-left: 3px solid transparent; }
+.admin-nav .nav-link:hover { color: #fff; background: #2a3242; }
+.admin-nav .nav-link.active { color: #fff; background: #2a3242; border-left-color: #4f8cff; }
+.offcanvas .admin-nav .nav-link { color: #c7ccd6; }
+.min-w-0 { min-width: 0; }
+.acceso-rapido { transition: transform .15s ease; }
+.acceso-rapido:hover { transform: translateY(-3px); }
+
+@media print {
+    .no-imprimir, header, footer, .admin-sidebar, .navbar { display: none !important; }
+    body, .fondo-tienda, .admin-wrapper { background: #fff !important; }
+}
