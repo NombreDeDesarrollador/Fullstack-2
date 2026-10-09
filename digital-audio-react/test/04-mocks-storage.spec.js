@@ -18,7 +18,7 @@ describe('Persistencia con mocks de localStorage', () => {
     });
 
     it('obtenerOrdenes() usa los datos simulados que entrega el mock', () => {
-        const ordenFalsa = { numero: 1, estado: 'Pagada', cliente: { correo: 'x@gmail.com' }, items: [], total: 0 };
+        const ordenFalsa = { numero: 1, estado: 'Pagada', estadoEnvio: 'Despachado', cliente: { correo: 'x@gmail.com' }, items: [], total: 0 };
         const espiaGet = spyOn(Storage.prototype, 'getItem').and.returnValue(JSON.stringify([ordenFalsa]));
         const ordenes = obtenerOrdenes();
         expect(espiaGet).toHaveBeenCalledWith('da_ordenes');

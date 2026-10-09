@@ -1,14 +1,20 @@
-import React from 'react';
+// Detalle de una boleta: datos del cliente, productos, totales, estado de envío
+// (editable por Administrador y Vendedor) y código de barras con el código de la orden.
+import React, { useState } from 'react';
 import { Card, Row, Col, Table, Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import EstadoBadge from '../../components/comunes/EstadoBadge';
+import SelectEstadoEnvio from '../../components/admin/SelectEstadoEnvio';
+import CodigoBarras from '../../components/comunes/CodigoBarras';
+import { useAuth } from '../../context/AuthContext';
 import { buscarOrden } from '../../services/ordenesService';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
 import logo from '../../assets/logo.png';
 
 function Boleta() {
     const { numero } = useParams();
-    const orden = buscarOrden(numero);
+    const { usuario } = useAuth();
+    const [orden, setOrden] = useState(() => buscarOrden(numero));
 
     if (!orden) {
         return <div className="text-center py-5"><p>No se encontró la boleta.</p><Link to="/admin/ordenes" className="btn btn-primary">Ver órdenes</Link></div>;
@@ -41,6 +47,12 @@ function Boleta() {
                         <Col md={4}><div className="text-muted text-uppercase">Entrega</div>{d.calle}{d.departamento ? `, ${d.departamento}` : ''}<br />{d.comuna}, {d.region}</Col>
                         <Col md={4}><div className="text-muted text-uppercase">Compra</div>Fecha: {formatoFecha(orden.fecha)}<br />Código: {orden.codigo}<br />Pago: {orden.medioPago || 'Webpay'}</Col>
                     </Row>
+                    {orden.estado === 'Pagada' && (
+                        <div className="d-flex flex-wrap align-items-center gap-2 small mb-3">
+                            <span className="text-muted text-uppercase">Estado del envío:</span>
+                            <div><SelectEstadoEnvio orden={orden} usuario={usuario} onCambio={setOrden} /></div>
+                        </div>
+                    )}
                     <Table responsive size="sm">
                         <thead><tr><th>Código</th><th>Producto</th><th>Precio</th><th>Cant.</th><th className="text-end">Subtotal</th></tr></thead>
                         <tbody>
@@ -55,6 +67,9 @@ function Boleta() {
                         <div className="d-flex justify-content-between fs-5 fw-bold border-top mt-1 pt-1"><span>Total</span><span>{formatoCLP(orden.total)}</span></div>
                     </div>
                     {orden.estado !== 'Pagada' && <p className="text-danger small mt-3 mb-0">Pago rechazado: {orden.motivo}</p>}
+                    <div className="text-center mt-4">
+                        <CodigoBarras valor={orden.codigo} />
+                    </div>
                 </Card.Body>
             </Card>
         </>

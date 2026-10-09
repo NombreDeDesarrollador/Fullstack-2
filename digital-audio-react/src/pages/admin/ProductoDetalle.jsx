@@ -1,8 +1,10 @@
+// Detalle de un producto en el panel: datos, ventas, stock y código de barras.
 import React from 'react';
 import { Card, Row, Col, Badge } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { BadgeStock } from './Productos';
+import CodigoBarras from '../../components/comunes/CodigoBarras';
 import { obtenerProducto, descuentoProducto, precioFinal } from '../../services/productosService';
 import { obtenerOrdenes } from '../../services/ordenesService';
 import { formatoCLP } from '../../utils/formato';
@@ -53,6 +55,7 @@ function ProductoDetalleAdmin() {
                                     </Col>
                                 ))}
                             </Row>
+                            <div className="mt-3"><CodigoBarras valor={producto.codigo} alto={40} /></div>
                             <Link to={`/producto/${codigo}`} className="d-inline-block mt-3">Ver en la tienda <i className="bi bi-box-arrow-up-right"></i></Link>
                         </Col>
                     </Row>

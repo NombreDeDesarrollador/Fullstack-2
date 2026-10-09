@@ -4,7 +4,7 @@ import { Container, Card, Form, Button, Row, Col, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom';
 import CampoFormulario from '../../components/comunes/CampoFormulario';
 import SelectRegionComuna from '../../components/comunes/SelectRegionComuna';
-import { validarUsuario, esValido } from '../../utils/validaciones';
+import { validarUsuario, esValido, limpiarRun } from '../../utils/validaciones';
 import { crearUsuario } from '../../services/usuariosService';
 
 const vacio = { run: '', nombre: '', apellidos: '', correo: '', correo2: '', clave: '', clave2: '', telefono: '', region: '', comuna: '', direccion: '' };
@@ -19,7 +19,7 @@ function Registro() {
 
     const enviar = (e) => {
         e.preventDefault();
-        const limpios = { ...datos, run: datos.run.trim().toUpperCase(), correo: datos.correo.trim(), correo2: datos.correo2.trim() };
+        const limpios = { ...datos, run: limpiarRun(datos.run), correo: datos.correo.trim(), correo2: datos.correo2.trim() };
         const nuevosErrores = validarUsuario(limpios, { confirmar: true });
         setErrores(nuevosErrores);
         if (!esValido(nuevosErrores)) return;
@@ -42,7 +42,7 @@ function Registro() {
                     {exito && <Alert variant="success">¡Registro exitoso! Redirigiendo al inicio de sesión...</Alert>}
                     <Form onSubmit={enviar} noValidate>
                         <Row>
-                            <Col md={6}><CampoFormulario id="run" label="RUN" requerido valor={datos.run} onChange={v => cambiar('run', v)} error={errores.run} placeholder="19011029K" ayuda="Sin puntos ni guion" /></Col>
+                            <Col md={6}><CampoFormulario id="run" label="RUN" requerido valor={datos.run} onChange={v => cambiar('run', v)} error={errores.run} placeholder="19011029K" ayuda="Ej: 19.011.029-K o 19011029K" /></Col>
                             <Col md={6}><CampoFormulario id="telefono" label="Teléfono" tipo="tel" opcional valor={datos.telefono} onChange={v => cambiar('telefono', v)} error={errores.telefono} /></Col>
                             <Col md={6}><CampoFormulario id="nombre" label="Nombre" requerido valor={datos.nombre} onChange={v => cambiar('nombre', v)} error={errores.nombre} /></Col>
                             <Col md={6}><CampoFormulario id="apellidos" label="Apellidos" requerido valor={datos.apellidos} onChange={v => cambiar('apellidos', v)} error={errores.apellidos} /></Col>

@@ -70,10 +70,10 @@ describe('Servicios CRUD (fuente de datos simulada)', () => {
         });
 
         it('no permite RUN repetido y mantiene la clave si se edita sin contraseña', () => {
-            expect(() => crearUsuario({ run: '333333333', correo: 'otro@gmail.com' })).toThrowError('Ya existe un usuario con ese RUN.');
-            actualizarUsuario('333333333', { nombre: 'Cliente Editado', clave: '' });
-            expect(buscarUsuarioPorRun('333333333').clave).toBe('cliente1');
-            expect(buscarUsuarioPorRun('333333333').nombre).toBe('Cliente Editado');
+            expect(() => crearUsuario({ run: '187654327', correo: 'otro@gmail.com' })).toThrowError('Ya existe un usuario con ese RUN.');
+            actualizarUsuario('187654327', { nombre: 'Cliente Editado', clave: '' });
+            expect(buscarUsuarioPorRun('187654327').clave).toBe('cliente1');
+            expect(buscarUsuarioPorRun('187654327').nombre).toBe('Cliente Editado');
         });
     });
 });
