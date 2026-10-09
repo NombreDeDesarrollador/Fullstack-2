@@ -72,6 +72,7 @@ karma.conf.js             # Configuración de Karma + webpack + cobertura
 | `10-Contacto` | Formulario controlado: errores y limpieza tras enviar |
 | `11-flujo-compra` | Carrito → Checkout → pago exitoso / rechazado → resultado |
 | `12-admin` | Reportes, filtros, menú por rol y permisos del Vendedor |
+| `14-formularios-vistas` | Registro (validación, selects dependientes, RUN repetido, redirección), filtros del Catálogo, ProductoForm y UsuarioForm (crear, editar, validar) |
 | `13-mejoras-panel` | RUN (módulo 11, desde 1-9), permisos por rol, stock del Vendedor, orden por criticidad, estados de envío y código de barras |
 
 ## 🔐 Reglas de negocio del panel
