@@ -3,6 +3,7 @@
 // =====================================================================
 import { productosIniciales, categoriasIniciales, ofertasIniciales } from '../data/productos';
 import { leer, guardar } from './storage';
+import { exigirPermiso } from '../utils/permisos';
 
 const CLAVE_PRODUCTOS = 'da_productos';
 const CLAVE_CATEGORIAS = 'da_categorias';
@@ -43,6 +44,17 @@ export function actualizarProducto(codigo, cambios) {
     return actualizado;
 }
 
+// Actualiza SOLO el stock. Lo pueden usar Administrador y Vendedor.
+// Valida el permiso del usuario y que el stock sea un entero >= 0.
+export function actualizarStock(codigo, nuevoStock, usuario) {
+    exigirPermiso(usuario, 'productos:stock');
+    const stock = Number(nuevoStock);
+    if (nuevoStock === '' || nuevoStock === null || !Number.isInteger(stock) || stock < 0) {
+        throw new Error('El stock debe ser un número entero mayor o igual a 0.');
+    }
+    return actualizarProducto(codigo, { stock });
+}
+
 // ---------- Eliminar ----------
 export function eliminarProducto(codigo) {
     const productos = obtenerProductos();
@@ -66,7 +78,23 @@ export function esCritico(producto) {
 }
 
 export function productosCriticos() {
-    return obtenerProductos().filter(esCritico);
+    return ordenarPorCriticidad(obtenerProductos().filter(esCritico));
+}
+
+// Nivel de urgencia: 0 = agotado, 1 = bajo el stock crítico, 2 = normal
+export function nivelCriticidad(producto) {
+    if (producto.stock === 0) return 0;
+    return esCritico(producto) ? 1 : 2;
+}
+
+// Ordena del más crítico al menos crítico, sin modificar la lista original.
+// Primero los agotados, luego los críticos y al final el resto; dentro de cada
+// grupo, el que tiene menos unidades sobre su stock crítico va primero.
+export function ordenarPorCriticidad(productos) {
+    return [...productos].sort((a, b) =>
+        nivelCriticidad(a) - nivelCriticidad(b) ||
+        (a.stock - (a.stockCritico || 0)) - (b.stock - (b.stockCritico || 0)) ||
+        a.nombre.localeCompare(b.nombre));
 }
 
 export function descuentoProducto(producto) {

@@ -3,7 +3,7 @@ import { Card, Form, Row, Col, Button, Alert } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CampoFormulario from '../../components/comunes/CampoFormulario';
 import SelectRegionComuna from '../../components/comunes/SelectRegionComuna';
-import { validarUsuario, esValido } from '../../utils/validaciones';
+import { validarUsuario, esValido, limpiarRun } from '../../utils/validaciones';
 import { buscarUsuarioPorRun, buscarUsuarioPorCorreo, crearUsuario, actualizarUsuario } from '../../services/usuariosService';
 import { tiposUsuario } from '../../data/usuarios';
 
@@ -22,7 +22,7 @@ function UsuarioForm() {
 
     const guardar = (e) => {
         e.preventDefault();
-        const limpios = { ...datos, run: datos.run.trim().toUpperCase(), correo: datos.correo.trim() };
+        const limpios = { ...datos, run: limpiarRun(datos.run), correo: datos.correo.trim() };
         const nuevos = validarUsuario(limpios, { edicion });
         const otro = buscarUsuarioPorCorreo(limpios.correo);
         if (!nuevos.correo && otro && otro.run !== run) nuevos.correo = 'Ya existe un usuario con ese correo.';
@@ -49,7 +49,7 @@ function UsuarioForm() {
                     {ok && <Alert variant="success">Usuario guardado correctamente.</Alert>}
                     <Form onSubmit={guardar} noValidate>
                         <Row>
-                            <Col md={6}><CampoFormulario id="run" label="RUN" requerido disabled={edicion} valor={datos.run} onChange={v => cambiar('run', v)} error={errores.run} ayuda="Sin puntos ni guion" /></Col>
+                            <Col md={6}><CampoFormulario id="run" label="RUN" requerido disabled={edicion} valor={datos.run} onChange={v => cambiar('run', v)} error={errores.run} ayuda="Ej: 19.011.029-K o 19011029K" /></Col>
                             <Col md={6}>
                                 <CampoFormulario id="tipoUsuario" label="Tipo de usuario" as="select" requerido valor={datos.tipoUsuario} onChange={v => cambiar('tipoUsuario', v)}>
                                     {tiposUsuario.map(t => <option key={t}>{t}</option>)}

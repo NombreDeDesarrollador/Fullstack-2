@@ -6,14 +6,28 @@
 
 export const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
-// RUN chileno sin puntos ni guion, con dígito verificador (ej: 19011029K)
+// Quita puntos, guion y espacios: "19.011.029-k" -> "19011029K"
+export function limpiarRun(run) {
+    return String(run || '').replace(/[.\-\s]/g, '').toUpperCase();
+}
+
+// RUN chileno con dígito verificador. Acepta "19011029K", "19011029-K" o "19.011.029-K".
+// Reglas:
+//  1. Cuerpo de 1 a 8 dígitos sin ceros a la izquierda: desde 1-9 hasta 99.999.999-K.
+//     (1-9 es un RUN válido: cuerpo 1 -> 1x2 = 2 -> 11 - 2 = 9).
+//  2. Dígito verificador de 0 a 9 o K.
+//  3. El dígito verificador debe coincidir con el cálculo módulo 11.
 export function validarRun(run) {
-    const valor = String(run || '').trim().toUpperCase();
-    if (valor.length < 7 || valor.length > 9) return false;
+    const valor = limpiarRun(run);
+    if (!/^[1-9]\d{0,7}[0-9K]$/.test(valor)) return false;
     const cuerpo = valor.slice(0, -1);
     const dv = valor.slice(-1);
-    if (!/^\d+$/.test(cuerpo)) return false;
+    return dv === calcularDv(cuerpo);
+}
 
+// Módulo 11: se multiplica cada dígito (de derecha a izquierda) por 2,3,4,5,6,7,2,3...
+// DV = 11 - (suma % 11); si da 11 -> "0", si da 10 -> "K".
+export function calcularDv(cuerpo) {
     let suma = 0;
     let multiplo = 2;
     for (let i = cuerpo.length - 1; i >= 0; i--) {
@@ -21,8 +35,7 @@ export function validarRun(run) {
         multiplo = multiplo === 7 ? 2 : multiplo + 1;
     }
     const resto = 11 - (suma % 11);
-    const esperado = resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
-    return dv === esperado;
+    return resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
 }
 
 export function esCorreoValido(correo) {

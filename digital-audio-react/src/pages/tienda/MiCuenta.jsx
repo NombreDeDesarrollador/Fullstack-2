@@ -4,6 +4,7 @@ import { Container, Card, Button, Form, Row, Col, ListGroup, Alert } from 'react
 import { Link, useNavigate } from 'react-router-dom';
 import CampoFormulario from '../../components/comunes/CampoFormulario';
 import EstadoBadge from '../../components/comunes/EstadoBadge';
+import EstadoEnvioBadge from '../../components/comunes/EstadoEnvioBadge';
 import { useAuth } from '../../context/AuthContext';
 import { ordenesPorCorreo, cantidadUnidades } from '../../services/ordenesService';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
@@ -108,6 +109,7 @@ function MiCuenta() {
                                     </div>
                                     <div className="d-flex align-items-center gap-3">
                                         <EstadoBadge estado={o.estado} />
+                                        {o.estadoEnvio && <EstadoEnvioBadge estado={o.estadoEnvio} />}
                                         <strong>{formatoCLP(o.total)}</strong>
                                         <Link to={`/compra/${o.estado === 'Pagada' ? 'exito' : 'error'}/${o.numero}`}>Ver detalle</Link>
                                     </div>
