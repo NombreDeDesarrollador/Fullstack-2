@@ -19,7 +19,7 @@ Informe de cobertura: abrir `coverage/html/index.html` después de `npm test`.
 | Rol           | Correo            | Clave    | Accede a |
 |---------------|-------------------|----------|----------|
 | Cliente       | cliente@gmail.com | cliente1 | Tienda, Mi cuenta (perfil y compras) |
-| Vendedor      | vendedor@duoc.cl  | venta1   | Panel: Dashboard, Órdenes, Productos (solo ver), Perfil |
+| Vendedor      | vendedor@duoc.cl  | venta1   | Panel: Dashboard, Órdenes (cambiar estado de envío), Productos (ver y actualizar stock), Perfil |
 | Administrador | admin@duoc.cl     | admin1   | Panel completo |
 
 ## 🗂️ Estructura
@@ -72,6 +72,16 @@ karma.conf.js             # Configuración de Karma + webpack + cobertura
 | `10-Contacto` | Formulario controlado: errores y limpieza tras enviar |
 | `11-flujo-compra` | Carrito → Checkout → pago exitoso / rechazado → resultado |
 | `12-admin` | Reportes, filtros, menú por rol y permisos del Vendedor |
+| `14-formularios-vistas` | Registro (validación, selects dependientes, RUN repetido, redirección), filtros del Catálogo, ProductoForm y UsuarioForm (crear, editar, validar) |
+| `13-mejoras-panel` | RUN (módulo 11, desde 1-9), permisos por rol, stock del Vendedor, orden por criticidad, estados de envío y código de barras |
+
+## 🔐 Reglas de negocio del panel
+
+- **Permisos por rol** (`src/utils/permisos.js`): el Administrador crea, edita y elimina productos; el Vendedor solo actualiza stock. Ambos cambian el estado de envío de los pedidos. Los servicios validan el permiso, no solo los botones.
+- **Productos ordenados por criticidad**: primero los agotados, luego los que están bajo su stock crítico y al final el resto.
+- **Estados de envío**: En preparación → Despachado → Entregado. No se puede retroceder ni despachar una orden rechazada. El cliente ve el estado en *Mi cuenta*.
+- **Código de barras** (Code 39 en SVG, sin librerías) en la boleta y en el detalle del producto.
+- **RUN**: acepta `19.011.029-K` o `19011029K`; desde `1-9` hasta `99.999.999-K`, DV 0-9 o K y validación módulo 11.
 
 ## 🛠️ Tecnologías
 

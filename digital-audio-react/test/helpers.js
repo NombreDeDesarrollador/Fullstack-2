@@ -33,6 +33,6 @@ export const productoDemo = {
 };
 
 export const clienteDemo = {
-    run: '333333333', nombre: 'Cliente', apellidos: 'Demo', correo: 'cliente@gmail.com', clave: 'cliente1',
+    run: '187654327', nombre: 'Cliente', apellidos: 'Demo', correo: 'cliente@gmail.com', clave: 'cliente1',
     telefono: '', region: 'Región de Valparaíso', comuna: 'Viña del Mar', direccion: 'Av. Siempre Viva 123', tipoUsuario: 'Cliente'
 };

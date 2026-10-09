@@ -4,6 +4,7 @@ import { Card, Table } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import FichaUsuario from './FichaUsuario';
 import EstadoBadge from '../../components/comunes/EstadoBadge';
+import EstadoEnvioBadge from '../../components/comunes/EstadoEnvioBadge';
 import { buscarUsuarioPorRun } from '../../services/usuariosService';
 import { ordenesPorCorreo } from '../../services/ordenesService';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
@@ -39,7 +40,7 @@ function UsuarioDetalle() {
                                         <td>{formatoFecha(o.fecha)}</td>
                                         <td className="small">{o.items.map(i => `${i.nombre} x${i.cantidad}`).join(', ')}</td>
                                         <td>{formatoCLP(o.total)}</td>
-                                        <td><EstadoBadge estado={o.estado} /></td>
+                                        <td><EstadoBadge estado={o.estado} /> <EstadoEnvioBadge estado={o.estadoEnvio} /></td>
                                         <td><Link to={`/admin/ordenes/${o.numero}`}>Boleta</Link></td>
                                     </tr>
                                 ))}

@@ -1,11 +1,12 @@
 // =====================================================================
 // FUENTE DE DATOS SIMULADA: ÓRDENES / BOLETAS DE EJEMPLO
 // CRUD en src/services/ordenesService.js
+// estado: pago (Pagada / Rechazada) · estadoEnvio: En preparación -> Despachado -> Entregado
 // =====================================================================
 
 export const ordenesIniciales = [
     {
-        numero: 20260901, codigo: 'ORDER20260901', fecha: '2026-09-01T12:30:00', estado: 'Pagada', medioPago: 'Webpay',
+        numero: 20260901, codigo: 'ORDER20260901', fecha: '2026-09-01T12:30:00', estado: 'Pagada', estadoEnvio: 'Entregado', medioPago: 'Webpay',
         cliente: { nombre: 'Cliente', apellidos: 'Demo', correo: 'cliente@gmail.com' },
         direccion: { calle: 'Av. Siempre Viva 123', departamento: '', region: 'Región de Valparaíso', comuna: 'Viña del Mar', indicaciones: '' },
         items: [
@@ -14,7 +15,7 @@ export const ordenesIniciales = [
         ]
     },
     {
-        numero: 20260912, codigo: 'ORDER20260912', fecha: '2026-09-12T18:05:00', estado: 'Pagada', medioPago: 'Webpay',
+        numero: 20260912, codigo: 'ORDER20260912', fecha: '2026-09-12T18:05:00', estado: 'Pagada', estadoEnvio: 'Entregado', medioPago: 'Webpay',
         cliente: { nombre: 'Camila', apellidos: 'Rojas Soto', correo: 'camila.rojas@gmail.com' },
         direccion: { calle: 'Los Aromos 455', departamento: 'Depto 302', region: 'Región Metropolitana de Santiago', comuna: 'Ñuñoa', indicaciones: 'Dejar en conserjería.' },
         items: [
@@ -33,7 +34,7 @@ export const ordenesIniciales = [
         ]
     },
     {
-        numero: 20261002, codigo: 'ORDER20261002', fecha: '2026-10-02T16:40:00', estado: 'Pagada', medioPago: 'Transferencia',
+        numero: 20261002, codigo: 'ORDER20261002', fecha: '2026-10-02T16:40:00', estado: 'Pagada', estadoEnvio: 'Despachado', medioPago: 'Transferencia',
         cliente: { nombre: 'Cliente', apellidos: 'Demo', correo: 'cliente@gmail.com' },
         direccion: { calle: 'Av. Siempre Viva 123', departamento: '', region: 'Región de Valparaíso', comuna: 'Viña del Mar', indicaciones: 'Llamar antes de llegar.' },
         items: [
@@ -43,7 +44,7 @@ export const ordenesIniciales = [
         ]
     },
     {
-        numero: 20261005, codigo: 'ORDER20261005', fecha: '2026-10-05T11:20:00', estado: 'Pagada', medioPago: 'Webpay',
+        numero: 20261005, codigo: 'ORDER20261005', fecha: '2026-10-05T11:20:00', estado: 'Pagada', estadoEnvio: 'En preparación', medioPago: 'Webpay',
         cliente: { nombre: 'Valentina', apellidos: 'Pérez', correo: 'vale.perez@gmail.com' },
         direccion: { calle: 'Av. Alemania 1020', departamento: '', region: 'Región de la Araucanía', comuna: 'Temuco', indicaciones: '' },
         items: [

@@ -1,12 +1,18 @@
-import React from 'react';
-import { Card, Table, Badge } from 'react-bootstrap';
+// Listado de productos críticos (agotados o bajo su stock crítico), del más urgente al menos urgente.
+// Administrador y Vendedor pueden reponer stock directamente desde aquí.
+import React, { useState } from 'react';
+import { Card, Table, Badge, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import ModalStock from '../../components/admin/ModalStock';
 import { productosCriticos } from '../../services/productosService';
+import { puede } from '../../utils/permisos';
 
 function ProductosCriticos() {
     const { usuario } = useAuth();
-    const criticos = productosCriticos().sort((a, b) => a.stock - b.stock);
+    const [criticos, setCriticos] = useState(productosCriticos);
+    const [aStock, setAStock] = useState(null);
+    const stockGuardado = () => { setCriticos(productosCriticos()); setAStock(null); };
     const agotados = criticos.filter(p => p.stock === 0).length;
 
     return (
@@ -28,7 +34,8 @@ function ProductosCriticos() {
                                     <td>{p.stock === 0 ? <Badge bg="danger">Agotado</Badge> : <Badge bg="warning" text="dark">Reponer</Badge>}</td>
                                     <td className="text-end">
                                         <Link to={`/admin/productos/${p.codigo}`} className="btn btn-sm btn-light"><i className="bi bi-eye"></i></Link>{' '}
-                                        {usuario.tipoUsuario === 'Administrador' && <Link to={`/admin/productos/${p.codigo}/editar`} className="btn btn-sm btn-light text-primary"><i className="bi bi-pencil"></i></Link>}
+                                        {puede(usuario, 'productos:stock') && <><Button size="sm" variant="light" className="text-success" title="Reponer stock" onClick={() => setAStock(p)}><i className="bi bi-box-arrow-in-down"></i></Button>{' '}</>}
+                                        {puede(usuario, 'productos:editar') && <Link to={`/admin/productos/${p.codigo}/editar`} className="btn btn-sm btn-light text-primary"><i className="bi bi-pencil"></i></Link>}
                                     </td>
                                 </tr>
                             ))}
@@ -36,6 +43,8 @@ function ProductosCriticos() {
                     </Table>
                 </Card.Body>
             </Card>
+            <ModalStock key={aStock ? aStock.codigo : 'cerrado'} producto={aStock} usuario={usuario}
+                onCerrar={() => setAStock(null)} onGuardado={stockGuardado} />
         </>
     );
 }

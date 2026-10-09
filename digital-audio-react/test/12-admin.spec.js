@@ -11,8 +11,8 @@ import { productosIniciales } from '../src/data/productos';
 import { renderConApp, clienteDemo } from './helpers';
 
 const ordenes = ordenesIniciales.map(o => ({ ...o, total: o.items.reduce((s, i) => s + i.precio * i.cantidad, 0) }));
-const admin = { ...clienteDemo, run: '444444444', nombre: 'Administrador', tipoUsuario: 'Administrador' };
-const vendedor = { ...clienteDemo, run: '222222222', nombre: 'Vendedor', tipoUsuario: 'Vendedor' };
+const admin = { ...clienteDemo, run: '156782343', nombre: 'Administrador', tipoUsuario: 'Administrador' };
+const vendedor = { ...clienteDemo, run: '172345670', nombre: 'Vendedor', tipoUsuario: 'Vendedor' };
 
 describe('Panel administrador', () => {
     beforeEach(() => localStorage.clear());
