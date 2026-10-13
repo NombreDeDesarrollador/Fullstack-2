@@ -8,11 +8,18 @@ Migración de la tienda de instrumentos (HTML/CSS/JS) a **React**, con **React B
 ```bash
 npm install          # instala dependencias
 npm start            # abre http://localhost:3000
-npm test             # ejecuta las pruebas con Karma + Jasmine (Chrome Headless) y genera la cobertura
 npm run build        # versión de producción en /build
+
+# Informe de cobertura (Jest + React Testing Library, guía 2.3.4)
+CI=true npm test -- --coverage --watchAll=false   # también: npm run test:coverage
+
+# Pruebas Jasmine + Karma (Chrome Headless)
+npm run test:karma
 ```
 
-Informe de cobertura: abrir `coverage/html/index.html` después de `npm test`.
+- Informe de cobertura de Jest: `coverage/lcov-report/index.html` (incluye **todos** los archivos de `src/`).
+- Informe de Karma: `coverage-karma/html/index.html`.
+- Pruebas de Jest: `src/pruebas/*.test.js` y `src/Saludo.test.js` (ejemplo de la guía). Pruebas de Jasmine: `test/*.spec.js`.
 
 ## 👤 Usuarios de prueba
 
@@ -42,6 +49,7 @@ src/
 │                         # Categorías, Usuarios (CRUD, detalle + historial), Reportes, Perfil
 ├── App.jsx               # Rutas (react-router-dom)
 └── index.js              # Bootstrap + proveedores de contexto
+src/pruebas/              # Pruebas Jest + React Testing Library (*.test.js) para el informe de cobertura
 test/                     # Pruebas Jasmine (*.spec.js) ejecutadas por Karma
 karma.conf.js             # Configuración de Karma + webpack + cobertura
 ```

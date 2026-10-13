@@ -1,5 +1,6 @@
 /node_modules
 /build
 /coverage
+/coverage-karma
 .DS_Store
 npm-debug.log*

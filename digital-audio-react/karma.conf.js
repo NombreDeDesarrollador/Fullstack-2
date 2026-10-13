@@ -4,7 +4,7 @@
 // - Karma: ejecuta las pruebas en un navegador real (Chrome Headless).
 // - karma-webpack + babel-loader: compilan JSX/ES6 antes de ejecutar.
 // - babel-plugin-istanbul + karma-coverage: generan el informe de cobertura
-//   en coverage/html/index.html (líneas, sentencias, ramas y funciones).
+//   en coverage-karma/html/index.html (líneas, sentencias, ramas y funciones).
 // Ejecutar: npm test
 // =====================================================================
 module.exports = function (config) {
@@ -47,7 +47,7 @@ module.exports = function (config) {
         reporters: ['progress', 'kjhtml', 'coverage'],
 
         coverageReporter: {
-            dir: 'coverage/',
+            dir: 'coverage-karma/',   // la carpeta coverage/ queda para el informe de Jest
             reporters: [
                 { type: 'html', subdir: 'html' },
                 { type: 'text-summary' },
