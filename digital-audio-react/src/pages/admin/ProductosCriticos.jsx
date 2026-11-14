@@ -1,5 +1,5 @@
 // Listado de productos críticos (agotados o bajo su stock crítico), del más urgente al menos urgente.
-// Administrador y Vendedor pueden reponer stock directamente desde aquí.
+// Solo el Administrador puede reponer stock directamente desde aquí.
 import React, { useState } from 'react';
 import { Card, Table, Badge, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

@@ -9,7 +9,7 @@ export const PERMISOS = {
     'productos:crear': ['Administrador'],
     'productos:editar': ['Administrador'],
     'productos:eliminar': ['Administrador'],
-    'productos:stock': ['Administrador', 'Vendedor'],   // el Vendedor solo puede tocar el stock
+    'productos:stock': ['Administrador'],
     'ordenes:estado': ['Administrador', 'Vendedor']     // cambiar el estado de envío de un pedido
 };
 

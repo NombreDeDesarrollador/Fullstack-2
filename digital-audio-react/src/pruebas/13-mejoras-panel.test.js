@@ -1,5 +1,5 @@
 // Mejoras pedidas por el docente:
-// permisos por rol, stock del Vendedor, orden por criticidad, estados de envío,
+// permisos por rol, stock, orden por criticidad, estados de envío,
 // código de barras y validación de RUN desde 1-9.
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
@@ -48,8 +48,8 @@ describe('Validación de RUN (módulo 11, desde 1-9)', () => {
 });
 
 describe('Permisos por rol', () => {
-    it('el Vendedor solo puede actualizar stock y estados de pedidos', () => {
-        expect(puede(vendedor, 'productos:stock')).toBe(true);
+    it('el Vendedor no puede actualizar stock, pero sí cambiar estados de pedidos', () => {
+        expect(puede(vendedor, 'productos:stock')).toBe(false);
         expect(puede(vendedor, 'ordenes:estado')).toBe(true);
         expect(puede(vendedor, 'productos:editar')).toBe(false);
         expect(puede(vendedor, 'productos:eliminar')).toBe(false);
@@ -65,12 +65,17 @@ describe('Permisos por rol', () => {
 describe('Actualizar stock', () => {
     beforeEach(() => localStorage.clear());
 
-    it('el Vendedor actualiza el stock y solo cambia ese campo', () => {
+    it('el Administrador actualiza el stock y solo cambia ese campo', () => {
         const antes = obtenerProducto('GA005');
-        const despues = actualizarStock('GA005', '7', vendedor);
+        const despues = actualizarStock('GA005', '7', admin);
         expect(despues.stock).toBe(7);
         expect(despues.precio).toBe(antes.precio);
         expect(obtenerProducto('GA005').stock).toBe(7);
+    });
+
+    it('un Vendedor no puede actualizar stock', () => {
+        expect(() => actualizarStock('GA005', 5, vendedor)).toThrow('No tienes permiso para realizar esta acción.');
+        expect(obtenerProducto('GA005').stock).toBe(0);
     });
 
     it('un Cliente no puede actualizar stock', () => {
@@ -78,9 +83,9 @@ describe('Actualizar stock', () => {
     });
 
     it('rechaza stock negativo, decimal o vacío', () => {
-        expect(() => actualizarStock('GA005', -1, vendedor)).toThrow(/entero mayor o igual a 0/);
-        expect(() => actualizarStock('GA005', 2.5, vendedor)).toThrow(/entero/);
-        expect(() => actualizarStock('GA005', '', vendedor)).toThrow(/entero/);
+        expect(() => actualizarStock('GA005', -1, admin)).toThrow(/entero mayor o igual a 0/);
+        expect(() => actualizarStock('GA005', 2.5, admin)).toThrow(/entero/);
+        expect(() => actualizarStock('GA005', '', admin)).toThrow(/entero/);
     });
 });
 
@@ -104,15 +109,15 @@ describe('Listado de productos según el rol', () => {
         expect(filas[0].className).toContain('table-danger');
     });
 
-    it('el Vendedor ve el botón de stock pero no editar ni eliminar', () => {
+    it('el Vendedor solo ve acciones de consulta, sin botones de stock, editar ni eliminar', () => {
         renderConApp(<Productos />, { usuario: vendedor });
-        expect(screen.getAllByTitle('Actualizar stock').length).toBe(productosIniciales.length);
+        expect(screen.queryAllByTitle('Actualizar stock').length).toBe(0);
         expect(screen.queryAllByTitle('Editar').length).toBe(0);
         expect(screen.queryAllByTitle('Eliminar').length).toBe(0);
     });
 
-    it('el Vendedor repone stock desde el modal y el producto deja de estar primero', async () => {
-        renderConApp(<Productos />, { usuario: vendedor });
+    it('el Administrador repone stock desde el modal y el producto deja de estar primero', async () => {
+        renderConApp(<Productos />, { usuario: admin });
         fireEvent.click(screen.getByLabelText('Actualizar stock de Guitarra 3/4 Niños'));
         const modal = await screen.findByRole('dialog');
         fireEvent.change(within(modal).getByLabelText('Nuevo stock'), { target: { value: '10' } });
@@ -123,7 +128,7 @@ describe('Listado de productos según el rol', () => {
     });
 
     it('el modal muestra el error si el stock no es válido', async () => {
-        renderConApp(<Productos />, { usuario: vendedor });
+        renderConApp(<Productos />, { usuario: admin });
         fireEvent.click(screen.getByLabelText('Actualizar stock de Guitarra 3/4 Niños'));
         const modal = await screen.findByRole('dialog');
         fireEvent.change(within(modal).getByLabelText('Nuevo stock'), { target: { value: '-3' } });

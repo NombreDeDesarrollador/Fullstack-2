@@ -44,7 +44,7 @@ export function actualizarProducto(codigo, cambios) {
     return actualizado;
 }
 
-// Actualiza SOLO el stock. Lo pueden usar Administrador y Vendedor.
+// Actualiza SOLO el stock. Solo lo puede usar el Administrador.
 // Valida el permiso del usuario y que el stock sea un entero >= 0.
 export function actualizarStock(codigo, nuevoStock, usuario) {
     exigirPermiso(usuario, 'productos:stock');

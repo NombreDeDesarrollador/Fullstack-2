@@ -233,19 +233,11 @@ describe('Vistas del panel administrativo', () => {
     });
 
     describe('Productos críticos', () => {
-        it('lista agotados y bajo stock crítico; el Vendedor puede reponer stock pero no editar', async () => {
+        it('lista productos críticos; el Vendedor puede consultarlos pero no reponer stock ni editar', async () => {
             renderConApp(<ProductosCriticos />, { usuario: vendedorDemo });
-            const antes = productosCriticos().length;
             expect(screen.getAllByText('Agotado').length).toBeGreaterThan(0);
             expect(screen.queryAllByRole('link').filter(a => a.getAttribute('href').endsWith('/editar')).length).toBe(0);
-
-            const fila = screen.getByText('GA005').closest('tr');
-            fireEvent.click(within(fila).getByTitle('Reponer stock'));
-            fireEvent.change(await screen.findByLabelText('Nuevo stock'), { target: { value: '20' } });
-            fireEvent.click(screen.getByRole('button', { name: 'Guardar stock' }));
-            expect(obtenerProducto('GA005').stock).toBe(20);
-            expect(productosCriticos().length).toBe(antes - 1);
-            expect(screen.queryByText('GA005')).toBeNull();
+            expect(screen.queryAllByTitle('Reponer stock').length).toBe(0);
         });
 
         it('el Administrador también ve el enlace para editar', () => {

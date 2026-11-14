@@ -1,4 +1,4 @@
-// Modal para actualizar el stock de un producto (Administrador y Vendedor).
+// Modal para actualizar el stock de un producto (solo Administrador).
 // Props: producto (o null para ocultarlo), usuario (sesión), onCerrar, onGuardado(productoActualizado).
 // Estado propio: el valor que se escribe y el mensaje de error.
 // La validación del permiso se hace en el servicio actualizarStock().

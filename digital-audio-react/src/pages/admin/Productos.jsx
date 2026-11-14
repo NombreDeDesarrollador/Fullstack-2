@@ -1,7 +1,7 @@
 // Listado de productos del panel (Administrador y Vendedor).
 // Se muestra ordenado del más crítico al menos crítico.
 // Los botones dependen del rol (utils/permisos): el Administrador crea, edita y elimina;
-// el Vendedor solo puede ver y actualizar el stock.
+// el Vendedor solo puede consultar el catálogo y el detalle.
 import React, { useState } from 'react';
 import { Card, Table, Form, Button, Badge, Modal, Row, Col, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
