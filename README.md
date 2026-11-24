@@ -5,6 +5,8 @@ Sitio web de e-commerce para una tienda de instrumentos musicales, desarrollado 
 ## 📋 Descripción
 
 Digital Audio es una tienda en línea de instrumentos y accesorios musicales (guitarras, bajos, baterías, teclados, amplificadores, micrófonos, pedales de efectos y accesorios). El sitio simula el flujo completo de un e-commerce: registro/login de usuarios, catálogo con búsqueda, ficha de producto, carrito de compras y contacto.
+## Backend
+https://github.com/M4rtinj4ke1/sonido-vivo-backend
 
 ## ✨ Funcionalidades
 
