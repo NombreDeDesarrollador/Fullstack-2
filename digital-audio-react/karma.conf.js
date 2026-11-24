@@ -7,6 +7,8 @@
 //   en coverage-karma/html/index.html (líneas, sentencias, ramas y funciones).
 // Ejecutar: npm test
 // =====================================================================
+const webpack = require('webpack');
+
 module.exports = function (config) {
     config.set({
         frameworks: ['jasmine', 'webpack'],
@@ -41,7 +43,9 @@ module.exports = function (config) {
                     { test: /\.css$/i, type: 'asset/resource' }
                 ]
             },
-            resolve: { extensions: ['.js', '.jsx'] }
+            resolve: { extensions: ['.js', '.jsx'] },
+            // En el navegador no existe "process": se definen las variables de entorno que usa src/services/api.js
+            plugins: [new webpack.DefinePlugin({ 'process.env': JSON.stringify({ NODE_ENV: 'test' }) })]
         },
 
         reporters: ['progress', 'kjhtml', 'coverage'],

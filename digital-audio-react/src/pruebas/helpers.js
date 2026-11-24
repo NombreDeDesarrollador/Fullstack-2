@@ -1,10 +1,11 @@
-// Utilidad para renderizar componentes con Router + sesión + carrito
+// Utilidad para renderizar componentes con Router + sesión (JWT falso) + carrito
 import React from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
 import App from '../App';
+import { iniciarSesionFalsa } from './servidorFalso';
 
 // Activa el comportamiento de React Router v7 (evita advertencias en la consola)
 export const FUTURO = { v7_startTransition: true, v7_relativeSplatPath: true };
@@ -16,6 +17,7 @@ export function UbicacionActual() {
 }
 
 export function renderConApp(ui, { ruta = '/', usuario = null, path = '*' } = {}) {
+    iniciarSesionFalsa(usuario); // deja un token válido para que el backend falso reconozca el rol
     return render(
         <MemoryRouter initialEntries={[ruta]} future={FUTURO}>
             <AuthProvider usuarioInicial={usuario}>
@@ -33,7 +35,7 @@ export function renderConApp(ui, { ruta = '/', usuario = null, path = '*' } = {}
 
 export const productoDemo = {
     codigo: 'GE001', nombre: 'Guitarra Eléctrica Stratocaster', marca: 'Squier', categoria: 'Guitarras Eléctricas',
-    precio: 219990, stock: 3, stockCritico: 1, descripcion: 'Guitarra de prueba', imagen: 'guitarra.png'
+    precio: 219990, descuento: 20, stock: 3, stockCritico: 1, descripcion: 'Guitarra de prueba', imagen: 'guitarra.png'
 };
 
 export const clienteDemo = {
@@ -43,6 +45,7 @@ export const clienteDemo = {
 
 // Renderiza la aplicación completa (todas las rutas de App.jsx) partiendo en "ruta"
 export function renderApp(ruta = '/', usuario = null) {
+    iniciarSesionFalsa(usuario);
     return render(
         <MemoryRouter initialEntries={[ruta]} future={FUTURO}>
             <AuthProvider usuarioInicial={usuario}>

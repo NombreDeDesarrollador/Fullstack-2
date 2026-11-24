@@ -9,15 +9,14 @@ import Blogs from '../pages/tienda/Blogs';
 import BlogDetalle from '../pages/tienda/BlogDetalle';
 import MiCuenta from '../pages/tienda/MiCuenta';
 import { productosEnOferta, precioFinal, actualizarProducto } from '../services/productosService';
-import { renderConApp, clienteDemo } from './helpers';
+import { renderConApp, clienteDemo, adminDemo } from './helpers';
+import { iniciarSesionFalsa } from './servidorFalso';
 
 // Nombres de los productos mostrados en una grilla, en orden
 const nombresEnGrilla = () => screen.getAllByRole('heading', { level: 3 }).filter(h => h.querySelector('a')).map(h => h.textContent);
 const carrito = () => JSON.parse(localStorage.getItem('da_carrito'));
 
 describe('Vistas de la tienda', () => {
-    beforeEach(() => localStorage.clear());
-
     describe('Inicio (Home)', () => {
         it('muestra el carrusel, las categorías y 4 ofertas destacadas ordenadas por descuento', () => {
             renderConApp(<Home />);
@@ -77,8 +76,9 @@ describe('Vistas de la tienda', () => {
             expect(screen.getByText('También te puede interesar')).toBeTruthy();
         });
 
-        it('al añadir muestra un mensaje de éxito y al superar el stock un aviso', () => {
-            actualizarProducto('GE001', { stock: 1, stockCritico: 0 });
+        it('al añadir muestra un mensaje de éxito y al superar el stock un aviso', async () => {
+            iniciarSesionFalsa(adminDemo);
+            await actualizarProducto('GE001', { stock: 1, stockCritico: 0 });
             abrir('GE001');
             const boton = screen.getAllByRole('button', { name: /Añadir al carrito/ })[0]; // el primero es el del producto
             fireEvent.click(boton);
@@ -90,12 +90,13 @@ describe('Vistas de la tienda', () => {
             expect(screen.queryByText('No hay más unidades disponibles de este producto.')).toBeNull();
         });
 
-        it('indica "Sin stock" (botón deshabilitado) y "Últimas unidades" según el stock', () => {
+        it('indica "Sin stock" (botón deshabilitado) y "Últimas unidades" según el stock', async () => {
             const { unmount } = abrir('GA005'); // stock 0
             expect(screen.getAllByText('Sin stock').length).toBeGreaterThan(0);
             expect(screen.getAllByRole('button', { name: /Añadir al carrito/ })[0].disabled).toBe(true);
             unmount();
-            actualizarProducto('GE001', { stock: 1, stockCritico: 2 });
+            iniciarSesionFalsa(adminDemo);
+            await actualizarProducto('GE001', { stock: 1, stockCritico: 2 });
             abrir('GE001');
             expect(screen.getByText('¡Últimas unidades! (1)')).toBeTruthy();
         });
@@ -160,15 +161,15 @@ describe('Vistas de la tienda', () => {
             expect(screen.getByRole('button', { name: 'Editar' })).toBeTruthy();
         });
 
-        it('guarda los cambios del perfil y muestra el aviso', () => {
+        it('guarda los cambios del perfil (PUT /usuarios/me) y muestra el aviso', async () => {
             abrir();
             fireEvent.click(screen.getByRole('button', { name: 'Editar' }));
             fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Clienta' } });
             fireEvent.change(screen.getByLabelText(/^Teléfono/), { target: { value: '+56 9 8765 4321' } });
             fireEvent.click(screen.getByRole('button', { name: 'Guardar' }));
-            expect(screen.getByText('Tus datos se guardaron correctamente.')).toBeTruthy();
+            expect(await screen.findByText('Tus datos se guardaron correctamente.')).toBeTruthy();
             expect(screen.getByText('Hola, Clienta')).toBeTruthy();
-            expect(JSON.parse(localStorage.getItem('da_sesion')).nombre).toBe('Clienta');
+            expect(JSON.parse(localStorage.getItem('da_sesion')).usuario.nombre).toBe('Clienta');
         });
     });
 });

@@ -2,7 +2,7 @@
 // sesión leída desde localStorage, formatos con valores inválidos, componentes con props opcionales
 // y funciones de categorías.
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { CartProvider, useCarrito } from '../context/CartContext';
 import { formatoCLP, formatoFecha, formatoFechaLarga } from '../utils/formato';
@@ -13,16 +13,19 @@ import { categoriaPorSlug, crearCategoria, obtenerCategorias } from '../services
 import { guardar, leer, eliminar } from '../services/storage';
 import { validarProducto } from '../utils/validaciones';
 import { productoDemo, adminDemo } from './helpers';
+import { iniciarSesionFalsa } from './servidorFalso';
 
 // Componentes de prueba que usan los hooks y muestran su estado
 function PanelSesion() {
     const { usuario, login, logout, actualizarPerfil, esPersonal } = useAuth();
+    const [error, setError] = React.useState('');
     return (
         <div>
             <span data-testid="usuario">{usuario ? usuario.nombre : 'invitado'}</span>
             <span data-testid="personal">{String(esPersonal)}</span>
             <button onClick={() => login('admin@duoc.cl', 'admin1')}>entrar</button>
-            <button onClick={() => login('admin@duoc.cl', 'mala')}>clave mala</button>
+            <button onClick={() => login('admin@duoc.cl', 'mala').catch(e => setError(e.message))}>clave mala</button>
+            <span data-testid="error">{error}</span>
             <button onClick={() => actualizarPerfil({ nombre: 'Jefa' })}>renombrar</button>
             <button onClick={logout}>salir</button>
         </div>
@@ -45,38 +48,56 @@ function PanelCarrito() {
 }
 
 describe('Contextos, utilidades y casos de borde', () => {
-    beforeEach(() => localStorage.clear());
-
     describe('AuthContext', () => {
         it('useAuth fuera de <AuthProvider> lanza un error claro', () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             expect(() => render(<PanelSesion />)).toThrow('useAuth debe usarse dentro de <AuthProvider>');
         });
 
-        it('recupera la sesión guardada en localStorage al iniciar', () => {
-            localStorage.setItem('da_sesion', JSON.stringify(adminDemo));
+        it('recupera la sesión guardada al recargar y la valida contra el backend (/auth/me)', async () => {
+            iniciarSesionFalsa(adminDemo);
             render(<AuthProvider><PanelSesion /></AuthProvider>);
             expect(screen.getByTestId('usuario').textContent).toBe('Administrador');
             expect(screen.getByTestId('personal').textContent).toBe('true');
+            await waitFor(() => expect(fetch.mock.calls.some(([url]) => url.endsWith('/auth/me'))).toBe(true));
         });
 
-        it('login correcto guarda la sesión, actualizarPerfil la modifica y logout la elimina', () => {
+        it('si el token guardado no es válido, el backend responde 401 y se cierra la sesión', async () => {
+            localStorage.setItem('da_sesion', JSON.stringify({ accessToken: 'a.b.c', refreshToken: 'x.y.z', usuario: adminDemo }));
+            render(<AuthProvider><PanelSesion /></AuthProvider>);
+            await waitFor(() => expect(screen.getByTestId('usuario').textContent).toBe('invitado'));
+            expect(localStorage.getItem('da_sesion')).toBeNull();
+        });
+
+        it('login correcto guarda los tokens, actualizarPerfil la modifica y logout la elimina', async () => {
             render(<AuthProvider><PanelSesion /></AuthProvider>);
             expect(screen.getByTestId('usuario').textContent).toBe('invitado');
 
             fireEvent.click(screen.getByText('clave mala'));
+            await waitFor(() => expect(screen.getByTestId('error').textContent).toBe('Correo o contraseña incorrectos.'));
             expect(screen.getByTestId('usuario').textContent).toBe('invitado');
 
             fireEvent.click(screen.getByText('entrar'));
-            expect(screen.getByTestId('usuario').textContent).toBe('Administrador');
+            await waitFor(() => expect(screen.getByTestId('usuario').textContent).toBe('Administrador'));
+            expect(JSON.parse(localStorage.getItem('da_sesion')).accessToken).toBeTruthy();
 
             fireEvent.click(screen.getByText('renombrar'));
-            expect(screen.getByTestId('usuario').textContent).toBe('Jefa');
-            expect(JSON.parse(localStorage.getItem('da_sesion')).nombre).toBe('Jefa');
+            await waitFor(() => expect(screen.getByTestId('usuario').textContent).toBe('Jefa'));
+            expect(JSON.parse(localStorage.getItem('da_sesion')).usuario.nombre).toBe('Jefa');
 
             fireEvent.click(screen.getByText('salir'));
             expect(screen.getByTestId('usuario').textContent).toBe('invitado');
             expect(localStorage.getItem('da_sesion')).toBeNull();
+            // logout revoca el refresh token en el backend
+            expect(fetch.mock.calls.some(([url, o]) => url.endsWith('/auth/logout') && o.method === 'POST')).toBe(true);
+        });
+
+        it('si la sesión se borra en otra pestaña, esta también se cierra', async () => {
+            iniciarSesionFalsa(adminDemo);
+            render(<AuthProvider><PanelSesion /></AuthProvider>);
+            localStorage.removeItem('da_sesion');
+            fireEvent(window, new StorageEvent('storage', { key: 'da_sesion' }));
+            await waitFor(() => expect(screen.getByTestId('usuario').textContent).toBe('invitado'));
         });
     });
 
@@ -183,10 +204,11 @@ describe('Contextos, utilidades y casos de borde', () => {
             expect(categoriaPorSlug('no-existe')).toBeNull();
         });
 
-        it('crearCategoria agrega una nueva y rechaza duplicados sin importar mayúsculas', () => {
-            crearCategoria('Vinilos');
+        it('crearCategoria agrega una nueva y el backend rechaza duplicados sin importar mayúsculas', async () => {
+            iniciarSesionFalsa(adminDemo);
+            await crearCategoria('Vinilos');
             expect(obtenerCategorias()).toContain('Vinilos');
-            expect(() => crearCategoria('VINILOS')).toThrow('Ya existe una categoría con ese nombre.');
+            await expect(crearCategoria('VINILOS')).rejects.toThrow('Ya existe una categoría con ese nombre.');
         });
 
         it('eliminar() borra la clave y no falla si localStorage está bloqueado', () => {

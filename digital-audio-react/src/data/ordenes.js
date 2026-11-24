@@ -1,7 +1,8 @@
 // =====================================================================
-// FUENTE DE DATOS SIMULADA: ÓRDENES / BOLETAS DE EJEMPLO
-// CRUD en src/services/ordenesService.js
-// estado: pago (Pagada / Rechazada) · estadoEnvio: En preparación -> Despachado -> Entregado
+// DATOS DE PRUEBA: ÓRDENES / BOLETAS DE EJEMPLO
+// Desde la EV3 la aplicación ya NO usa este archivo: los datos reales viven en
+// MySQL y se piden a los microservicios Spring Boot. Se conserva solo como
+// datos iniciales del backend falso de las pruebas (src/pruebas/servidorFalso.js).
 // =====================================================================
 
 export const ordenesIniciales = [

@@ -1,8 +1,8 @@
 // Mejoras pedidas por el docente:
-// permisos por rol, stock, orden por criticidad, estados de envío,
+// permisos por rol, stock del Vendedor, orden por criticidad, estados de envío,
 // código de barras y validación de RUN desde 1-9.
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent, within, waitFor } from '@testing-library/react';
 import { validarRun, calcularDv, limpiarRun } from '../utils/validaciones';
 import { puede } from '../utils/permisos';
 import { actualizarStock, ordenarPorCriticidad, obtenerProducto } from '../services/productosService';
@@ -12,6 +12,7 @@ import CodigoBarras, { calcularBarras } from '../components/comunes/CodigoBarras
 import Productos from '../pages/admin/Productos';
 import Ordenes from '../pages/admin/Ordenes';
 import { renderConApp, clienteDemo } from './helpers';
+import { iniciarSesionFalsa } from './servidorFalso';
 
 const admin = { ...clienteDemo, run: '156782343', nombre: 'Administrador', tipoUsuario: 'Administrador' };
 const vendedor = { ...clienteDemo, run: '172345670', nombre: 'Vendedor', tipoUsuario: 'Vendedor' };
@@ -48,11 +49,12 @@ describe('Validación de RUN (módulo 11, desde 1-9)', () => {
 });
 
 describe('Permisos por rol', () => {
-    it('el Vendedor no puede actualizar stock, pero sí cambiar estados de pedidos', () => {
-        expect(puede(vendedor, 'productos:stock')).toBe(false);
-        expect(puede(vendedor, 'ordenes:estado')).toBe(true);
-        expect(puede(vendedor, 'productos:editar')).toBe(false);
-        expect(puede(vendedor, 'productos:eliminar')).toBe(false);
+    it('el Vendedor solo visualiza: no tiene ninguna acción de modificación (Anexo 1)', () => {
+        ['productos:crear', 'productos:editar', 'productos:eliminar', 'productos:stock',
+            'ordenes:estado', 'ordenes:eliminar', 'usuarios:gestionar', 'reportes:ver']
+            .forEach(accion => expect(puede(vendedor, accion)).toBe(false));
+        expect(puede(admin, 'productos:stock')).toBe(true);
+        expect(puede(admin, 'ordenes:estado')).toBe(true);
     });
 
     it('el Cliente y un usuario sin sesión no tienen permisos del panel', () => {
@@ -63,29 +65,34 @@ describe('Permisos por rol', () => {
 });
 
 describe('Actualizar stock', () => {
-    beforeEach(() => localStorage.clear());
-
-    it('el Administrador actualiza el stock y solo cambia ese campo', () => {
+    it('el Administrador actualiza el stock (PATCH) y solo cambia ese campo', async () => {
+        iniciarSesionFalsa(admin);
         const antes = obtenerProducto('GA005');
-        const despues = actualizarStock('GA005', '7', admin);
+        const despues = await actualizarStock('GA005', '7', admin);
         expect(despues.stock).toBe(7);
         expect(despues.precio).toBe(antes.precio);
         expect(obtenerProducto('GA005').stock).toBe(7);
     });
 
-    it('un Vendedor no puede actualizar stock', () => {
-        expect(() => actualizarStock('GA005', 5, vendedor)).toThrow('No tienes permiso para realizar esta acción.');
-        expect(obtenerProducto('GA005').stock).toBe(0);
+    it('un Vendedor o un Cliente no pueden actualizar stock (ni siquiera llega a llamar a la API)', async () => {
+        await expect(actualizarStock('GA005', 5, vendedor)).rejects.toThrow('No tienes permiso para realizar esta acción.');
+        await expect(actualizarStock('GA005', 5, clienteDemo)).rejects.toThrow('No tienes permiso para realizar esta acción.');
+        expect(fetch).not.toHaveBeenCalled();
     });
 
-    it('un Cliente no puede actualizar stock', () => {
-        expect(() => actualizarStock('GA005', 5, clienteDemo)).toThrow('No tienes permiso para realizar esta acción.');
+    it('si el Vendedor llama directo a la API, el backend responde 403', async () => {
+        iniciarSesionFalsa(vendedor);
+        const respuesta = await fetch('http://localhost:8082/api/v1/productos/GA005/stock', {
+            method: 'PATCH', headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('da_sesion')).accessToken}` },
+            body: JSON.stringify({ stock: 9 })
+        });
+        expect(respuesta.status).toBe(403);
     });
 
-    it('rechaza stock negativo, decimal o vacío', () => {
-        expect(() => actualizarStock('GA005', -1, admin)).toThrow(/entero mayor o igual a 0/);
-        expect(() => actualizarStock('GA005', 2.5, admin)).toThrow(/entero/);
-        expect(() => actualizarStock('GA005', '', admin)).toThrow(/entero/);
+    it('rechaza stock negativo, decimal o vacío', async () => {
+        await expect(actualizarStock('GA005', -1, admin)).rejects.toThrow(/entero mayor o igual a 0/);
+        await expect(actualizarStock('GA005', 2.5, admin)).rejects.toThrow(/entero/);
+        await expect(actualizarStock('GA005', '', admin)).rejects.toThrow(/entero/);
     });
 });
 
@@ -100,8 +107,6 @@ describe('Orden por criticidad', () => {
 });
 
 describe('Listado de productos según el rol', () => {
-    beforeEach(() => localStorage.clear());
-
     it('muestra primero el producto más crítico', () => {
         renderConApp(<Productos />, { usuario: admin });
         const filas = screen.getAllByTestId('fila-producto');
@@ -109,11 +114,13 @@ describe('Listado de productos según el rol', () => {
         expect(filas[0].className).toContain('table-danger');
     });
 
-    it('el Vendedor solo ve acciones de consulta, sin botones de stock, editar ni eliminar', () => {
+    it('el Vendedor solo ve la lista: sin botones de stock, editar, eliminar ni nuevo producto', () => {
         renderConApp(<Productos />, { usuario: vendedor });
+        expect(screen.getAllByTestId('fila-producto').length).toBe(productosIniciales.length);
         expect(screen.queryAllByTitle('Actualizar stock').length).toBe(0);
         expect(screen.queryAllByTitle('Editar').length).toBe(0);
         expect(screen.queryAllByTitle('Eliminar').length).toBe(0);
+        expect(screen.queryByText(/Nuevo producto/)).toBeNull();
     });
 
     it('el Administrador repone stock desde el modal y el producto deja de estar primero', async () => {
@@ -122,7 +129,7 @@ describe('Listado de productos según el rol', () => {
         const modal = await screen.findByRole('dialog');
         fireEvent.change(within(modal).getByLabelText('Nuevo stock'), { target: { value: '10' } });
         fireEvent.click(within(modal).getByRole('button', { name: 'Guardar stock' }));
-        expect(screen.getByText(/actualizado a 10 unidades/)).toBeTruthy();
+        expect(await screen.findByText(/actualizado a 10 unidades/)).toBeTruthy();
         expect(obtenerProducto('GA005').stock).toBe(10);
         expect(within(screen.getAllByTestId('fila-producto')[0]).queryByText('GA005')).toBeNull();
     });
@@ -133,39 +140,43 @@ describe('Listado de productos según el rol', () => {
         const modal = await screen.findByRole('dialog');
         fireEvent.change(within(modal).getByLabelText('Nuevo stock'), { target: { value: '-3' } });
         fireEvent.click(within(modal).getByRole('button', { name: 'Guardar stock' }));
-        expect(within(modal).getByText(/entero mayor o igual a 0/)).toBeTruthy();
+        expect(await within(modal).findByText(/entero mayor o igual a 0/)).toBeTruthy();
         expect(obtenerProducto('GA005').stock).toBe(0);
     });
 });
 
 describe('Estado de envío de los pedidos', () => {
-    beforeEach(() => localStorage.clear());
-
     it('las órdenes pagadas tienen estado de envío y las rechazadas no', () => {
         const ordenes = obtenerOrdenes();
         expect(ordenes.filter(o => o.estado === 'Pagada').every(o => !!o.estadoEnvio)).toBe(true);
-        expect(buscarOrden(20260920).estadoEnvio).toBeUndefined();
+        expect(buscarOrden(20260920).estadoEnvio).toBeFalsy();
     });
 
-    it('el Vendedor marca un pedido como Entregado', () => {
-        const orden = cambiarEstadoEnvio(20261005, 'Entregado', vendedor);
+    it('el Vendedor no puede cambiar el estado de envío (solo lo visualiza)', async () => {
+        await expect(cambiarEstadoEnvio(20261005, 'Entregado', vendedor)).rejects.toThrow(/permiso/);
+    });
+
+    it('el Administrador marca un pedido como Entregado', async () => {
+        iniciarSesionFalsa(admin);
+        const orden = await cambiarEstadoEnvio(20261005, 'Entregado', admin);
         expect(orden.estadoEnvio).toBe('Entregado');
         expect(buscarOrden(20261005).estadoEnvio).toBe('Entregado');
     });
 
-    it('no permite retroceder, despachar rechazadas ni que un Cliente cambie el estado', () => {
+    it('no permite retroceder, despachar rechazadas ni que un Cliente cambie el estado', async () => {
+        iniciarSesionFalsa(admin);
         expect(siguientesEstadosEnvio(buscarOrden(20261002))).toEqual(['Despachado', 'Entregado']);
-        expect(() => cambiarEstadoEnvio(20260901, 'Despachado', admin)).toThrow('No se puede volver a un estado anterior.');
-        expect(() => cambiarEstadoEnvio(20260920, 'Despachado', admin)).toThrow('Solo se pueden despachar órdenes pagadas.');
-        expect(() => cambiarEstadoEnvio(20261005, 'Entregado', clienteDemo)).toThrow(/permiso/);
-        expect(() => cambiarEstadoEnvio(20261005, 'Perdido', admin)).toThrow('Estado de envío no válido.');
+        await expect(cambiarEstadoEnvio(20260901, 'Despachado', admin)).rejects.toThrow('No se puede volver a un estado anterior.');
+        await expect(cambiarEstadoEnvio(20260920, 'Despachado', admin)).rejects.toThrow('Solo se pueden despachar órdenes pagadas.');
+        await expect(cambiarEstadoEnvio(20261005, 'Entregado', clienteDemo)).rejects.toThrow(/permiso/);
+        await expect(cambiarEstadoEnvio(20261005, 'Perdido', admin)).rejects.toThrow('Estado de envío no válido.');
     });
 
-    it('en el listado de órdenes el Administrador cambia el estado con el selector', () => {
+    it('en el listado de órdenes el Administrador cambia el estado con el selector', async () => {
         renderConApp(<Ordenes />, { usuario: admin });
         const selector = screen.getByLabelText('Estado de envío de la orden 20261005');
         fireEvent.change(selector, { target: { value: 'Despachado' } });
-        expect(buscarOrden(20261005).estadoEnvio).toBe('Despachado');
+        await waitFor(() => expect(buscarOrden(20261005).estadoEnvio).toBe('Despachado'));
         expect(screen.getByLabelText('Estado de envío de la orden 20261005').value).toBe('Despachado');
     });
 

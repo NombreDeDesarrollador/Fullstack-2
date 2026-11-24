@@ -1,7 +1,8 @@
 // =====================================================================
-// FUENTE DE DATOS SIMULADA: PRODUCTOS, CATEGORÍAS Y OFERTAS
-// Son los datos iniciales. Las funciones CRUD que los leen y modifican
-// están en src/services/productosService.js (persisten en localStorage).
+// DATOS DE PRUEBA: PRODUCTOS, CATEGORÍAS Y OFERTAS
+// Desde la EV3 la aplicación ya NO usa este archivo: los datos reales viven en
+// MySQL y se piden a los microservicios Spring Boot. Se conserva solo como
+// datos iniciales del backend falso de las pruebas (src/pruebas/servidorFalso.js).
 // =====================================================================
 
 export const productosIniciales = [

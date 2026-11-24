@@ -1,8 +1,10 @@
+// Generado a partir de src/pruebas/13-mejoras-panel.test.js (misma prueba, sintaxis Jasmine para Karma)
 // Mejoras pedidas por el docente:
-// permisos por rol, stock, orden por criticidad, estados de envío,
+// permisos por rol, stock del Vendedor, orden por criticidad, estados de envío,
 // código de barras y validación de RUN desde 1-9.
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent, within} from '@testing-library/react';
+import { waitFor } from './helpers';
 import { validarRun, calcularDv, limpiarRun } from '../src/utils/validaciones';
 import { puede } from '../src/utils/permisos';
 import { actualizarStock, ordenarPorCriticidad, obtenerProducto } from '../src/services/productosService';
@@ -12,31 +14,32 @@ import CodigoBarras, { calcularBarras } from '../src/components/comunes/CodigoBa
 import Productos from '../src/pages/admin/Productos';
 import Ordenes from '../src/pages/admin/Ordenes';
 import { renderConApp, clienteDemo } from './helpers';
+import { iniciarSesionFalsa } from '../src/pruebas/servidorFalso';
 
 const admin = { ...clienteDemo, run: '156782343', nombre: 'Administrador', tipoUsuario: 'Administrador' };
 const vendedor = { ...clienteDemo, run: '172345670', nombre: 'Vendedor', tipoUsuario: 'Vendedor' };
 
 describe('Validación de RUN (módulo 11, desde 1-9)', () => {
     it('acepta RUN válidos con o sin puntos y guion', () => {
-        expect(validarRun('19.011.029-K')).toBeTrue();
-        expect(validarRun('19011029-k')).toBeTrue();
-        expect(validarRun('12345678-5')).toBeTrue();
-        expect(validarRun('9.876.543-3')).toBeTrue();
+        expect(validarRun('19.011.029-K')).toBe(true);
+        expect(validarRun('19011029-k')).toBe(true);
+        expect(validarRun('12345678-5')).toBe(true);
+        expect(validarRun('9.876.543-3')).toBe(true);
     });
 
     it('acepta el RUN 1-9 y otros RUN cortos válidos', () => {
-        expect(validarRun('1-9')).toBeTrue();
-        expect(validarRun('19')).toBeTrue();
-        expect(validarRun('2-7')).toBeTrue();
-        expect(validarRun('1-8')).toBeFalse(); // mismo cuerpo, DV incorrecto
+        expect(validarRun('1-9')).toBe(true);
+        expect(validarRun('19')).toBe(true);
+        expect(validarRun('2-7')).toBe(true);
+        expect(validarRun('1-8')).toBe(false); // mismo cuerpo, DV incorrecto
     });
 
     it('rechaza DV distinto de 0-9 o K, ceros a la izquierda y cuerpos de más de 8 dígitos', () => {
-        expect(validarRun('12345678-X')).toBeFalse();
-        expect(validarRun('0-0')).toBeFalse();
-        expect(validarRun('01-9')).toBeFalse();
-        expect(validarRun('123456789-' + calcularDv('123456789'))).toBeFalse();
-        expect(validarRun('-9')).toBeFalse();
+        expect(validarRun('12345678-X')).toBe(false);
+        expect(validarRun('0-0')).toBe(false);
+        expect(validarRun('01-9')).toBe(false);
+        expect(validarRun('123456789-' + calcularDv('123456789'))).toBe(false);
+        expect(validarRun('-9')).toBe(false);
     });
 
     it('calcularDv y limpiarRun funcionan por separado', () => {
@@ -48,44 +51,50 @@ describe('Validación de RUN (módulo 11, desde 1-9)', () => {
 });
 
 describe('Permisos por rol', () => {
-    it('el Vendedor no puede actualizar stock, pero sí cambiar estados de pedidos', () => {
-        expect(puede(vendedor, 'productos:stock')).toBeFalse();
-        expect(puede(vendedor, 'ordenes:estado')).toBeTrue();
-        expect(puede(vendedor, 'productos:editar')).toBeFalse();
-        expect(puede(vendedor, 'productos:eliminar')).toBeFalse();
+    it('el Vendedor solo visualiza: no tiene ninguna acción de modificación (Anexo 1)', () => {
+        ['productos:crear', 'productos:editar', 'productos:eliminar', 'productos:stock',
+            'ordenes:estado', 'ordenes:eliminar', 'usuarios:gestionar', 'reportes:ver']
+            .forEach(accion => expect(puede(vendedor, accion)).toBe(false));
+        expect(puede(admin, 'productos:stock')).toBe(true);
+        expect(puede(admin, 'ordenes:estado')).toBe(true);
     });
 
     it('el Cliente y un usuario sin sesión no tienen permisos del panel', () => {
-        expect(puede(clienteDemo, 'productos:stock')).toBeFalse();
-        expect(puede(null, 'ordenes:estado')).toBeFalse();
-        expect(puede(admin, 'productos:editar')).toBeTrue();
+        expect(puede(clienteDemo, 'productos:stock')).toBe(false);
+        expect(puede(null, 'ordenes:estado')).toBe(false);
+        expect(puede(admin, 'productos:editar')).toBe(true);
     });
 });
 
 describe('Actualizar stock', () => {
-    beforeEach(() => localStorage.clear());
-
-    it('el Administrador actualiza el stock y solo cambia ese campo', () => {
+    it('el Administrador actualiza el stock (PATCH) y solo cambia ese campo', async () => {
+        iniciarSesionFalsa(admin);
         const antes = obtenerProducto('GA005');
-        const despues = actualizarStock('GA005', '7', admin);
+        const despues = await actualizarStock('GA005', '7', admin);
         expect(despues.stock).toBe(7);
         expect(despues.precio).toBe(antes.precio);
         expect(obtenerProducto('GA005').stock).toBe(7);
     });
 
-    it('un Vendedor no puede actualizar stock', () => {
-        expect(() => actualizarStock('GA005', 5, vendedor)).toThrowError('No tienes permiso para realizar esta acción.');
-        expect(obtenerProducto('GA005').stock).toBe(0);
+    it('un Vendedor o un Cliente no pueden actualizar stock (ni siquiera llega a llamar a la API)', async () => {
+        await expectAsync(actualizarStock('GA005', 5, vendedor)).toBeRejectedWithError(/No tienes permiso para realizar esta acción\./);
+        await expectAsync(actualizarStock('GA005', 5, clienteDemo)).toBeRejectedWithError(/No tienes permiso para realizar esta acción\./);
+        expect(fetch).not.toHaveBeenCalled();
     });
 
-    it('un Cliente no puede actualizar stock', () => {
-        expect(() => actualizarStock('GA005', 5, clienteDemo)).toThrowError('No tienes permiso para realizar esta acción.');
+    it('si el Vendedor llama directo a la API, el backend responde 403', async () => {
+        iniciarSesionFalsa(vendedor);
+        const respuesta = await fetch('http://localhost:8082/api/v1/productos/GA005/stock', {
+            method: 'PATCH', headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('da_sesion')).accessToken}` },
+            body: JSON.stringify({ stock: 9 })
+        });
+        expect(respuesta.status).toBe(403);
     });
 
-    it('rechaza stock negativo, decimal o vacío', () => {
-        expect(() => actualizarStock('GA005', -1, admin)).toThrowError(/entero mayor o igual a 0/);
-        expect(() => actualizarStock('GA005', 2.5, admin)).toThrowError(/entero/);
-        expect(() => actualizarStock('GA005', '', admin)).toThrowError(/entero/);
+    it('rechaza stock negativo, decimal o vacío', async () => {
+        await expectAsync(actualizarStock('GA005', -1, admin)).toBeRejectedWithError(/entero mayor o igual a 0/);
+        await expectAsync(actualizarStock('GA005', 2.5, admin)).toBeRejectedWithError(/entero/);
+        await expectAsync(actualizarStock('GA005', '', admin)).toBeRejectedWithError(/entero/);
     });
 });
 
@@ -100,8 +109,6 @@ describe('Orden por criticidad', () => {
 });
 
 describe('Listado de productos según el rol', () => {
-    beforeEach(() => localStorage.clear());
-
     it('muestra primero el producto más crítico', () => {
         renderConApp(<Productos />, { usuario: admin });
         const filas = screen.getAllByTestId('fila-producto');
@@ -109,11 +116,13 @@ describe('Listado de productos según el rol', () => {
         expect(filas[0].className).toContain('table-danger');
     });
 
-    it('el Vendedor solo ve acciones de consulta, sin botones de stock, editar ni eliminar', () => {
+    it('el Vendedor solo ve la lista: sin botones de stock, editar, eliminar ni nuevo producto', () => {
         renderConApp(<Productos />, { usuario: vendedor });
+        expect(screen.getAllByTestId('fila-producto').length).toBe(productosIniciales.length);
         expect(screen.queryAllByTitle('Actualizar stock').length).toBe(0);
         expect(screen.queryAllByTitle('Editar').length).toBe(0);
         expect(screen.queryAllByTitle('Eliminar').length).toBe(0);
+        expect(screen.queryByText(/Nuevo producto/)).toBeNull();
     });
 
     it('el Administrador repone stock desde el modal y el producto deja de estar primero', async () => {
@@ -122,7 +131,7 @@ describe('Listado de productos según el rol', () => {
         const modal = await screen.findByRole('dialog');
         fireEvent.change(within(modal).getByLabelText('Nuevo stock'), { target: { value: '10' } });
         fireEvent.click(within(modal).getByRole('button', { name: 'Guardar stock' }));
-        expect(screen.getByText(/actualizado a 10 unidades/)).toBeTruthy();
+        expect(await screen.findByText(/actualizado a 10 unidades/)).toBeTruthy();
         expect(obtenerProducto('GA005').stock).toBe(10);
         expect(within(screen.getAllByTestId('fila-producto')[0]).queryByText('GA005')).toBeNull();
     });
@@ -133,39 +142,43 @@ describe('Listado de productos según el rol', () => {
         const modal = await screen.findByRole('dialog');
         fireEvent.change(within(modal).getByLabelText('Nuevo stock'), { target: { value: '-3' } });
         fireEvent.click(within(modal).getByRole('button', { name: 'Guardar stock' }));
-        expect(within(modal).getByText(/entero mayor o igual a 0/)).toBeTruthy();
+        expect(await within(modal).findByText(/entero mayor o igual a 0/)).toBeTruthy();
         expect(obtenerProducto('GA005').stock).toBe(0);
     });
 });
 
 describe('Estado de envío de los pedidos', () => {
-    beforeEach(() => localStorage.clear());
-
     it('las órdenes pagadas tienen estado de envío y las rechazadas no', () => {
         const ordenes = obtenerOrdenes();
-        expect(ordenes.filter(o => o.estado === 'Pagada').every(o => !!o.estadoEnvio)).toBeTrue();
-        expect(buscarOrden(20260920).estadoEnvio).toBeUndefined();
+        expect(ordenes.filter(o => o.estado === 'Pagada').every(o => !!o.estadoEnvio)).toBe(true);
+        expect(buscarOrden(20260920).estadoEnvio).toBeFalsy();
     });
 
-    it('el Vendedor marca un pedido como Entregado', () => {
-        const orden = cambiarEstadoEnvio(20261005, 'Entregado', vendedor);
+    it('el Vendedor no puede cambiar el estado de envío (solo lo visualiza)', async () => {
+        await expectAsync(cambiarEstadoEnvio(20261005, 'Entregado', vendedor)).toBeRejectedWithError(/permiso/);
+    });
+
+    it('el Administrador marca un pedido como Entregado', async () => {
+        iniciarSesionFalsa(admin);
+        const orden = await cambiarEstadoEnvio(20261005, 'Entregado', admin);
         expect(orden.estadoEnvio).toBe('Entregado');
         expect(buscarOrden(20261005).estadoEnvio).toBe('Entregado');
     });
 
-    it('no permite retroceder, despachar rechazadas ni que un Cliente cambie el estado', () => {
+    it('no permite retroceder, despachar rechazadas ni que un Cliente cambie el estado', async () => {
+        iniciarSesionFalsa(admin);
         expect(siguientesEstadosEnvio(buscarOrden(20261002))).toEqual(['Despachado', 'Entregado']);
-        expect(() => cambiarEstadoEnvio(20260901, 'Despachado', admin)).toThrowError('No se puede volver a un estado anterior.');
-        expect(() => cambiarEstadoEnvio(20260920, 'Despachado', admin)).toThrowError('Solo se pueden despachar órdenes pagadas.');
-        expect(() => cambiarEstadoEnvio(20261005, 'Entregado', clienteDemo)).toThrowError(/permiso/);
-        expect(() => cambiarEstadoEnvio(20261005, 'Perdido', admin)).toThrowError('Estado de envío no válido.');
+        await expectAsync(cambiarEstadoEnvio(20260901, 'Despachado', admin)).toBeRejectedWithError(/No se puede volver a un estado anterior\./);
+        await expectAsync(cambiarEstadoEnvio(20260920, 'Despachado', admin)).toBeRejectedWithError(/Solo se pueden despachar órdenes pagadas\./);
+        await expectAsync(cambiarEstadoEnvio(20261005, 'Entregado', clienteDemo)).toBeRejectedWithError(/permiso/);
+        await expectAsync(cambiarEstadoEnvio(20261005, 'Perdido', admin)).toBeRejectedWithError(/Estado de envío no válido\./);
     });
 
-    it('en el listado de órdenes el Administrador cambia el estado con el selector', () => {
+    it('en el listado de órdenes el Administrador cambia el estado con el selector', async () => {
         renderConApp(<Ordenes />, { usuario: admin });
         const selector = screen.getByLabelText('Estado de envío de la orden 20261005');
         fireEvent.change(selector, { target: { value: 'Despachado' } });
-        expect(buscarOrden(20261005).estadoEnvio).toBe('Despachado');
+        await waitFor(() => expect(buscarOrden(20261005).estadoEnvio).toBe('Despachado'));
         expect(screen.getByLabelText('Estado de envío de la orden 20261005').value).toBe('Despachado');
     });
 
@@ -185,7 +198,7 @@ describe('Código de barras (Code 39)', () => {
 
     it('no acepta caracteres fuera del estándar', () => {
         expect(() => calcularBarras('ÑANDÚ')).toThrowError(/solo acepta/);
-        expect(() => calcularBarras('')).toThrowError();
+        expect(() => calcularBarras('')).toThrow();
     });
 
     it('el componente dibuja el SVG con el texto y avisa si el código no es válido', () => {

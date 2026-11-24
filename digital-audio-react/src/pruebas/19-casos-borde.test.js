@@ -1,20 +1,19 @@
 // Segunda iteración guiada por el informe de cobertura: líneas que seguían sin ejecutarse
 // (vista Reportes, eliminación de productos, campos opcionales del Checkout, stock insuficiente,
 // "Ir a pagar" del carrito y cierre de sesión del Cliente dentro de la app completa).
-import { screen, fireEvent, within } from '@testing-library/react';
+import { screen, fireEvent, within, waitFor } from '@testing-library/react';
 import Reportes from '../pages/admin/Reportes';
 import Productos from '../pages/admin/Productos';
 import Checkout from '../pages/tienda/Checkout';
 import Carrito from '../pages/tienda/Carrito';
-import { obtenerProducto, actualizarProducto } from '../services/productosService';
-import { buscarOrden, obtenerOrdenes } from '../services/ordenesService';
+import { obtenerProducto } from '../services/productosService';
+import { prepararDatos, datosServidor } from './servidorFalso';
+import { buscarOrden } from '../services/ordenesService';
 import { renderConApp, renderApp, clienteDemo, adminDemo } from './helpers';
 
 const itemGuardado = { codigo: 'AC001', nombre: 'Cuerdas Guitarra Eléctrica 09-42', precio: 8990, imagen: 'c.png', stock: 50, cantidad: 2 };
 
 describe('Casos de borde detectados con el informe de cobertura', () => {
-    beforeEach(() => localStorage.clear());
-
     it('la vista Reportes muestra indicadores, barras por categoría y mes, top de productos e inventario', () => {
         const espiaPrint = jest.spyOn(window, 'print').mockImplementation(() => {});
         renderConApp(<Reportes />, { usuario: adminDemo });
@@ -34,11 +33,11 @@ describe('Casos de borde detectados con el informe de cobertura', () => {
         const modal = await screen.findByRole('dialog');
         expect(within(modal).getByText(/Esta acción no se puede deshacer/)).toBeTruthy();
         fireEvent.click(within(modal).getByRole('button', { name: 'Eliminar' }));
-        expect(obtenerProducto('GE001')).toBeNull();
+        await waitFor(() => expect(obtenerProducto('GE001')).toBeNull());
         expect(screen.queryByText('GE001')).toBeNull();
     });
 
-    it('el Checkout guarda departamento, indicaciones y medio de pago elegidos', () => {
+    it('el Checkout envía departamento, indicaciones y medio de pago elegidos', async () => {
         localStorage.setItem('da_carrito', JSON.stringify([itemGuardado]));
         renderConApp(<Checkout />, { usuario: clienteDemo, ruta: '/checkout', path: '/checkout' });
         fireEvent.change(screen.getByLabelText(/^Departamento/), { target: { value: '603' } });
@@ -46,19 +45,21 @@ describe('Casos de borde detectados con el informe de cobertura', () => {
         fireEvent.click(screen.getByLabelText('Transferencia'));
         fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
 
-        const orden = obtenerOrdenes().slice(-1)[0];
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toContain('/compra/exito/'));
+        const orden = datosServidor().ordenes.slice(-1)[0];
         expect(orden.estado).toBe('Pagada');
         expect(orden.medioPago).toBe('Transferencia');
         expect(orden.direccion.departamento).toBe('603');
         expect(orden.direccion.indicaciones).toBe('Edificio azul');
     });
 
-    it('si el stock cambió antes de pagar, la orden se rechaza por stock insuficiente', () => {
+    it('si el stock cambió antes de pagar, el backend rechaza la orden por stock insuficiente', async () => {
         localStorage.setItem('da_carrito', JSON.stringify([itemGuardado]));
-        actualizarProducto('AC001', { stock: 1 });
+        prepararDatos(db => { db.productos.find(p => p.codigo === 'AC001').stock = 1; });
         renderConApp(<Checkout />, { usuario: clienteDemo, ruta: '/checkout', path: '/checkout' });
         fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
 
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toContain('/compra/error/'));
         const numero = screen.getByTestId('ubicacion').textContent.split('/').pop();
         expect(screen.getByTestId('ubicacion').textContent).toContain('/compra/error/');
         expect(buscarOrden(numero).motivo).toBe('Stock insuficiente para Cuerdas Guitarra Eléctrica 09-42.');

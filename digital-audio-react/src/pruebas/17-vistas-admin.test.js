@@ -1,6 +1,6 @@
 // Vistas del panel que no tenían pruebas: Dashboard, Boleta, Categorías, Usuarios,
 // Detalle de usuario, Perfil, Detalle de producto y Productos críticos.
-import { screen, fireEvent, act, within } from '@testing-library/react';
+import { screen, fireEvent, act, within, waitFor } from '@testing-library/react';
 import Dashboard from '../pages/admin/Dashboard';
 import Boleta from '../pages/admin/Boleta';
 import CategoriasAdmin from '../pages/admin/Categorias';
@@ -10,13 +10,12 @@ import UsuarioDetalle from '../pages/admin/UsuarioDetalle';
 import Perfil from '../pages/admin/Perfil';
 import ProductoDetalleAdmin from '../pages/admin/ProductoDetalle';
 import ProductosCriticos from '../pages/admin/ProductosCriticos';
-import { obtenerCategorias, crearCategoria, obtenerProducto, productosCriticos, obtenerProductos, actualizarProducto } from '../services/productosService';
-import { obtenerUsuarios, crearUsuario } from '../services/usuariosService';
+import { obtenerCategorias, obtenerProducto, productosCriticos } from '../services/productosService';
+import { prepararDatos, datosServidor } from './servidorFalso';
+import { obtenerUsuarios } from '../services/usuariosService';
 import { renderConApp, adminDemo, vendedorDemo } from './helpers';
 
 describe('Vistas del panel administrativo', () => {
-    beforeEach(() => localStorage.clear());
-
     describe('Dashboard', () => {
         it('el Administrador ve compras, productos, usuarios y las últimas 5 órdenes', () => {
             renderConApp(<Dashboard />, { usuario: adminDemo });
@@ -35,7 +34,7 @@ describe('Vistas del panel administrativo', () => {
         });
 
         it('sin productos críticos no muestra la alerta', () => {
-            obtenerProductos().forEach(p => actualizarProducto(p.codigo, { stock: 50, stockCritico: 1 }));
+            prepararDatos(db => db.productos.forEach(p => { p.stock = 50; p.stockCritico = 1; }));
             renderConApp(<Dashboard />, { usuario: adminDemo });
             expect(screen.queryByText(/productos con stock crítico/)).toBeNull();
         });
@@ -45,13 +44,13 @@ describe('Vistas del panel administrativo', () => {
         const abrir = (numero, usuario = adminDemo) =>
             renderConApp(<Boleta />, { usuario, ruta: `/admin/ordenes/${numero}`, path: '/admin/ordenes/:numero' });
 
-        it('una boleta pagada muestra neto, IVA, total, selector de envío y código de barras', () => {
+        it('una boleta pagada muestra neto, IVA, total, selector de envío y código de barras', async () => {
             abrir(20261005);
             expect(screen.getByText('N° 20261005')).toBeTruthy();
             expect(screen.getByText('IVA (19%)')).toBeTruthy();
             const selector = screen.getByLabelText('Estado de envío de la orden 20261005');
             fireEvent.change(selector, { target: { value: 'Despachado' } });
-            expect(selector.value).toBe('Despachado');
+            await waitFor(() => expect(screen.getByLabelText('Estado de envío de la orden 20261005').value).toBe('Despachado'));
             expect(document.querySelector('svg')).toBeTruthy();
         });
 
@@ -75,8 +74,8 @@ describe('Vistas del panel administrativo', () => {
     });
 
     describe('Categorías', () => {
-        it('lista las categorías con su cantidad de productos y solo deja eliminar las vacías', () => {
-            crearCategoria('Vinilos');
+        it('lista las categorías con su cantidad de productos y solo deja eliminar las vacías', async () => {
+            prepararDatos(db => db.categorias.push({ id: 99, nombre: 'Vinilos' }));
             renderConApp(<CategoriasAdmin />, { usuario: adminDemo });
             const fila = screen.getByText('Vinilos').closest('tr');
             const eliminar = within(fila).getByTitle('Eliminar');
@@ -85,7 +84,7 @@ describe('Vistas del panel administrativo', () => {
             expect(within(filaConProductos).getByTitle('Eliminar').disabled).toBe(true);
 
             fireEvent.click(eliminar);
-            expect(screen.queryByText('Vinilos')).toBeNull();
+            await waitFor(() => expect(screen.queryByText('Vinilos')).toBeNull());
             expect(obtenerCategorias()).not.toContain('Vinilos');
         });
 
@@ -94,7 +93,7 @@ describe('Vistas del panel administrativo', () => {
             const nueva = () => renderConApp(<CategoriaForm />, { usuario: adminDemo, ruta: '/admin/categorias/nueva', path: '/admin/categorias/nueva' });
             const guardar = () => fireEvent.click(screen.getByRole('button', { name: 'Guardar categoría' }));
 
-            it('valida nombre vacío, largo y repetido', () => {
+            it('valida nombre vacío, largo y repetido (409 del backend)', async () => {
                 nueva();
                 guardar();
                 expect(screen.getByText('El nombre es requerido.')).toBeTruthy();
@@ -103,27 +102,27 @@ describe('Vistas del panel administrativo', () => {
                 expect(screen.getByText('Máximo 50 caracteres.')).toBeTruthy();
                 fireEvent.change(screen.getByLabelText(/Nombre de la categoría/), { target: { value: 'accesorios' } });
                 guardar();
-                expect(screen.getByText('Ya existe una categoría con ese nombre.')).toBeTruthy();
+                expect(await screen.findByText('Ya existe una categoría con ese nombre.')).toBeTruthy();
             });
 
-            it('crea la categoría y vuelve al listado', () => {
+            it('crea la categoría y vuelve al listado', async () => {
                 jest.useFakeTimers();
                 nueva();
                 fireEvent.change(screen.getByLabelText(/Nombre de la categoría/), { target: { value: 'Vinilos' } });
                 guardar();
-                expect(screen.getByText('Categoría guardada correctamente.')).toBeTruthy();
+                expect(await screen.findByText('Categoría guardada correctamente.')).toBeTruthy();
                 expect(obtenerCategorias()).toContain('Vinilos');
                 act(() => jest.advanceTimersByTime(700));
                 expect(screen.getByTestId('ubicacion').textContent).toBe('/admin/categorias');
             });
 
-            it('al editar renombra la categoría y mueve sus productos', () => {
+            it('al editar renombra la categoría y mueve sus productos', async () => {
                 renderConApp(<CategoriaForm />, { usuario: adminDemo, ruta: '/admin/categorias/Micr%C3%B3fonos/editar', path: '/admin/categorias/:nombre/editar' });
                 expect(screen.getByText('Editar categoría: Micrófonos')).toBeTruthy();
                 expect(screen.getByText(/sus productos se moverán/)).toBeTruthy();
                 fireEvent.change(screen.getByLabelText(/Nombre de la categoría/), { target: { value: 'Micrófonos y Voces' } });
                 guardar();
-                expect(obtenerProducto('MI001').categoria).toBe('Micrófonos y Voces');
+                await waitFor(() => expect(obtenerProducto('MI001').categoria).toBe('Micrófonos y Voces'));
             });
         });
     });
@@ -152,7 +151,7 @@ describe('Vistas del panel administrativo', () => {
             const modal = await screen.findByRole('dialog');
             expect(within(modal).getByText(/¿Eliminar a/)).toBeTruthy();
             fireEvent.click(within(modal).getByRole('button', { name: 'Eliminar' }));
-            expect(obtenerUsuarios().length).toBe(total - 1);
+            await waitFor(() => expect(obtenerUsuarios().length).toBe(total - 1));
             expect(screen.queryByText('cliente@gmail.com')).toBeNull();
         });
     });
@@ -168,7 +167,7 @@ describe('Vistas del panel administrativo', () => {
         });
 
         it('un usuario sin compras muestra el mensaje y uno inexistente avisa', () => {
-            crearUsuario({ run: '111111111', nombre: 'Sin', apellidos: 'Compras', correo: 'sin@gmail.com', clave: 'abcd', tipoUsuario: 'Cliente', region: '', comuna: '', direccion: '' });
+            prepararDatos(db => db.usuarios.push({ run: '111111111', nombre: 'Sin', apellidos: 'Compras', correo: 'sin@gmail.com', clave: 'abcd', tipoUsuario: 'Cliente', region: '', comuna: '', direccion: '', activo: true }));
             const { unmount } = abrir('111111111');
             expect(screen.getByText('Este usuario aún no registra compras.')).toBeTruthy();
             unmount();
@@ -195,14 +194,14 @@ describe('Vistas del panel administrativo', () => {
             expect(screen.getByText('Las contraseñas no coinciden.')).toBeTruthy();
         });
 
-        it('guarda los datos y la nueva contraseña', () => {
+        it('guarda los datos y la nueva contraseña', async () => {
             abrir();
             fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Vendedora' } });
             fireEvent.change(screen.getByLabelText(/^Nueva contraseña/), { target: { value: 'nueva1' } });
             fireEvent.change(screen.getByLabelText('Confirmar contraseña'), { target: { value: 'nueva1' } });
             guardar();
-            expect(screen.getByText('Datos actualizados correctamente.')).toBeTruthy();
-            const guardado = obtenerUsuarios().find(u => u.run === vendedorDemo.run);
+            expect(await screen.findByText('Datos actualizados correctamente.')).toBeTruthy();
+            const guardado = datosServidor().usuarios.find(u => u.run === vendedorDemo.run);
             expect(guardado.nombre).toBe('Vendedora');
             expect(guardado.clave).toBe('nueva1');
             expect(screen.getByLabelText(/^Nueva contraseña/).value).toBe('');
@@ -233,11 +232,24 @@ describe('Vistas del panel administrativo', () => {
     });
 
     describe('Productos críticos', () => {
-        it('lista productos críticos; el Vendedor puede consultarlos pero no reponer stock ni editar', async () => {
+        it('el Vendedor ve agotados y bajo stock crítico, sin botones para reponer ni editar', () => {
             renderConApp(<ProductosCriticos />, { usuario: vendedorDemo });
             expect(screen.getAllByText('Agotado').length).toBeGreaterThan(0);
             expect(screen.queryAllByRole('link').filter(a => a.getAttribute('href').endsWith('/editar')).length).toBe(0);
             expect(screen.queryAllByTitle('Reponer stock').length).toBe(0);
+        });
+
+        it('el Administrador repone stock desde la lista de críticos', async () => {
+            renderConApp(<ProductosCriticos />, { usuario: adminDemo });
+            const antes = productosCriticos().length;
+
+            const fila = screen.getByText('GA005').closest('tr');
+            fireEvent.click(within(fila).getByTitle('Reponer stock'));
+            fireEvent.change(await screen.findByLabelText('Nuevo stock'), { target: { value: '20' } });
+            fireEvent.click(screen.getByRole('button', { name: 'Guardar stock' }));
+            await waitFor(() => expect(obtenerProducto('GA005').stock).toBe(20));
+            expect(productosCriticos().length).toBe(antes - 1);
+            expect(screen.queryByText('GA005')).toBeNull();
         });
 
         it('el Administrador también ve el enlace para editar', () => {
@@ -246,7 +258,7 @@ describe('Vistas del panel administrativo', () => {
         });
 
         it('sin productos críticos muestra el mensaje vacío', () => {
-            obtenerProductos().forEach(p => actualizarProducto(p.codigo, { stock: 50, stockCritico: 1 }));
+            prepararDatos(db => db.productos.forEach(p => { p.stock = 50; p.stockCritico = 1; }));
             renderConApp(<ProductosCriticos />, { usuario: adminDemo });
             expect(screen.getByText('No hay productos críticos.')).toBeTruthy();
         });

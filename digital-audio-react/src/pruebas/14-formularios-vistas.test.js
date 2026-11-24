@@ -1,8 +1,8 @@
 // Vistas críticas que faltaban: Registro, Catálogo (filtros) y formularios del panel
 // (ProductoForm y UsuarioForm). Se prueban el renderizado, el estado de los
-// formularios, la validación, los eventos y la persistencia en localStorage.
+// formularios, la validación, los eventos y el envío a la API (backend falso).
 import React from 'react';
-import { screen, fireEvent, act } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import Registro from '../pages/tienda/Registro';
 import Catalogo from '../pages/tienda/Catalogo';
 import ProductoForm from '../pages/admin/ProductoForm';
@@ -12,6 +12,7 @@ import { buscarUsuarioPorRun } from '../services/usuariosService';
 import { obtenerProducto } from '../services/productosService';
 import { precioFinal } from '../services/productosService';
 import { renderConApp, clienteDemo } from './helpers';
+import { datosServidor } from './servidorFalso';
 
 const admin = { ...clienteDemo, run: '156782343', nombre: 'Administrador', tipoUsuario: 'Administrador' };
 
@@ -20,8 +21,6 @@ const escribir = (etiqueta, valor) => fireEvent.change(screen.getByLabelText(eti
 const nombresVisibles = () => screen.getAllByRole('heading', { level: 3 }).map(h => h.textContent);
 
 describe('Registro', () => {
-    beforeEach(() => localStorage.clear());
-    afterEach(() => jest.useRealTimers());
 
     function llenarRegistro(run) {
         escribir(/^RUN/, run);
@@ -60,29 +59,28 @@ describe('Registro', () => {
         expect(screen.getByRole('option', { name: 'Concepción' })).toBeTruthy();
     });
 
-    it('con datos válidos crea el cliente (RUN con puntos y guion) y redirige al login', () => {
-        jest.useFakeTimers();
+    it('con datos válidos registra al cliente en ms-usuarios, deja la sesión iniciada y va a la tienda', async () => {
         renderConApp(<Registro />, { ruta: '/registro', path: '/registro' });
         llenarRegistro('19.011.029-K');
         fireEvent.click(screen.getByRole('button', { name: 'Registrarme' }));
-        expect(screen.getByText(/Registro exitoso/)).toBeTruthy();
-        const creado = buscarUsuarioPorRun('19011029K');
+        expect(await screen.findByText(/Registro exitoso/)).toBeTruthy();
+        const creado = datosServidor().usuarios.find(u => u.run === '19011029K');
         expect(creado.tipoUsuario).toBe('Cliente');
-        expect(creado.correo2).toBeUndefined(); // no guarda los campos de confirmación
-        act(() => jest.advanceTimersByTime(1500));
-        expect(screen.getByTestId('ubicacion').textContent).toBe('/login');
+        expect(creado.correo2).toBeUndefined(); // no envía los campos de confirmación
+        expect(JSON.parse(localStorage.getItem('da_sesion')).usuario.run).toBe('19011029K');
+        // Redirige a la tienda 1,5 s después del mensaje
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toBe('/'), { timeout: 2500 });
     });
 
-    it('no permite registrar dos veces el mismo RUN', () => {
+    it('no permite registrar dos veces el mismo RUN (409 del backend)', async () => {
         renderConApp(<Registro />);
         llenarRegistro('18.765.432-7'); // RUN del cliente de prueba
         fireEvent.click(screen.getByRole('button', { name: 'Registrarme' }));
-        expect(screen.getByText('Ya existe un usuario con ese RUN.')).toBeTruthy();
+        expect(await screen.findByText('Ya existe un usuario con ese RUN.')).toBeTruthy();
     });
 });
 
 describe('Catálogo con filtros', () => {
-    beforeEach(() => localStorage.clear());
 
     it('muestra todos los productos y el total', () => {
         renderConApp(<Catalogo />);
@@ -117,8 +115,6 @@ describe('Catálogo con filtros', () => {
 });
 
 describe('ProductoForm (panel)', () => {
-    beforeEach(() => localStorage.clear());
-    afterEach(() => jest.useRealTimers());
 
     it('valida precio negativo, stock decimal y categoría vacía', () => {
         renderConApp(<ProductoForm />, { usuario: admin });
@@ -133,8 +129,7 @@ describe('ProductoForm (panel)', () => {
         expect(obtenerProducto('NU001')).toBeNull();
     });
 
-    it('crea un producto nuevo y vuelve al listado', () => {
-        jest.useFakeTimers();
+    it('crea un producto nuevo (POST) y vuelve al listado', async () => {
         renderConApp(<ProductoForm />, { usuario: admin, ruta: '/admin/productos/nuevo', path: '/admin/productos/nuevo' });
         escribir(/^Código/, 'NU001');
         escribir(/^Nombre/, 'Ukelele Soprano');
@@ -142,13 +137,12 @@ describe('ProductoForm (panel)', () => {
         escribir(/^Precio/, '39990');
         escribir(/^Stock\*?$/, '6');
         fireEvent.click(screen.getByRole('button', { name: /Guardar producto/ }));
-        expect(screen.getByText('Producto creado correctamente.')).toBeTruthy();
+        expect(await screen.findByText('Producto creado correctamente.')).toBeTruthy();
         expect(obtenerProducto('NU001')).toEqual(expect.objectContaining({ precio: 39990, stock: 6, stockCritico: 0 }));
-        act(() => jest.advanceTimersByTime(800));
-        expect(screen.getByTestId('ubicacion').textContent).toBe('/admin/productos');
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toBe('/admin/productos'), { timeout: 2000 });
     });
 
-    it('no permite crear un código repetido', () => {
+    it('no permite crear un código repetido', async () => {
         renderConApp(<ProductoForm />, { usuario: admin });
         escribir(/^Código/, 'ga001');
         escribir(/^Nombre/, 'Copia');
@@ -156,23 +150,22 @@ describe('ProductoForm (panel)', () => {
         escribir(/^Precio/, '100');
         escribir(/^Stock\*?$/, '1');
         fireEvent.click(screen.getByRole('button', { name: /Guardar producto/ }));
-        expect(screen.getByText('Ya existe un producto con ese código.')).toBeTruthy();
+        expect(await screen.findByText('Ya existe un producto con ese código.')).toBeTruthy();
     });
 
-    it('en modo edición carga los datos, bloquea el código y guarda los cambios', () => {
+    it('en modo edición carga los datos, bloquea el código y guarda los cambios (PUT)', async () => {
         renderConApp(<ProductoForm />, { usuario: admin, ruta: '/admin/productos/GA001/editar', path: '/admin/productos/:codigo/editar' });
         expect(screen.getByText('Editar producto: GA001')).toBeTruthy();
         expect(screen.getByLabelText(/^Código/).disabled).toBe(true);
         expect(screen.getByLabelText(/^Nombre/).value).toBe('Guitarra Acústica Folk');
         escribir(/^Precio/, '139990');
         fireEvent.click(screen.getByRole('button', { name: /Guardar producto/ }));
-        expect(screen.getByText('Producto actualizado correctamente.')).toBeTruthy();
+        expect(await screen.findByText('Producto actualizado correctamente.')).toBeTruthy();
         expect(obtenerProducto('GA001').precio).toBe(139990);
     });
 });
 
 describe('UsuarioForm (panel)', () => {
-    beforeEach(() => localStorage.clear());
 
     function llenarUsuario({ run, correo }) {
         escribir(/^RUN/, run);
@@ -185,12 +178,12 @@ describe('UsuarioForm (panel)', () => {
         escribir(/^Dirección/, 'Calle 2');
     }
 
-    it('crea un Vendedor con el rol elegido', () => {
+    it('crea un Vendedor con el rol elegido', async () => {
         renderConApp(<UsuarioForm />, { usuario: admin });
         llenarUsuario({ run: '12.345.678-5', correo: 'pedro@duoc.cl' });
         escribir(/^Tipo de usuario/, 'Vendedor');
         fireEvent.click(screen.getByRole('button', { name: /Guardar usuario/ }));
-        expect(screen.getByText('Usuario guardado correctamente.')).toBeTruthy();
+        expect(await screen.findByText('Usuario guardado correctamente.')).toBeTruthy();
         expect(buscarUsuarioPorRun('123456785').tipoUsuario).toBe('Vendedor');
     });
 
@@ -206,14 +199,15 @@ describe('UsuarioForm (panel)', () => {
         expect(buscarUsuarioPorRun('123456785')).toBeNull();
     });
 
-    it('en edición bloquea el RUN y mantiene la clave si se deja en blanco', () => {
+    it('en edición bloquea el RUN y mantiene la clave si se deja en blanco', async () => {
         renderConApp(<UsuarioForm />, { usuario: admin, ruta: '/admin/usuarios/187654327/editar', path: '/admin/usuarios/:run/editar' });
         expect(screen.getByLabelText(/^RUN/).disabled).toBe(true);
         expect(screen.getByLabelText(/^Contraseña/).value).toBe('');
         escribir(/^Nombre/, 'Cliente Editado');
         fireEvent.click(screen.getByRole('button', { name: /Guardar usuario/ }));
-        const editado = buscarUsuarioPorRun('187654327');
-        expect(editado.nombre).toBe('Cliente Editado');
-        expect(editado.clave).toBe('cliente1');
+        expect(await screen.findByText('Usuario guardado correctamente.')).toBeTruthy();
+        expect(buscarUsuarioPorRun('187654327').nombre).toBe('Cliente Editado');
+        const enServidor = datosServidor().usuarios.find(u => u.run === '187654327');
+        expect(enServidor.clave).toBe('cliente1'); // clave vacía = el backend mantiene la actual
     });
 });

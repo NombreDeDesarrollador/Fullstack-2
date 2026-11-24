@@ -1,38 +1,32 @@
-// Utilidad para renderizar componentes con Router + sesión + carrito
-import React from 'react';
-import { render } from '@testing-library/react';
-import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AuthProvider } from '../src/context/AuthContext';
-import { CartProvider } from '../src/context/CartContext';
+// Las pruebas de Karma usan las mismas utilidades que las de Jest
+// (render con Router + sesión JWT falsa + carrito, y los usuarios de prueba).
+import { waitFor as waitForRTL } from '@testing-library/react';
 
-// Muestra la ruta actual para comprobar redirecciones
-export function UbicacionActual() {
-    const location = useLocation();
-    return <div data-testid="ubicacion">{location.pathname}</div>;
+export * from '../src/pruebas/helpers';
+
+// En Jasmine un expect() que falla NO lanza una excepción (solo se anota), así que waitFor()
+// creería que la condición ya se cumplió. Este waitFor usa, mientras espera, un expect
+// pequeño que sí lanza error, para que waitFor vuelva a intentar hasta que se cumpla.
+function expectQueLanza(real) {
+    const comprobar = (ok, mensaje) => { if (!ok) throw new Error(mensaje); };
+    const matchers = (negado) => ({
+        toBe: (esperado) => comprobar(Object.is(real, esperado) !== negado, `Se esperaba ${negado ? 'distinto de ' : ''}${esperado} y llegó ${real}`),
+        toEqual: (esperado) => comprobar(jasmine.matchersUtil.equals(real, esperado) !== negado, 'Los valores no coinciden'),
+        toBeNull: () => comprobar((real === null) !== negado, `Se esperaba ${negado ? 'algo' : 'null'}`),
+        toBeTruthy: () => comprobar(!!real !== negado, 'Se esperaba un valor verdadero'),
+        toContain: (parte) => comprobar(real.includes(parte) !== negado, `No contiene ${parte}`)
+    });
+    return { ...matchers(false), not: matchers(true) };
 }
 
-export function renderConApp(ui, { ruta = '/', usuario = null, path = '*' } = {}) {
-    return render(
-        <MemoryRouter initialEntries={[ruta]}>
-            <AuthProvider usuarioInicial={usuario}>
-                <CartProvider>
-                    <Routes>
-                        <Route path={path} element={ui} />
-                        {path !== '*' && <Route path="*" element={null} />}
-                    </Routes>
-                    <UbicacionActual />
-                </CartProvider>
-            </AuthProvider>
-        </MemoryRouter>
-    );
+export async function waitFor(callback, opciones) {
+    return waitForRTL(() => {
+        const original = window.expect;
+        window.expect = expectQueLanza;
+        try {
+            return callback();
+        } finally {
+            window.expect = original;
+        }
+    }, opciones);
 }
-
-export const productoDemo = {
-    codigo: 'GE001', nombre: 'Guitarra Eléctrica Stratocaster', marca: 'Squier', categoria: 'Guitarras Eléctricas',
-    precio: 219990, stock: 3, stockCritico: 1, descripcion: 'Guitarra de prueba', imagen: 'guitarra.png'
-};
-
-export const clienteDemo = {
-    run: '187654327', nombre: 'Cliente', apellidos: 'Demo', correo: 'cliente@gmail.com', clave: 'cliente1',
-    telefono: '', region: 'Región de Valparaíso', comuna: 'Viña del Mar', direccion: 'Av. Siempre Viva 123', tipoUsuario: 'Cliente'
-};

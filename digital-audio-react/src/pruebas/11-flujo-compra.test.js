@@ -1,16 +1,15 @@
 // Flujo de compra: carrito -> checkout -> resultado (integración de componentes y contexto)
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import Carrito from '../pages/tienda/Carrito';
 import Checkout from '../pages/tienda/Checkout';
 import CompraResultado from '../pages/tienda/CompraResultado';
 import { renderConApp, clienteDemo } from './helpers';
+import { datosServidor } from './servidorFalso';
 
 const itemGuardado = { codigo: 'AC001', nombre: 'Cuerdas Guitarra Eléctrica 09-42', precio: 8990, imagen: 'c.png', stock: 50, cantidad: 2 };
 
 describe('Flujo de compra', () => {
-    beforeEach(() => localStorage.clear());
-
     it('el carrito vacío muestra el mensaje correspondiente', () => {
         renderConApp(<Carrito />);
         expect(screen.getByTestId('carrito-vacio')).toBeTruthy();
@@ -34,22 +33,36 @@ describe('Flujo de compra', () => {
         expect(screen.getByLabelText(/^Comuna/).value).toBe('Viña del Mar');
     });
 
-    it('un pago exitoso crea la orden, descuenta stock, vacía el carrito y redirige', () => {
+    it('un pago exitoso envía el pedido a ms-pedidos, descuenta stock, vacía el carrito y redirige', async () => {
         localStorage.setItem('da_carrito', JSON.stringify([itemGuardado]));
+        const stockAntes = datosServidor().productos.find(p => p.codigo === 'AC001').stock;
         renderConApp(<Checkout />, { usuario: clienteDemo, ruta: '/checkout', path: '/checkout' });
         fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
-        expect(screen.getByTestId('ubicacion').textContent).toBe('/compra/exito/20261006');
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toBe('/compra/exito/100001'));
+        // El navegador solo envía código y cantidad (los precios los pone el backend)
+        const [, opciones] = fetch.mock.calls.find(([url, o]) => url.endsWith('/pedidos') && o.method === 'POST');
+        expect(JSON.parse(opciones.body).items).toEqual([{ codigo: 'AC001', cantidad: 2 }]);
         expect(JSON.parse(localStorage.getItem('da_carrito'))).toEqual([]);
-        expect(JSON.parse(localStorage.getItem('da_productos')).find(p => p.codigo === 'AC001').stock).toBe(48);
+        expect(datosServidor().productos.find(p => p.codigo === 'AC001').stock).toBe(stockAntes - 2);
     });
 
-    it('simular pago rechazado lleva a la vista de error y mantiene el carrito', () => {
+    it('simular pago rechazado lleva a la vista de error y mantiene el carrito', async () => {
         localStorage.setItem('da_carrito', JSON.stringify([itemGuardado]));
         renderConApp(<Checkout />, { usuario: clienteDemo, ruta: '/checkout', path: '/checkout' });
         fireEvent.click(screen.getByLabelText(/Simular pago rechazado/));
         fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
-        expect(screen.getByTestId('ubicacion').textContent).toBe('/compra/error/20261006');
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toBe('/compra/error/100001'));
         expect(JSON.parse(localStorage.getItem('da_carrito')).length).toBe(1);
+    });
+
+    it('con retiro en tienda no pide dirección', async () => {
+        localStorage.setItem('da_carrito', JSON.stringify([itemGuardado]));
+        renderConApp(<Checkout />, { usuario: { ...clienteDemo, direccion: '', region: '', comuna: '' }, ruta: '/checkout', path: '/checkout' });
+        fireEvent.click(screen.getByLabelText('Retiro en tienda'));
+        expect(screen.queryByLabelText(/^Calle/)).toBeNull();
+        fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
+        await waitFor(() => expect(screen.getByTestId('ubicacion').textContent).toBe('/compra/exito/100001'));
+        expect(datosServidor().ordenes.at(-1).tipoEntrega).toBe('Retiro en tienda');
     });
 
     it('CompraResultado cambia título y acciones según la prop exito', () => {

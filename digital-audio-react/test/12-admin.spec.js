@@ -1,6 +1,8 @@
+// Generado a partir de src/pruebas/12-admin.test.js (misma prueba, sintaxis Jasmine para Karma)
 // Panel administrador: lógica de reportes/filtros y permisos por rol en los componentes
 import React from 'react';
-import { screen, fireEvent, within } from '@testing-library/react';
+import { screen, fireEvent, within} from '@testing-library/react';
+import { waitFor } from './helpers';
 import { calcularReporte } from '../src/pages/admin/Reportes';
 import { filtrarOrdenes } from '../src/pages/admin/Ordenes';
 import { ordenarProductos } from '../src/pages/tienda/Catalogo';
@@ -15,8 +17,6 @@ const admin = { ...clienteDemo, run: '156782343', nombre: 'Administrador', tipoU
 const vendedor = { ...clienteDemo, run: '172345670', nombre: 'Vendedor', tipoUsuario: 'Vendedor' };
 
 describe('Panel administrador', () => {
-    beforeEach(() => localStorage.clear());
-
     it('calcularReporte solo considera órdenes pagadas', () => {
         const r = calcularReporte(ordenes, productosIniciales);
         expect(r.cantidadPagadas).toBe(4);
@@ -58,6 +58,7 @@ describe('Panel administrador', () => {
         fireEvent.click(screen.getByTitle('Eliminar'));
         const modal = await screen.findByRole('dialog');
         fireEvent.click(within(modal).getByRole('button', { name: 'Eliminar' }));
-        expect(screen.queryByText('Guitarra Acústica Folk')).toBeNull();
+        await waitFor(() => expect(screen.queryByText('Guitarra Acústica Folk')).toBeNull());
+        expect(fetch).toHaveBeenCalledWith('http://localhost:8082/api/v1/productos/GA001', jasmine.objectContaining({ method: 'DELETE' }));
     });
 });
