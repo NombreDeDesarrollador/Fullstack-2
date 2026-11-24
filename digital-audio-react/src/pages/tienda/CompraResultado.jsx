@@ -1,11 +1,13 @@
 // Un solo componente para "compra exitosa" y "pago con error".
 // La prop `exito` decide el título, colores y acciones (personalización por props).
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Card, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import ResumenOrden from '../../components/comunes/ResumenOrden';
 import { PasosCompra } from './Checkout';
-import { buscarOrden } from '../../services/ordenesService';
+import { buscarOrden, cargarOrden, TIPOS_ENTREGA } from '../../services/ordenesService';
+import { useDatos } from '../../services/cache';
+import Cargando from '../../components/comunes/Cargando';
 import { obtenerProducto } from '../../services/productosService';
 import { formatoCLP } from '../../utils/formato';
 
@@ -21,8 +23,18 @@ function Dato({ label, valor, md = 6 }) {
 function CompraResultado({ exito }) {
     const { numero } = useParams();
     const [emailEnviado, setEmailEnviado] = useState(false);
+    const [buscando, setBuscando] = useState(false);
+    useDatos();
     const orden = buscarOrden(numero);
 
+    // Si se recargó la página, el pedido no está en memoria: se pide a ms-pedidos
+    useEffect(() => {
+        if (buscarOrden(numero)) return;
+        setBuscando(true);
+        cargarOrden(numero).catch(() => {}).finally(() => setBuscando(false));
+    }, [numero]);
+
+    if (!orden && buscando) return <Cargando texto="Buscando tu pedido..." />;
     if (!orden) {
         return (
             <Container className="text-center py-5">
@@ -63,7 +75,8 @@ function CompraResultado({ exito }) {
                         <Dato md={4} label="Apellidos" valor={orden.cliente.apellidos} />
                         <Dato md={4} label="Correo" valor={orden.cliente.correo} />
                     </Row>
-                    <h2 className="fs-5">Dirección de entrega de los productos</h2>
+                    <h2 className="fs-5">{orden.tipoEntrega === TIPOS_ENTREGA[1] ? 'Retiro en tienda' : 'Dirección de entrega de los productos'}</h2>
+                    {orden.estadoEnvio && <p className="small">Estado del pedido: <strong>{orden.estadoEnvio}</strong></p>}
                     <Row>
                         <Dato label="Calle" valor={d.calle} />
                         <Dato label="Departamento" valor={d.departamento} />

@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import ProductGrid from '../../components/tienda/ProductGrid';
 import { useCarrito } from '../../context/CartContext';
 import { obtenerCategorias, buscarProductos, precioFinal } from '../../services/productosService';
+import { useDatos } from '../../services/cache';
 
 export function ordenarProductos(productos, orden) {
     const copia = [...productos];
@@ -16,6 +17,7 @@ export function ordenarProductos(productos, orden) {
 }
 
 function Catalogo() {
+    useDatos(); // se redibuja cuando llega el catálogo desde ms-productos
     const { agregar } = useCarrito();
     const [params] = useSearchParams();
     const busqueda = params.get('buscar') || '';

@@ -5,6 +5,7 @@ import BlogCard from '../../components/tienda/BlogCard';
 import { blogs, buscarBlog } from '../../data/blogs';
 import { obtenerProducto, precioFinal } from '../../services/productosService';
 import { formatoCLP, formatoFechaLarga } from '../../utils/formato';
+import { useDatos } from '../../services/cache';
 
 function BloqueContenido({ bloque }) {
     if (bloque.tipo === 'h2') return <h2 className="fs-4 mt-4 border-start border-4 border-primary ps-2">{bloque.texto}</h2>;
@@ -13,6 +14,7 @@ function BloqueContenido({ bloque }) {
 }
 
 function BlogDetalle() {
+    useDatos(); // se redibuja cuando llega el catálogo desde ms-productos
     const { id } = useParams();
     const blog = buscarBlog(id);
 

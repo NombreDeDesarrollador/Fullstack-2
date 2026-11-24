@@ -11,14 +11,14 @@ function CategoriaForm() {
     const [error, setError] = useState('');
     const [ok, setOk] = useState(false);
 
-    const guardar = (e) => {
+    const guardar = async (e) => {
         e.preventDefault();
         const valor = nombre.trim();
         if (!valor) return setError('El nombre es requerido.');
         if (valor.length > 50) return setError('Máximo 50 caracteres.');
         try {
-            if (original) renombrarCategoria(original, valor);
-            else crearCategoria(valor);
+            if (original) await renombrarCategoria(original, valor);
+            else await crearCategoria(valor);
             setError('');
             setOk(true);
             setTimeout(() => navigate('/admin/categorias'), 700);

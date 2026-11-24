@@ -1,7 +1,7 @@
 // Modal para actualizar el stock de un producto (solo Administrador).
 // Props: producto (o null para ocultarlo), usuario (sesión), onCerrar, onGuardado(productoActualizado).
 // Estado propio: el valor que se escribe y el mensaje de error.
-// La validación del permiso se hace en el servicio actualizarStock().
+// La validación del permiso se hace en el servicio actualizarStock() y de nuevo en el backend (PATCH /productos/{codigo}/stock).
 // El padre le pasa key={producto.codigo} para que el estado se reinicie con cada producto.
 import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -10,14 +10,17 @@ import { actualizarStock } from '../../services/productosService';
 function ModalStock({ producto, usuario, onCerrar, onGuardado }) {
     const [valor, setValor] = useState(producto ? String(producto.stock) : '');
     const [error, setError] = useState('');
+    const [guardando, setGuardando] = useState(false);
 
-    const guardar = (e) => {
+    const guardar = async (e) => {
         e.preventDefault();
+        setGuardando(true);
         try {
-            const actualizado = actualizarStock(producto.codigo, valor, usuario);
+            const actualizado = await actualizarStock(producto.codigo, valor, usuario);
             onGuardado(actualizado);
         } catch (err) {
             setError(err.message);
+            setGuardando(false);
         }
     };
 
@@ -37,7 +40,7 @@ function ModalStock({ producto, usuario, onCerrar, onGuardado }) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={onCerrar}>Cancelar</Button>
-                    <Button type="submit" variant="primary">Guardar stock</Button>
+                    <Button type="submit" variant="primary" disabled={guardando}>Guardar stock</Button>
                 </Modal.Footer>
             </Form>
         </Modal>

@@ -1,5 +1,5 @@
-// Listado de órdenes del panel. Administrador y Vendedor pueden cambiar el estado
-// de envío de cada pedido pagado (En preparación -> Despachado -> Entregado).
+// Listado de órdenes del panel. El Vendedor solo las visualiza; el Administrador puede
+// cambiar el estado de envío de cada pedido pagado (En preparación -> Despachado -> Entregado).
 import React, { useState } from 'react';
 import { Card, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import SelectEstadoEnvio from '../../components/admin/SelectEstadoEnvio';
 import { useAuth } from '../../context/AuthContext';
 import { obtenerOrdenes, cantidadUnidades, ESTADOS_ENVIO } from '../../services/ordenesService';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
+import { useDatos } from '../../services/cache';
 
 // Filtro puro (exportado para probarlo): texto por n°, cliente o correo + estado
 // (el estado puede ser de pago: Pagada/Rechazada, o de envío: En preparación/Despachado/Entregado)
@@ -24,7 +25,8 @@ function Ordenes() {
     const { usuario } = useAuth();
     const [texto, setTexto] = useState('');
     const [estado, setEstado] = useState('');
-    const [todas, setTodas] = useState(obtenerOrdenes);
+    useDatos(); // las órdenes vienen de ms-pedidos y se guardan en la caché
+    const todas = obtenerOrdenes();
     const lista = filtrarOrdenes(todas, texto, estado).sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
     const pagadas = todas.filter(o => o.estado === 'Pagada');
 
@@ -66,7 +68,7 @@ function Ordenes() {
                                     <td>{cantidadUnidades(o)}</td>
                                     <td>{formatoCLP(o.total)}</td>
                                     <td><EstadoBadge estado={o.estado} /></td>
-                                    <td><SelectEstadoEnvio orden={o} usuario={usuario} onCambio={() => setTodas(obtenerOrdenes())} /></td>
+                                    <td><SelectEstadoEnvio orden={o} usuario={usuario} /></td>
                                     <td><Link to={`/admin/ordenes/${o.numero}`} className="btn btn-sm btn-outline-secondary"><i className="bi bi-eye me-1"></i>Boleta</Link></td>
                                 </tr>
                             ))}

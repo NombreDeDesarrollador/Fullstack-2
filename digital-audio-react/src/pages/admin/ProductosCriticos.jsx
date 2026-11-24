@@ -1,5 +1,5 @@
 // Listado de productos críticos (agotados o bajo su stock crítico), del más urgente al menos urgente.
-// Solo el Administrador puede reponer stock directamente desde aquí.
+// El Administrador puede reponer stock desde aquí; el Vendedor solo ve la lista.
 import React, { useState } from 'react';
 import { Card, Table, Badge, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -7,12 +7,14 @@ import { useAuth } from '../../context/AuthContext';
 import ModalStock from '../../components/admin/ModalStock';
 import { productosCriticos } from '../../services/productosService';
 import { puede } from '../../utils/permisos';
+import { useDatos } from '../../services/cache';
 
 function ProductosCriticos() {
     const { usuario } = useAuth();
-    const [criticos, setCriticos] = useState(productosCriticos);
+    useDatos();
+    const criticos = productosCriticos();
     const [aStock, setAStock] = useState(null);
-    const stockGuardado = () => { setCriticos(productosCriticos()); setAStock(null); };
+    const stockGuardado = () => setAStock(null);
     const agotados = criticos.filter(p => p.stock === 0).length;
 
     return (

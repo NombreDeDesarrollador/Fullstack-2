@@ -5,31 +5,37 @@ import { Link, useNavigate } from 'react-router-dom';
 import CampoFormulario from '../../components/comunes/CampoFormulario';
 import SelectRegionComuna from '../../components/comunes/SelectRegionComuna';
 import { validarUsuario, esValido, limpiarRun } from '../../utils/validaciones';
-import { crearUsuario } from '../../services/usuariosService';
+import { useAuth } from '../../context/AuthContext';
 
 const vacio = { run: '', nombre: '', apellidos: '', correo: '', correo2: '', clave: '', clave2: '', telefono: '', region: '', comuna: '', direccion: '' };
 
 function Registro() {
     const navigate = useNavigate();
+    const { registrarCliente } = useAuth();
+    const [enviando, setEnviando] = useState(false);
     const [datos, setDatos] = useState(vacio);
     const [errores, setErrores] = useState({});
     const [exito, setExito] = useState(false);
 
     const cambiar = (campo, valor) => setDatos(prev => ({ ...prev, [campo]: valor }));
 
-    const enviar = (e) => {
+    const enviar = async (e) => {
         e.preventDefault();
         const limpios = { ...datos, run: limpiarRun(datos.run), correo: datos.correo.trim(), correo2: datos.correo2.trim() };
         const nuevosErrores = validarUsuario(limpios, { confirmar: true });
         setErrores(nuevosErrores);
         if (!esValido(nuevosErrores)) return;
+        setEnviando(true);
         try {
             const { correo2, clave2, ...usuario } = limpios;
-            crearUsuario({ ...usuario, tipoUsuario: 'Cliente' });
+            await registrarCliente(usuario); // el backend crea la cuenta como Cliente y deja la sesión iniciada
             setExito(true);
-            setTimeout(() => navigate('/login'), 1500);
+            setTimeout(() => navigate('/'), 1500);
         } catch (error) {
-            setErrores({ [error.message.includes('RUN') ? 'run' : 'correo']: error.message });
+            // Errores por campo (@Valid) o regla de negocio (RUN / correo repetido)
+            if (error.errores) setErrores(error.errores);
+            else setErrores({ [error.message.includes('RUN') ? 'run' : 'correo']: error.message });
+            setEnviando(false);
         }
     };
 
@@ -39,7 +45,7 @@ function Registro() {
                 <Card.Body className="p-4 p-md-5">
                     <h1 className="fs-3 mb-1">Crear cuenta</h1>
                     <p className="text-muted">Regístrate para comprar más rápido y ver tus pedidos.</p>
-                    {exito && <Alert variant="success">¡Registro exitoso! Redirigiendo al inicio de sesión...</Alert>}
+                    {exito && <Alert variant="success">¡Registro exitoso! Ya iniciaste sesión, te llevamos a la tienda...</Alert>}
                     <Form onSubmit={enviar} noValidate>
                         <Row>
                             <Col md={6}><CampoFormulario id="run" label="RUN" requerido valor={datos.run} onChange={v => cambiar('run', v)} error={errores.run} placeholder="19011029K" ayuda="Ej: 19.011.029-K o 19011029K" /></Col>
@@ -53,7 +59,7 @@ function Registro() {
                         </Row>
                         <SelectRegionComuna region={datos.region} comuna={datos.comuna} onChange={cambiar} errores={errores} />
                         <CampoFormulario id="direccion" label="Dirección" requerido valor={datos.direccion} onChange={v => cambiar('direccion', v)} error={errores.direccion} />
-                        <Button type="submit" className="w-100" disabled={exito}>Registrarme</Button>
+                        <Button type="submit" className="w-100" disabled={exito || enviando}>Registrarme</Button>
                     </Form>
                     <p className="text-center small mt-3 mb-0">¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link></p>
                 </Card.Body>

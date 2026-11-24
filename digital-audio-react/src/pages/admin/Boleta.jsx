@@ -1,21 +1,39 @@
 // Detalle de una boleta: datos del cliente, productos, totales, estado de envío
 // (editable por Administrador y Vendedor) y código de barras con el código de la orden.
 import React, { useState } from 'react';
-import { Card, Row, Col, Table, Button } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import { Card, Row, Col, Table, Button, Modal, Alert } from 'react-bootstrap';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import EstadoBadge from '../../components/comunes/EstadoBadge';
 import SelectEstadoEnvio from '../../components/admin/SelectEstadoEnvio';
 import CodigoBarras from '../../components/comunes/CodigoBarras';
 import { useAuth } from '../../context/AuthContext';
-import { buscarOrden } from '../../services/ordenesService';
+import { buscarOrden, eliminarOrden } from '../../services/ordenesService';
+import { puede } from '../../utils/permisos';
+import { useDatos, estaCargado } from '../../services/cache';
+import Cargando from '../../components/comunes/Cargando';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
 import logo from '../../assets/logo.png';
 
 function Boleta() {
     const { numero } = useParams();
     const { usuario } = useAuth();
-    const [orden, setOrden] = useState(() => buscarOrden(numero));
+    const navigate = useNavigate();
+    const [confirmar, setConfirmar] = useState(false);
+    const [error, setError] = useState('');
+    useDatos();
+    const orden = buscarOrden(numero);
 
+    const anular = async () => {
+        try {
+            await eliminarOrden(orden.numero, usuario);
+            navigate('/admin/ordenes');
+        } catch (e) {
+            setError(e.message);
+            setConfirmar(false);
+        }
+    };
+
+    if (!orden && !estaCargado('ordenes')) return <Cargando />;
     if (!orden) {
         return <div className="text-center py-5"><p>No se encontró la boleta.</p><Link to="/admin/ordenes" className="btn btn-primary">Ver órdenes</Link></div>;
     }
@@ -28,9 +46,13 @@ function Boleta() {
                 <h1 className="fs-3 mb-0">Detalle de boleta</h1>
                 <div className="d-flex gap-2">
                     <Link to="/admin/ordenes" className="btn btn-outline-secondary">Volver</Link>
+                    {puede(usuario, 'ordenes:eliminar') && orden.estadoEnvio !== 'Entregado' && (
+                        <Button variant="outline-danger" onClick={() => setConfirmar(true)}><i className="bi bi-x-circle me-1"></i>Anular</Button>
+                    )}
                     <Button onClick={() => window.print()}><i className="bi bi-printer me-1"></i>Imprimir</Button>
                 </div>
             </div>
+            {error && <Alert variant="danger" dismissible onClose={() => setError('')}>{error}</Alert>}
             <Card className="border-0 shadow-sm" style={{ maxWidth: 900 }}>
                 <Card.Body className="p-4">
                     <div className="d-flex flex-wrap justify-content-between gap-3 border-bottom pb-3 mb-3">
@@ -50,7 +72,7 @@ function Boleta() {
                     {orden.estado === 'Pagada' && (
                         <div className="d-flex flex-wrap align-items-center gap-2 small mb-3">
                             <span className="text-muted text-uppercase">Estado del envío:</span>
-                            <div><SelectEstadoEnvio orden={orden} usuario={usuario} onCambio={setOrden} /></div>
+                            <div><SelectEstadoEnvio orden={orden} usuario={usuario} /></div>
                         </div>
                     )}
                     <Table responsive size="sm">
@@ -72,6 +94,14 @@ function Boleta() {
                     </div>
                 </Card.Body>
             </Card>
+            <Modal show={confirmar} onHide={() => setConfirmar(false)} centered>
+                <Modal.Header closeButton><Modal.Title className="fs-5">Anular pedido</Modal.Title></Modal.Header>
+                <Modal.Body>¿Anular el pedido <strong>N° {orden.numero}</strong>?{orden.estado === 'Pagada' && ' Las unidades vuelven al stock.'}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setConfirmar(false)}>Cancelar</Button>
+                    <Button variant="danger" onClick={anular}>Anular pedido</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }

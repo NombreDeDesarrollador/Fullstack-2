@@ -1,7 +1,7 @@
 // Listado de productos del panel (Administrador y Vendedor).
 // Se muestra ordenado del más crítico al menos crítico.
 // Los botones dependen del rol (utils/permisos): el Administrador crea, edita y elimina;
-// el Vendedor solo puede consultar el catálogo y el detalle.
+// el Vendedor solo visualiza la lista y el detalle (Anexo 1 de la pauta).
 import React, { useState } from 'react';
 import { Card, Table, Form, Button, Badge, Modal, Row, Col, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { useAuth } from '../../context/AuthContext';
 import ModalStock from '../../components/admin/ModalStock';
 import { obtenerProductos, eliminarProducto, buscarProductos, esCritico, ordenarPorCriticidad } from '../../services/productosService';
 import { puede } from '../../utils/permisos';
+import { useDatos } from '../../services/cache';
 import { formatoCLP } from '../../utils/formato';
 
 export function BadgeStock({ producto }) {
@@ -23,20 +24,25 @@ function Productos() {
     const puedeEditar = puede(usuario, 'productos:editar');
     const puedeEliminar = puede(usuario, 'productos:eliminar');
     const puedeStock = puede(usuario, 'productos:stock');
-    const [productos, setProductos] = useState(obtenerProductos);
+    useDatos(); // se redibuja cuando cambia el catálogo en la caché
+    const productos = obtenerProductos();
+    const [error, setError] = useState('');
     const [texto, setTexto] = useState('');
     const [aEliminar, setAEliminar] = useState(null);
     const [aStock, setAStock] = useState(null);      // producto cuyo stock se está editando
     const [aviso, setAviso] = useState('');
 
-    const confirmarEliminar = () => {
-        eliminarProducto(aEliminar.codigo);
-        setProductos(obtenerProductos());
+    const confirmarEliminar = async () => {
+        try {
+            await eliminarProducto(aEliminar.codigo);
+            setError('');
+        } catch (e) {
+            setError(e.message);
+        }
         setAEliminar(null);
     };
 
     const stockGuardado = (actualizado) => {
-        setProductos(obtenerProductos());
         setAStock(null);
         setAviso(`Stock de ${actualizado.nombre} actualizado a ${actualizado.stock} unidades.`);
     };
@@ -54,6 +60,7 @@ function Productos() {
                 </div>
             </div>
             {aviso && <Alert variant="success" dismissible onClose={() => setAviso('')}>{aviso}</Alert>}
+            {error && <Alert variant="danger" dismissible onClose={() => setError('')}>{error}</Alert>}
             <p className="small text-muted mb-2"><i className="bi bi-sort-down me-1"></i>Ordenado del más crítico al menos crítico.</p>
             <Row className="mb-3"><Col md={6}>
                 <Form.Control type="search" placeholder="Buscar por nombre o marca" value={texto} onChange={e => setTexto(e.target.value)} aria-label="Buscar producto" />

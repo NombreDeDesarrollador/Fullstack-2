@@ -9,6 +9,7 @@ import { obtenerOrdenes } from '../../services/ordenesService';
 import { obtenerProductos, esCritico } from '../../services/productosService';
 import { obtenerUsuarios } from '../../services/usuariosService';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
+import { useDatos } from '../../services/cache';
 
 const descripciones = {
     Dashboard: 'Visión general de las métricas del sistema.',
@@ -23,6 +24,7 @@ const descripciones = {
 function Dashboard() {
     const { usuario } = useAuth();
     const esAdmin = usuario.tipoUsuario === 'Administrador';
+    useDatos();
     const ordenes = obtenerOrdenes();
     const pagadas = ordenes.filter(o => o.estado === 'Pagada');
     const productos = obtenerProductos();

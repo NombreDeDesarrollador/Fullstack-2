@@ -7,6 +7,7 @@ import EstadoBadge from '../../components/comunes/EstadoBadge';
 import EstadoEnvioBadge from '../../components/comunes/EstadoEnvioBadge';
 import { useAuth } from '../../context/AuthContext';
 import { ordenesPorCorreo, cantidadUnidades } from '../../services/ordenesService';
+import { useDatos } from '../../services/cache';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
 
 function FilaDato({ label, valor }) {
@@ -21,6 +22,7 @@ function FilaDato({ label, valor }) {
 function MiCuenta() {
     const { usuario, actualizarPerfil, logout } = useAuth();
     const navigate = useNavigate();
+    useDatos(); // se redibuja cuando llegan sus pedidos desde ms-pedidos
     const [editando, setEditando] = useState(false);
     const [form, setForm] = useState({});
     const [errores, setErrores] = useState({});
@@ -35,7 +37,7 @@ function MiCuenta() {
         setEditando(true);
     };
 
-    const guardarCambios = (e) => {
+    const guardarCambios = async (e) => {
         e.preventDefault();
         const nuevos = {};
         if (!form.nombre) nuevos.nombre = 'El nombre es requerido.';
@@ -44,9 +46,13 @@ function MiCuenta() {
         if (!form.direccion) nuevos.direccion = 'La dirección es requerida.';
         setErrores(nuevos);
         if (Object.keys(nuevos).length) return;
-        actualizarPerfil(form);
-        setEditando(false);
-        setAviso('Tus datos se guardaron correctamente.');
+        try {
+            await actualizarPerfil(form);
+            setEditando(false);
+            setAviso('Tus datos se guardaron correctamente.');
+        } catch (error) {
+            setErrores(error.errores || { nombre: error.message });
+        }
     };
 
     return (

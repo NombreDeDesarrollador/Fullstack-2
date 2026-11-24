@@ -5,6 +5,7 @@ import BarrasReporte from '../../components/admin/BarrasReporte';
 import { obtenerOrdenes, cantidadUnidades } from '../../services/ordenesService';
 import { obtenerProductos, obtenerCategorias } from '../../services/productosService';
 import { formatoCLP } from '../../utils/formato';
+import { useDatos } from '../../services/cache';
 
 // Cálculo puro de los indicadores (exportado para probarlo)
 export function calcularReporte(ordenes, productos) {
@@ -41,6 +42,7 @@ function nombreMes(clave) {
 }
 
 function Reportes() {
+    useDatos();
     const productos = obtenerProductos();
     const r = calcularReporte(obtenerOrdenes(), productos);
 

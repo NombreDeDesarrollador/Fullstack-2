@@ -3,8 +3,10 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 import ProductGrid from '../../components/tienda/ProductGrid';
 import { useCarrito } from '../../context/CartContext';
 import { productosEnOferta, descuentoProducto, precioFinal } from '../../services/productosService';
+import { useDatos } from '../../services/cache';
 
 function Ofertas() {
+    useDatos(); // se redibuja cuando llega el catálogo desde ms-productos
     const { agregar } = useCarrito();
     const [orden, setOrden] = useState('descuento');
     const ofertas = productosEnOferta();

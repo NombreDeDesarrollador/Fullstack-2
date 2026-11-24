@@ -1,4 +1,4 @@
-// Selector para cambiar el estado de envío de una orden (Administrador y Vendedor).
+// Selector para cambiar el estado de envío de una orden (solo Administrador).
 // Props: orden, usuario (sesión) y onCambio(ordenActualizada).
 // Solo ofrece el estado actual y los siguientes, así no se puede retroceder.
 // Si el usuario no tiene permiso o la orden fue rechazada, solo muestra el badge.
@@ -16,11 +16,11 @@ function SelectEstadoEnvio({ orden, usuario, onCambio }) {
         return <EstadoEnvioBadge estado={orden.estadoEnvio} />;
     }
 
-    const cambiar = (e) => {
+    const cambiar = async (e) => {
         try {
-            const actualizada = cambiarEstadoEnvio(orden.numero, e.target.value, usuario);
+            const actualizada = await cambiarEstadoEnvio(orden.numero, e.target.value, usuario);
             setError('');
-            onCambio(actualizada);
+            if (onCambio) onCambio(actualizada);
         } catch (err) {
             setError(err.message);
         }

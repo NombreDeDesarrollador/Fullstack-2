@@ -7,11 +7,15 @@ import EstadoBadge from '../../components/comunes/EstadoBadge';
 import EstadoEnvioBadge from '../../components/comunes/EstadoEnvioBadge';
 import { buscarUsuarioPorRun } from '../../services/usuariosService';
 import { ordenesPorCorreo } from '../../services/ordenesService';
+import { useDatos, estaCargado } from '../../services/cache';
+import Cargando from '../../components/comunes/Cargando';
 import { formatoCLP, formatoFecha } from '../../utils/formato';
 
 function UsuarioDetalle() {
     const { run } = useParams();
+    useDatos();
     const usuario = buscarUsuarioPorRun(run);
+    if (!usuario && !estaCargado('usuarios')) return <Cargando />;
     if (!usuario) return <div className="text-center py-5"><p>El usuario no existe.</p><Link to="/admin/usuarios" className="btn btn-primary">Ver usuarios</Link></div>;
 
     const historial = ordenesPorCorreo(usuario.correo);

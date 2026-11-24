@@ -6,8 +6,10 @@ import { useCarrito } from '../../context/CartContext';
 import { obtenerCategorias, obtenerProductos, productosEnOferta, slugCategoria, descuentoProducto } from '../../services/productosService';
 import bannerInstrumentos from '../../assets/banner-instrumentos.jpg';
 import bannerEstudio from '../../assets/banner-estudio.jpg';
+import { useDatos } from '../../services/cache';
 
 function Home() {
+    useDatos(); // se redibuja cuando llega el catálogo desde ms-productos
     const { agregar } = useCarrito();
     const productos = obtenerProductos();
     const categorias = obtenerCategorias();

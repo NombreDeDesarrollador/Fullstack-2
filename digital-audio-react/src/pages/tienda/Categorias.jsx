@@ -5,8 +5,10 @@ import { Link, useParams } from 'react-router-dom';
 import ProductGrid from '../../components/tienda/ProductGrid';
 import { useCarrito } from '../../context/CartContext';
 import { obtenerCategorias, obtenerProductos, slugCategoria } from '../../services/productosService';
+import { useDatos } from '../../services/cache';
 
 function Categorias() {
+    useDatos(); // se redibuja cuando llega el catálogo desde ms-productos
     const { slug } = useParams();
     const { agregar } = useCarrito();
     const categorias = obtenerCategorias();

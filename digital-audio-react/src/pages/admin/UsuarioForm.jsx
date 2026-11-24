@@ -5,22 +5,33 @@ import CampoFormulario from '../../components/comunes/CampoFormulario';
 import SelectRegionComuna from '../../components/comunes/SelectRegionComuna';
 import { validarUsuario, esValido, limpiarRun } from '../../utils/validaciones';
 import { buscarUsuarioPorRun, buscarUsuarioPorCorreo, crearUsuario, actualizarUsuario } from '../../services/usuariosService';
-import { tiposUsuario } from '../../data/usuarios';
+import { useDatos, estaCargado } from '../../services/cache';
+import Cargando from '../../components/comunes/Cargando';
 
-const vacio = { run: '', nombre: '', apellidos: '', correo: '', clave: '', telefono: '', region: '', comuna: '', direccion: '', tipoUsuario: 'Cliente' };
+const tiposUsuario = ['Administrador', 'Vendedor', 'Cliente'];
 
+const vacio = { run: '', nombre: '', apellidos: '', correo: '', clave: '', telefono: '', region: '', comuna: '', direccion: '', tipoUsuario: 'Cliente', activo: true };
+
+// Espera a que la lista de usuarios llegue del backend antes de armar el formulario
 function UsuarioForm() {
     const { run } = useParams();
+    useDatos();
+    if (run && !estaCargado('usuarios')) return <Cargando />;
+    return <FormularioUsuario key={run || 'nuevo'} run={run} />;
+}
+
+function FormularioUsuario({ run }) {
     const navigate = useNavigate();
     const existente = run ? buscarUsuarioPorRun(run) : null;
     const edicion = !!existente;
     const [datos, setDatos] = useState(existente ? { ...vacio, ...existente, clave: '' } : vacio);
     const [errores, setErrores] = useState({});
     const [ok, setOk] = useState(false);
+    const [guardando, setGuardando] = useState(false);
 
     const cambiar = (campo, valor) => setDatos(prev => ({ ...prev, [campo]: valor }));
 
-    const guardar = (e) => {
+    const guardar = async (e) => {
         e.preventDefault();
         const limpios = { ...datos, run: limpiarRun(datos.run), correo: datos.correo.trim() };
         const nuevos = validarUsuario(limpios, { edicion });
@@ -28,13 +39,15 @@ function UsuarioForm() {
         if (!nuevos.correo && otro && otro.run !== run) nuevos.correo = 'Ya existe un usuario con ese correo.';
         setErrores(nuevos);
         if (!esValido(nuevos)) return;
+        setGuardando(true);
         try {
-            if (edicion) actualizarUsuario(run, limpios);
-            else crearUsuario(limpios);
+            if (edicion) await actualizarUsuario(run, limpios);
+            else await crearUsuario(limpios);
             setOk(true);
             setTimeout(() => navigate('/admin/usuarios'), 800);
         } catch (err) {
-            setErrores({ run: err.message });
+            setErrores(err.errores || { [err.message.includes('correo') ? 'correo' : 'run']: err.message });
+            setGuardando(false);
         }
     };
 
@@ -63,7 +76,9 @@ function UsuarioForm() {
                         </Row>
                         <SelectRegionComuna region={datos.region} comuna={datos.comuna} onChange={cambiar} errores={errores} />
                         <CampoFormulario id="direccion" label="Dirección" requerido valor={datos.direccion} onChange={v => cambiar('direccion', v)} error={errores.direccion} />
-                        <Button type="submit"><i className="bi bi-check-lg me-1"></i>Guardar usuario</Button>
+                        <Form.Check type="switch" id="activo" className="mb-3" label="Cuenta activa (puede iniciar sesión)"
+                            checked={datos.activo !== false} onChange={e => cambiar('activo', e.target.checked)} />
+                        <Button type="submit" disabled={guardando}><i className="bi bi-check-lg me-1"></i>Guardar usuario</Button>
                     </Form>
                 </Card.Body>
             </Card>

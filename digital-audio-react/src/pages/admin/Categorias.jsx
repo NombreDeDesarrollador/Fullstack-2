@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { Card, Table, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { obtenerCategorias, obtenerProductos, eliminarCategoria, slugCategoria } from '../../services/productosService';
+import { useDatos } from '../../services/cache';
 
 function CategoriasAdmin() {
-    const [categorias, setCategorias] = useState(obtenerCategorias);
+    useDatos();
+    const categorias = obtenerCategorias();
     const [error, setError] = useState('');
     const productos = obtenerProductos();
 
-    const eliminar = (nombre) => {
+    const eliminar = async (nombre) => {
         try {
-            eliminarCategoria(nombre);
-            setCategorias(obtenerCategorias());
+            await eliminarCategoria(nombre);
             setError('');
         } catch (e) {
             setError(e.message);

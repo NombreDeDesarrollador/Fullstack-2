@@ -13,7 +13,7 @@ function Perfil() {
 
     const cambiar = campo => valor => setForm(prev => ({ ...prev, [campo]: valor }));
 
-    const guardar = (e) => {
+    const guardar = async (e) => {
         e.preventDefault();
         const nuevos = {};
         if (!form.nombre) nuevos.nombre = 'El nombre es requerido.';
@@ -25,9 +25,13 @@ function Perfil() {
         setOk(false);
         if (Object.keys(nuevos).length) return;
         const { clave2, ...cambios } = form;
-        actualizarPerfil(cambios);
-        setForm(prev => ({ ...prev, clave: '', clave2: '' }));
-        setOk(true);
+        try {
+            await actualizarPerfil(cambios);
+            setForm(prev => ({ ...prev, clave: '', clave2: '' }));
+            setOk(true);
+        } catch (error) {
+            setErrores(error.errores || { nombre: error.message });
+        }
     };
 
     return (

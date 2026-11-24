@@ -7,12 +7,16 @@ import { BadgeStock } from './Productos';
 import CodigoBarras from '../../components/comunes/CodigoBarras';
 import { obtenerProducto, descuentoProducto, precioFinal } from '../../services/productosService';
 import { obtenerOrdenes } from '../../services/ordenesService';
+import { useDatos, estaCargado } from '../../services/cache';
+import Cargando from '../../components/comunes/Cargando';
 import { formatoCLP } from '../../utils/formato';
 
 function ProductoDetalleAdmin() {
     const { codigo } = useParams();
     const { usuario } = useAuth();
+    useDatos();
     const producto = obtenerProducto(codigo);
+    if (!producto && !estaCargado('productos')) return <Cargando />;
 
     if (!producto) return <div className="text-center py-5"><p>El producto no existe.</p><Link to="/admin/productos" className="btn btn-primary">Ver productos</Link></div>;
 

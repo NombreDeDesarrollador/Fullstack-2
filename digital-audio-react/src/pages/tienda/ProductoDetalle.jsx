@@ -5,12 +5,16 @@ import PrecioProducto from '../../components/tienda/PrecioProducto';
 import ProductGrid from '../../components/tienda/ProductGrid';
 import { useCarrito } from '../../context/CartContext';
 import { obtenerProducto, obtenerProductos, esCritico, slugCategoria } from '../../services/productosService';
+import { useDatos, estaCargado } from '../../services/cache';
+import Cargando from '../../components/comunes/Cargando';
 
 function ProductoDetalle() {
+    useDatos(); // se redibuja cuando llega el catálogo desde ms-productos
     const { codigo } = useParams();
     const { agregar } = useCarrito();
     const [mensaje, setMensaje] = useState(null);
     const producto = obtenerProducto(codigo);
+    if (!producto && !estaCargado('productos')) return <Cargando />;
 
     if (!producto) {
         return (

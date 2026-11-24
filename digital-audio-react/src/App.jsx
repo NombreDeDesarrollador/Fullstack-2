@@ -1,10 +1,13 @@
 // Rutas de la aplicación (react-router-dom).
 // La tienda usa TiendaLayout; el panel usa AdminLayout protegido por rol.
+// Las rutas protegidas son la primera barrera (UX); la barrera real es el backend,
+// que rechaza con 401/403 cualquier petición sin token válido o sin el rol necesario.
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import TiendaLayout from './components/layout/TiendaLayout';
 import AdminLayout from './components/admin/AdminLayout';
 import RutaProtegida from './components/comunes/RutaProtegida';
+import SincronizarDatos from './components/comunes/SincronizarDatos';
 
 import Home from './pages/tienda/Home';
 import Catalogo from './pages/tienda/Catalogo';
@@ -45,6 +48,8 @@ const soloAdmin = (elemento) => <RutaProtegida roles={SOLO_ADMIN}>{elemento}</Ru
 
 function App() {
     return (
+        <>
+        <SincronizarDatos />
         <Routes>
             <Route element={<TiendaLayout />}>
                 <Route path="/" element={<Home />} />
@@ -60,9 +65,9 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/registro" element={<Registro />} />
                 <Route path="/carrito" element={<Carrito />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/compra/exito/:numero" element={<CompraResultado exito />} />
-                <Route path="/compra/error/:numero" element={<CompraResultado exito={false} />} />
+                <Route path="/checkout" element={<RutaProtegida roles={['Cliente']}><Checkout /></RutaProtegida>} />
+                <Route path="/compra/exito/:numero" element={<RutaProtegida roles={['Cliente']}><CompraResultado exito /></RutaProtegida>} />
+                <Route path="/compra/error/:numero" element={<RutaProtegida roles={['Cliente']}><CompraResultado exito={false} /></RutaProtegida>} />
                 <Route path="/mi-cuenta" element={<RutaProtegida roles={['Cliente']}><MiCuenta /></RutaProtegida>} />
                 <Route path="*" element={<NoEncontrado />} />
             </Route>
@@ -87,6 +92,7 @@ function App() {
                 <Route path="perfil" element={<Perfil />} />
             </Route>
         </Routes>
+        </>
     );
 }
 
