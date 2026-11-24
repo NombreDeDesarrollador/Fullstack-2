@@ -4,3 +4,5 @@
 /coverage-karma
 .DS_Store
 npm-debug.log*
+.env
+coverage/
